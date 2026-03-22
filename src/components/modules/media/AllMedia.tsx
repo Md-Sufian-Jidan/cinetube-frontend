@@ -5,7 +5,7 @@ import { getAllMedia } from "@/app/(commonLayout)/all-movie/_actions"
 
 /**
  * 
- * @returns 0
+ * 0
 : 
 averageRating
 : 
@@ -61,8 +61,8 @@ export default function AllMedia() {
         queryKey: ['medias'],
         queryFn: () => getAllMedia(),
     });
-    console.log(data);
+
     return (
-        <div>AllMedia {data?.meta?.total}</div>
+        <div className="text-6xl text-bold p-5 text-red-500">All Media {data?.meta?.total}</div>
     )
 }

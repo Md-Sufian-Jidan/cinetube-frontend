@@ -1,3 +1,4 @@
+import { ApiResponse } from "@/types/api.types";
 import axios from "axios";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -24,50 +25,50 @@ export interface ApiRequestOptions {
     timeout?: number;
 }
 
-const httpGet = async (options: ApiRequestOptions) => {
+const httpGet = async <T>(options: ApiRequestOptions): Promise<ApiResponse<T>> => {
     const { url, params, headers, timeout } = options;
     try {
-        const response = await axiosInstance().get(url, { params, headers, timeout });
+        const response = await axiosInstance().get<ApiResponse<T>>(url, { params, headers, timeout });
         return response.data;
     } catch (error) {
         throw error;
     }
 };
 
-const httpPost = async (data: unknown, options: ApiRequestOptions) => {
+const httpPost = async <T>(data: unknown, options: ApiRequestOptions): Promise<ApiResponse<T>> => {
     const { url, params, headers, timeout } = options;
     try {
-        const response = await axiosInstance().post(url, data, { params, headers, timeout });
+        const response = await axiosInstance().post<ApiResponse<T>>(url, data, { params, headers, timeout });
         return response.data;
     } catch (error) {
         throw error;
     }
 };
 
-const httpPut = async (data: unknown, options: ApiRequestOptions) => {
+const httpPut = async <T>(data: unknown, options: ApiRequestOptions): Promise<ApiResponse<T>> => {
     const { url, params, headers, timeout } = options;
     try {
-        const response = await axiosInstance().put(url, data, { params, headers, timeout });
+        const response = await axiosInstance().put<ApiResponse<T>>(url, data, { params, headers, timeout });
         return response.data;
     } catch (error) {
         throw error;
     }
 };
 
-const httpPatch = async (data: unknown, options: ApiRequestOptions) => {
+const httpPatch = async <T>(data: unknown, options: ApiRequestOptions): Promise<ApiResponse<T>> => {
     const { url, params, headers, timeout } = options;
     try {
-        const response = await axiosInstance().patch(url, data, { params, headers, timeout });
+        const response = await axiosInstance().patch<ApiResponse<T>>(url, data, { params, headers, timeout });
         return response.data;
     } catch (error) {
         throw error;
     }
 };
 
-const httpDelete = async (options: ApiRequestOptions) => {
+const httpDelete = async <T>(options: ApiRequestOptions): Promise<ApiResponse<T>> => {
     const { url, params, headers, timeout } = options;
     try {
-        const response = await axiosInstance().delete(url, { params, headers, timeout });
+        const response = await axiosInstance().delete<ApiResponse<T>>(url, { params, headers, timeout });
         return response.data;
     } catch (error) {
         throw error;
