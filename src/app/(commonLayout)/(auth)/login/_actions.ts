@@ -6,7 +6,7 @@ import { ILoginResponse } from "@/types/auth.types";
 import { ILoginPayload, loginZodSchema } from "@/zod/auth.validation";
 import { toast } from "sonner";
 
-export const loginAction = async (payload: ILoginPayload): Promise<ILoginResponse | ApiErrorResponse> => {
+export const loginAction = async (payload: ILoginPayload, redirectPath?: string): Promise<ILoginResponse | ApiErrorResponse> => {
     const parsedPayload = loginZodSchema.safeParse(payload);
 
     if (!parsedPayload.success) {
@@ -20,7 +20,7 @@ export const loginAction = async (payload: ILoginPayload): Promise<ILoginRespons
 
     try {
         const res = await httpClient.post<ILoginResponse>(parsedPayload.data, {
-            url: "/sign-in/email",
+            url: "/auth/sign-in/email",
         });
         return res.data;
     } catch (error) {

@@ -1,7 +1,17 @@
-export default function LoginPage() {
+import LoginForm from "@/components/modules/auth/LoginForm";
+
+interface LoginParams {
+    searchParams: Promise<{ redirect?: string }>;
+}
+
+const LoginPage = async ({ searchParams }: LoginParams) => {
+    const params = await searchParams;
+    const redirectPath = params.redirect;
     return (
-        <div>
-            <h1>Login</h1>
+        <div className="py-12">
+            <LoginForm redirectPath={redirectPath} />
         </div>
-    );
-};
+    )
+}
+
+export default LoginPage

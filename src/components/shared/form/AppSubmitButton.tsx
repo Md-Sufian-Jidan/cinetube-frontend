@@ -41,4 +41,4 @@ const AppSubmitButton = ({
     )
 }
 
-export default AppSubmitButton
+export default AppSubmitButton;

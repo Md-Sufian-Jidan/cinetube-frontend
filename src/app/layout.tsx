@@ -24,7 +24,7 @@ export default function RootLayout({
       lang="en"
       className={cn("h-full", "antialiased", dmSans.variable, playfair.variable)}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full">
         <QueryProviders>
           <Transition>
             {children}
