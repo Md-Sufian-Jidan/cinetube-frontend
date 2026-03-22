@@ -8,6 +8,7 @@ export interface IRegisterResponse {
 }
 
 export interface ILoginResponse {
+    token: string;
     user: {
         id: string;
         email: string;
