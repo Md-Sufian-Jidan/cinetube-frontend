@@ -31,8 +31,7 @@ const decodedToken = (token: string) => {
             error
         }
     }
-}
-
+};
 
 export const jwtUtils = {
     verifyToken,

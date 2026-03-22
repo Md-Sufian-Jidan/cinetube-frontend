@@ -1,6 +1,6 @@
 "use server"
 
-import { getCookie, setCookie } from "./cookieUtils";
+import { setCookie } from "./cookieUtils";
 
 const JWT_ACCESS_TOKEN = process.env.JWT_ACCESS_TOKEN;
 
@@ -8,6 +8,5 @@ export const setTokenCookies = async (name: string, token: string, fallBackMaxAg
     if (!JWT_ACCESS_TOKEN) {
         throw new Error("JWT_ACCESS_TOKEN is not defined");
     }
-    const maxAge = fallBackMaxAge;
-    await setCookie(name, token, maxAge);
+    await setCookie(name, token, fallBackMaxAge);
 };
