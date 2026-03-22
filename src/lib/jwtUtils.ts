@@ -15,7 +15,7 @@ const verifyToken = (token: string, secret: string) => {
             error
         }
     }
-}
+};
 
 const decodedToken = (token: string) => {
     try {
@@ -36,4 +36,4 @@ const decodedToken = (token: string) => {
 export const jwtUtils = {
     verifyToken,
     decodedToken,
-}
+};
