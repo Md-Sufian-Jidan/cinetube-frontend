@@ -28,9 +28,9 @@ export default function RootLayout({
         <QueryProviders>
           <Transition>
             {children}
+            <Toaster position="top-right" richColors />
           </Transition>
         </QueryProviders>
-        <Toaster />
       </body>
     </html>
   );

@@ -38,6 +38,7 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
             try {
                 const result = await mutateAsync(value) as any;
 
+                console.log("Login result from login form: ", result);
                 if (!result.success) {
                     setServerError(result.message || "Login failed");
                     return;
