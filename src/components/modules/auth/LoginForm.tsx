@@ -6,12 +6,14 @@ import AppSubmitButton from "@/components/shared/form/AppSubmitButton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { ROLES } from "@/constant/role";
 import { ILoginPayload, loginZodSchema } from "@/zod/auth.validation";
 import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface LoginFormProps {
     redirectPath?: string;
@@ -42,6 +44,13 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
                 if (!result.success) {
                     setServerError(result.message || "Login failed");
                     return;
+                }
+                if (result.user.role === ROLES.ADMIN) {
+                    toast.success("Login successful");
+                    window.location.href = "/admin/dashboard";
+                } else {
+                    toast.success("Login successful");
+                    window.location.href = "/dashboard";
                 }
             } catch (error: any) {
                 console.log(`Login failed: ${error.message}`);

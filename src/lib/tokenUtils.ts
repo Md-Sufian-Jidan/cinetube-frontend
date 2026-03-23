@@ -1,6 +1,5 @@
 "use server"
 
-import { httpClient } from "./axios/httpClient";
 import { getCookie, setCookie } from "./cookieUtils";
 
 const JWT_ACCESS_TOKEN = process.env.JWT_ACCESS_TOKEN;

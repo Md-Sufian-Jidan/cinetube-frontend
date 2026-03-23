@@ -17,4 +17,4 @@ export interface ILoginResponse {
         role: string;
         status: string;
     };
-}
+};
