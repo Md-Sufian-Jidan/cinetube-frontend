@@ -1,4 +1,5 @@
 import Navbar from "@/components/shared/Navbar";
+import Footer from "@/components/shared/Footer";
 
 export default function CommonLayout(
     { children, }: Readonly<{ children: React.ReactNode; }
@@ -9,6 +10,7 @@ export default function CommonLayout(
             <div className="min-h-screen pt-20">
                 {children}
             </div>
+            <Footer />
         </>
     );
 }
