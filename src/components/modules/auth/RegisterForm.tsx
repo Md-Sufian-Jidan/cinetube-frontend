@@ -1,6 +1,6 @@
 "use client"
 
-import { loginAction } from "@/app/(commonLayout)/(auth)/login/_actions";
+import { registerAction } from "@/app/(commonLayout)/(auth)/register/_actions";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import AppField from "@/components/shared/form/AppField";
 import AppSubmitButton from "@/components/shared/form/AppSubmitButton";
@@ -8,7 +8,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ROLES } from "@/constant/role";
-import { ILoginPayload, loginZodSchema } from "@/zod/auth.validation";
+import { IRegisterPayload, registerZodSchema } from "@/zod/auth.validation";
 import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
 import { Eye, EyeOff } from "lucide-react";
@@ -16,55 +16,60 @@ import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 
-interface LoginFormProps {
+interface RegisterFormProps {
     redirectPath?: string;
 }
 
-const LoginForm = ({ redirectPath }: LoginFormProps) => {
+export const RegisterForm = ({ redirectPath }: RegisterFormProps) => {
     // const queryClient = useQueryClient();
 
     const [serverError, setServerError] = useState<string | null>(null);
     const [showPassword, setShowPassword] = useState(false);
 
     const { mutateAsync, isPending } = useMutation({
-        mutationFn: (payload: ILoginPayload) => loginAction(payload, redirectPath),
+        mutationFn: (payload: IRegisterPayload) => registerAction(payload, redirectPath),
     })
 
     const form = useForm({
         defaultValues: {
+            name: "",
             email: "",
             password: "",
+            role: ROLES.USER,
         },
 
         onSubmit: async ({ value }) => {
+            const registerData = {
+                name: value.name,
+                email: value.email,
+                password: value.password,
+                role: ROLES.USER,
+            }
             setServerError(null);
             try {
-                const result = await mutateAsync(value) as any;
+                const result = await mutateAsync(registerData) as any;
 
-                console.log("Login result from login form: ", result);
+                console.log("Register result from register form: ", result);
                 if (!result.success) {
-                    setServerError(result.message || "Login failed");
+                    setServerError(result.message || "Registration failed");
                     return;
                 }
-                if (result.user.role === ROLES.ADMIN) {
-                    toast.success("Login successful");
-                    window.location.href = "/admin/dashboard";
-                } else {
-                    toast.success("Login successful");
-                    window.location.href = "/dashboard";
-                }
+
+                // ✅ success case
+                toast.success("Registration successful! Please login.");
+                window.location.href = "/login";
             } catch (error: any) {
-                console.log(`Login failed: ${error.message}`);
-                setServerError(`Login failed: ${error.message}`);
+                console.log(`Registration failed: ${error.message}`);
+                setServerError(`Registration failed: ${error.message}`);
             }
         }
     })
     return (
         <Card className="w-full max-w-md mx-auto shadow-md">
             <CardHeader className="text-center">
-                <CardTitle className="text-2xl font-bold">Welcome Back!</CardTitle>
+                <CardTitle className="text-2xl font-bold">Welcome!</CardTitle>
                 <CardDescription>
-                    Please enter your credentials to log in.
+                    Please enter your credentials to register.
                 </CardDescription>
             </CardHeader>
 
@@ -81,8 +86,22 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
                     className="space-y-4"
                 >
                     <form.Field
+                        name="name"
+                        validators={{ onChange: registerZodSchema.shape.name }}
+                    >
+                        {(field) => (
+                            <AppField
+                                field={field}
+                                label="Name"
+                                type="text"
+                                placeholder="Enter your name"
+                            />
+                        )}
+                    </form.Field>
+
+                    <form.Field
                         name="email"
-                        validators={{ onChange: loginZodSchema.shape.email }}
+                        validators={{ onChange: registerZodSchema.shape.email }}
                     >
                         {(field) => (
                             <AppField
@@ -96,7 +115,7 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
 
                     <form.Field
                         name="password"
-                        validators={{ onChange: loginZodSchema.shape.password }}
+                        validators={{ onChange: registerZodSchema.shape.password }}
                     >
                         {(field) => (
                             <AppField
@@ -144,27 +163,14 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
                         selector={(s) => [s.canSubmit, s.isSubmitting] as const}
                     >
                         {([canSubmit, isSubmitting]) => (
-                            <AppSubmitButton isPending={isSubmitting || isPending} pendingLabel="Logging In...." disabled={!canSubmit}>
-                                Log In
+                            <AppSubmitButton isPending={isSubmitting || isPending} pendingLabel="Signing Up...." disabled={!canSubmit}>
+                                Sign Up
                             </AppSubmitButton>
                         )}
                     </form.Subscribe>
                 </form>
             </CardContent>
 
-            <CardFooter className="justify-center border-t pt-4">
-                <p className="text-sm text-muted-foreground">
-                    Don&apos;t have an account?{" "}
-                    <Link
-                        href="/register"
-                        className="text-primary font-medium hover:underline underline-offset-4"
-                    >
-                        Sign Up for an account
-                    </Link>
-                </p>
-            </CardFooter>
         </Card>
     );
 }
-
-export default LoginForm

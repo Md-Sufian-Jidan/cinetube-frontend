@@ -1,13 +1,14 @@
-import Transition from "@/components/shared/Transition";
+import Navbar from "@/components/shared/Navbar";
 
 export default function CommonLayout(
     { children, }: Readonly<{ children: React.ReactNode; }
     >) {
     return (
-        <Transition>
-            <div className="min-h-screen">
+        <>
+            <Navbar />
+            <div className="min-h-screen pt-20">
                 {children}
             </div>
-        </Transition>
+        </>
     );
 }

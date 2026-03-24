@@ -25,7 +25,7 @@ export const loginAction = async (payload: ILoginPayload, redirectPath?: string)
         const { token, user } = res as any;
 
         if (token) {
-            await setTokenCookies("auth_token", token);
+            await setTokenCookies("cinetube.session_token", token);
         }
 
         return {

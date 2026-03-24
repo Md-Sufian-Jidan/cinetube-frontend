@@ -12,8 +12,8 @@ export const setTokenCookies = async (name: string, token: string, fallBackMaxAg
 };
 
 export const getToken = async (name: string) => {
-    if (!JWT_ACCESS_TOKEN) {
-        throw new Error("JWT_ACCESS_TOKEN is not defined");
-    }
+    // if (!JWT_ACCESS_TOKEN) {
+    //     throw new Error("JWT_ACCESS_TOKEN is not defined");
+    // }
     return await getCookie(name);
 };

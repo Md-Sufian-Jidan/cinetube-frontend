@@ -1,38 +1,65 @@
 import { getRouteRole } from "@/lib/authUtils";
 import { NextRequest, NextResponse } from "next/server";
 
-export default function proxy(request: NextRequest) {
-    const pathname = request.nextUrl.pathname;
+export default async function proxy(request: NextRequest) {
+    // const pathname = request.nextUrl.pathname;
 
-    const token = request.cookies.get("auth_token")?.value;
+    // const token = request.cookies.get("auth_token")?.value;
 
-    if (!getRouteRole(pathname)) {
-        return NextResponse.next();
-    }
+    // // Public route
+    // if (!getRouteRole(pathname)) {
+    //     return NextResponse.next();
+    // }
 
-    if (!token) {
-        return NextResponse.redirect(new URL("/login", request.url));
-    }
+    // // Not logged in
+    // if (!token) {
+    //     return NextResponse.redirect(new URL("/login", request.url));
+    // }
 
-    let userRole: "USER" | "ADMIN" = "USER";
+    // let userRole: "USER" | "ADMIN" = "USER";
 
-    try {
-        // .split(".")[1]
-        const payload = JSON.parse(atob(token));
-        console.log(payload);
-        userRole = payload.role;
-    } catch {
-        return NextResponse.redirect(new URL("/login", request.url));
-    }
+    // try {
+    //     // 🔥 MOST IMPORTANT LINE
+    //     const cookieHeader = request.headers.get("cookie");
+    //     console.log("cookieHeader", cookieHeader);
 
-    const routeRole = getRouteRole(pathname);
+    //     const res = await fetch(
+    //         `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/get-session`,
+    //         {
+    //             headers: {
+    //                 Cookie: cookieHeader || "", // ✅ CORRECT WAY
+    //             },
+    //             cache: "no-store",
+    //         }
+    //     );
 
-    if (routeRole && routeRole !== userRole) {
-        return NextResponse.redirect(new URL("/", request.url));
-    }
+    //     console.log("res", res);
 
-    return NextResponse.next();
-};
+    //     const session = await res.json();
+
+    //     console.log("Session from proxy:", session);
+
+    //     // ❌ session null check
+    //     if (!session || !session.user) {
+    //         return NextResponse.redirect(new URL("/login", request.url));
+    //     }
+
+    //     // ✅ FIX: role nested inside user
+    //     userRole = session.user.role;
+
+    // } catch (error) {
+    //     console.log("Middleware error:", error);
+    //     return NextResponse.redirect(new URL("/login", request.url));
+    // }
+
+    // const routeRole = getRouteRole(pathname);
+
+    // if (routeRole && routeRole !== userRole) {
+    //     return NextResponse.redirect(new URL("/", request.url));
+    // }
+
+    // return NextResponse.next();
+}
 
 export const config = {
     matcher: [
