@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Play, Info, Star, Calendar } from "lucide-react";
@@ -8,7 +8,7 @@ import Image from "next/image";
 
 export default function Hero() {
     // Animation variants for staggered text entry
-    const containerVariants = {
+    const containerVariants: Variants = {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
@@ -19,17 +19,17 @@ export default function Hero() {
         },
     };
 
-    const itemVariants = {
+    const itemVariants: Variants = {
         hidden: { y: 20, opacity: 0 },
         visible: { y: 0, opacity: 1, transition: { duration: 0.8, ease: "easeOut" } },
     };
 
     return (
-        <section className="relative h-[95vh] w-full overflow-hidden bg-[#0B0E14]">
+        <section className="relative h-[95vh] w-full overflow-hidden bg-[#0B0E14] px-5">
             {/* Background Image with Cinematic Overlay */}
             <div className="absolute inset-0">
                 <Image
-                    src="https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059" // Replace with a featured movie backdrop
+                    src="https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059"
                     alt="Featured Movie"
                     fill
                     priority
@@ -65,7 +65,7 @@ export default function Hero() {
                     {/* Main Title */}
                     <motion.h1
                         variants={itemVariants}
-                        className="font-playfair text-6xl font-black leading-[1.1] tracking-tight text-white md:text-8xl lg:text-9xl"
+                        className="font-playfair text-5xl font-black leading-[1.1] tracking-tight text-white md:text-6xl lg:text-7xl"
                     >
                         BEYOND THE <br />
                         <span className="text-[#EAB308]">HORIZON</span>
@@ -88,7 +88,7 @@ export default function Hero() {
                     >
                         <Button
                             size="lg"
-                            className="group h-14 bg-[#EAB308] px-8 text-lg font-bold text-[#0B0E14] hover:bg-[#EAB308]/90"
+                            className="group h-14 bg-[#EAB308] px-8 text-lg font-bold text-[#0B0E14] border-2 border-[#EAB308] hover:bg-transparent hover:border-[#EAB308] hover:border-2 hover:text-[#EAB308]"
                         >
                             <Play className="mr-2 h-5 w-5 fill-current transition-transform group-hover:scale-110" />
                             Watch Trailer
@@ -97,7 +97,7 @@ export default function Hero() {
                         <Button
                             size="lg"
                             variant="outline"
-                            className="h-14 border-white/20 bg-white/5 px-8 text-lg text-white backdrop-blur-sm hover:bg-white/10 hover:text-[#EAB308]"
+                            className="h-14 border-2 border-[#EAB308] px-8 text-lg text-[#EAB308] font-bold bg-transparent hover:bg-[#EAB308] hover:border-[#EAB308] hover:border-2 hover:text-[#0B0E14]"
                         >
                             <Info className="mr-2 h-5 w-5" />
                             View Details
