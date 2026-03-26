@@ -2,57 +2,60 @@ import { cookies } from "next/headers";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL as string;
 
-export const authService = {
-    getSession: async function () {
-        try {
-            const cookieStore = await cookies();
 
-            const res = await fetch(`${API_BASE_URL}/auth/get-session`, {
-                headers: {
-                    Cookie: cookieStore.toString(),
-                },
-                cache: "no-store",
-            });
-            console.log("res", res);
-            const session = await res.json();
-            console.log("session", session);
-            if (session === null) {
-                return { data: null, message: "No active session", status: false };
-            }
-            return { data: session, error: null, status: true };
-        } catch (error) {
-            console.log(error);
-            return {
-                data: null,
-                message: "Failed to fetch session data",
-                status: false,
-            };
+export async function getSession() {
+    try {
+        const cookieStore = await cookies();
+
+        const res = await fetch(`${API_BASE_URL}/auth/get-session`, {
+            headers: {
+                Cookie: cookieStore.toString(),
+            },
+            cache: "no-store",
+        });
+        const session = await res.json();
+        if (session === null) {
+            return { data: null, message: "No active session", status: false };
         }
-    },
+        return { data: session, error: null, status: true };
+    } catch (error) {
+        console.log(error);
+        return {
+            data: null,
+            message: "Failed to fetch session data",
+            status: false,
+        };
+    }
+}
 
-    getCurrentUser: async function () {
-        try {
-            const cookieStore = await cookies();
-            const res = await fetch(`${API_BASE_URL}/v1/users/me`, {
-                headers: {
-                    Cookie: cookieStore.toString(),
-                },
-                cache: "no-store",
-            });
+export async function getUserInfo() {
+    try {
+        const cookieStore = await cookies();
+        const token = cookieStore.get("auth_token")?.value;
+        const sessionToken = cookieStore.get("better-auth.session_token")?.value
 
-            if (!res.ok) {
-                throw new Error("Failed to fetch user data");
-            }
-
-            const result = await res.json();
-            return { data: result.data, error: null, status: true };
-        } catch (error) {
-            console.log(error);
-            return {
-                data: null,
-                message: "Failed to fetch user data",
-                status: false,
-            };
+        if (!token) {
+            return null;
         }
-    },
+
+        const res = await fetch(`${API_BASE_URL}/auth/me`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Cookie: `auth_token=${token}; better-auth.session_token=${sessionToken}`
+            }
+        });
+
+        if (!res.ok) {
+            console.error("Failed to fetch user info:", res.status, res.statusText);
+            return null;
+        }
+
+        const { data } = await res.json();
+
+        return data;
+    } catch (error) {
+        console.error("Error fetching user info:", error);
+        return null;
+    }
 };

@@ -1,7 +1,6 @@
 "use server"
 
 import { httpClient } from "@/lib/axios/httpClient";
-import { setTokenCookies } from "@/lib/tokenUtils";
 import { ApiErrorResponse } from "@/types/api.types";
 import { ILoginResponse } from "@/types/auth.types";
 import { ILoginPayload, loginZodSchema } from "@/zod/auth.validation";
@@ -22,23 +21,18 @@ export const loginAction = async (payload: ILoginPayload, redirectPath?: string)
             url: "/auth/sign-in/email",
         });
 
-        const { token, user } = res as any;
-
-        if (token) {
-            await setTokenCookies("cinetube.session_token", token);
-        }
+        const { user } = res as any;
 
         return {
             success: true,
-            token,
             user,
         };
 
-    } catch (error) {
+    } catch (error: any) {
         console.log("LoginAction Error:", error);
         return {
             success: false,
-            message: "Error from login action. Login failed",
+            message: error.response.data.message || "Login failed",
         };
     }
 };

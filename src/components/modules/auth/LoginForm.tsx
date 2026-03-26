@@ -1,7 +1,6 @@
-"use client"
+"use client";
 
-import { loginAction } from "@/app/(commonLayout)/(auth)/login/_actions";
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import axios from "axios";
 import AppField from "@/components/shared/form/AppField";
 import AppSubmitButton from "@/components/shared/form/AppSubmitButton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -10,25 +9,22 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { ROLES } from "@/constant/role";
 import { ILoginPayload, loginZodSchema } from "@/zod/auth.validation";
 import { useForm } from "@tanstack/react-form";
-import { useMutation } from "@tanstack/react-query";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 interface LoginFormProps {
     redirectPath?: string;
 }
 
 const LoginForm = ({ redirectPath }: LoginFormProps) => {
-    // const queryClient = useQueryClient();
-
     const [serverError, setServerError] = useState<string | null>(null);
     const [showPassword, setShowPassword] = useState(false);
-
-    const { mutateAsync, isPending } = useMutation({
-        mutationFn: (payload: ILoginPayload) => loginAction(payload, redirectPath),
-    })
+    const router = useRouter();
 
     const form = useForm({
         defaultValues: {
@@ -38,27 +34,46 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
 
         onSubmit: async ({ value }) => {
             setServerError(null);
-            try {
-                const result = await mutateAsync(value) as any;
 
-                console.log("Login result from login form: ", result);
-                if (!result.success) {
-                    setServerError(result.message || "Login failed");
+            try {
+                // 🔥 IMPORTANT PART
+                const res = await axios.post(
+                    `${API_BASE_URL}/auth/sign-in/email`,
+                    value,
+                    {
+                        withCredentials: true, // ✅ MUST
+                    }
+                );
+                console.log("Login response:", res);
+
+                const data = res.data;
+
+                console.log("Login data:", data);
+
+                if (!data?.user) {
+                    setServerError("Login failed");
                     return;
                 }
-                if (result.user.role === ROLES.ADMIN) {
-                    toast.success("Login successful");
-                    window.location.href = "/admin/dashboard";
+
+                toast.success("Login successful");
+
+                if (data.user.role === ROLES.ADMIN) {
+                    router.push("/admin/dashboard");
                 } else {
-                    toast.success("Login successful");
-                    window.location.href = "/dashboard";
+                    router.push("/dashboard");
                 }
+
+                router.refresh();
+
             } catch (error: any) {
-                console.log(`Login failed: ${error.message}`);
-                setServerError(`Login failed: ${error.message}`);
+                console.log("Login error:", error);
+                setServerError(
+                    error?.response?.data?.message || "Login failed"
+                );
             }
-        }
-    })
+        },
+    });
+
     return (
         <Card className="w-full max-w-md mx-auto shadow-md">
             <CardHeader className="text-center">
@@ -70,12 +85,8 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
 
             <CardContent>
                 <form
-                    method="POST"
-                    action="#"
-                    noValidate
                     onSubmit={(e) => {
                         e.preventDefault();
-                        e.stopPropagation();
                         form.handleSubmit();
                     }}
                     className="space-y-4"
@@ -103,39 +114,23 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
                                 field={field}
                                 label="Password"
                                 type={showPassword ? "text" : "password"}
-                                // type="text"
                                 placeholder="Enter your password"
-                                aria-label={showPassword ? "Hide password" : "Show password"}
-                                className="cursor-pointer"
                                 append={
                                     <Button
                                         type="button"
-                                        onClick={() => setShowPassword((value) => !value)}
+                                        onClick={() => setShowPassword((v) => !v)}
                                         variant="ghost"
                                         size="icon"
                                     >
-                                        {showPassword ? (
-                                            <EyeOff className="size-4" aria-hidden="true" />
-                                        ) : (
-                                            <Eye className="size-4" aria-hidden="true" />
-                                        )}
+                                        {showPassword ? <EyeOff /> : <Eye />}
                                     </Button>
                                 }
                             />
                         )}
                     </form.Field>
 
-                    <div className="text-right mt-2">
-                        <Link
-                            href="/forgot-password"
-                            className="text-sm text-primary hover:underline underline-offset-4"
-                        >
-                            Forgot password?
-                        </Link>
-                    </div>
-
                     {serverError && (
-                        <Alert variant={"destructive"}>
+                        <Alert variant="destructive">
                             <AlertDescription>{serverError}</AlertDescription>
                         </Alert>
                     )}
@@ -144,7 +139,10 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
                         selector={(s) => [s.canSubmit, s.isSubmitting] as const}
                     >
                         {([canSubmit, isSubmitting]) => (
-                            <AppSubmitButton isPending={isSubmitting || isPending} pendingLabel="Logging In...." disabled={!canSubmit}>
+                            <AppSubmitButton
+                                isPending={isSubmitting}
+                                disabled={!canSubmit}
+                            >
                                 Log In
                             </AppSubmitButton>
                         )}
@@ -155,16 +153,13 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
             <CardFooter className="justify-center border-t pt-4">
                 <p className="text-sm text-muted-foreground">
                     Don&apos;t have an account?{" "}
-                    <Link
-                        href="/register"
-                        className="text-primary font-medium hover:underline underline-offset-4"
-                    >
-                        Sign Up for an account
+                    <Link href="/register" className="text-primary">
+                        Sign Up
                     </Link>
                 </p>
             </CardFooter>
         </Card>
     );
-}
+};
 
-export default LoginForm
+export default LoginForm;

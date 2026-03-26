@@ -13,7 +13,8 @@ const axiosInstance = () => {
         headers: {
             "Content-Type": "application/json",
         },
-        timeout: 30000
+        timeout: 30000,
+        withCredentials: true
     })
     return instance;
 }

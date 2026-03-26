@@ -1,5 +1,5 @@
 import { Roles, ROLES } from "@/constant/role";
-
+export type UserRole = "ADMIN" | "USER";
 export type RouteConfig = {
     exact: string[];
     pattern: RegExp[];
@@ -46,6 +46,17 @@ export const matchRoute = (pathname: string, config: RouteConfig) => {
         config.pattern.some((r) => r.test(pathname))
     );
 };
+
+export const getDefaultDashboardRoute = (role: UserRole) => {
+    if (role === "ADMIN") {
+        return "/admin/dashboard";
+    }
+    if (role === "USER") {
+        return "/dashboard";
+    }
+
+    return "/";
+}
 
 export const getRouteRole = (pathname: string): Roles | null => {
     if (matchRoute(pathname, ROUTES.USER)) return ROLES.USER;

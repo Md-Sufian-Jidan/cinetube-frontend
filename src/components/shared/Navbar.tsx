@@ -27,7 +27,7 @@ export default function Navbar() {
                             <Film size={20} className="text-primary" />
                         </div>
                         <span className="font-display text-lg font-bold tracking-tight text-foreground">
-                            CineVault
+                            CineTube
                         </span>
                     </Link>
 
@@ -59,7 +59,7 @@ export default function Navbar() {
                         <Button variant="ghost" size="icon" className="text-muted-foreground">
                             <User size={18} />
                         </Button>
-                        <Button variant="hero" size="sm" className="hidden sm:inline-flex">
+                        <Button variant="outline" size="sm" className="hidden sm:inline-flex">
                             Sign In
                         </Button>
                         <button
@@ -92,7 +92,7 @@ export default function Navbar() {
                             </Link>
                         ))}
                         <div className="pt-2">
-                            <Button variant="hero" className="w-full">Sign In</Button>
+                            <Button variant="outline" className="w-full">Sign In</Button>
                         </div>
                     </div>
                 </div>
