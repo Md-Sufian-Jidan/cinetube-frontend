@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search, User, Menu, X, Film } from "lucide-react";
+import { Search, Menu, X, Film, PlayCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -15,84 +15,114 @@ const links = [
 
 export default function Navbar() {
     const [mobileOpen, setMobileOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
     const pathname = usePathname();
 
+    // Handle scroll logic for changing background opacity
+    useEffect(() => {
+        const handleScroll = () => setScrolled(window.scrollY > 20);
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
     return (
-        <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
-            <div className="mx-auto max-w-7xl px-5">
-                <div className="flex h-16 items-center justify-between">
-                    {/* Logo */}
-                    <Link href="/" className="flex items-center gap-2 group">
-                        <div className="p-1.5 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors duration-200">
-                            <Film size={20} className="text-primary" />
+        <nav
+            className={cn(
+                "fixed top-0 left-0 right-0 z-[100] transition-all duration-300 border-b",
+                scrolled
+                    ? "bg-[#0B0E14]/80 backdrop-blur-xl border-white/10 py-2 shadow-2xl"
+                    : "bg-transparent border-transparent py-4"
+            )}
+        >
+            <div className="mx-auto max-w-7xl px-6 lg:px-12">
+                <div className="flex h-12 items-center justify-between">
+
+                    {/* Logo Section */}
+                    <Link href="/" className="flex items-center gap-2 group shrink-0">
+                        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#EAB308] text-[#0B0E14] shadow-[0_0_15px_rgba(234,179,8,0.2)] transition-transform group-hover:scale-105">
+                            <Film size={20} />
                         </div>
-                        <span className="font-display text-lg font-bold tracking-tight text-foreground">
-                            CineTube
+                        <span className="font-playfair text-xl font-black tracking-tight text-black uppercase">
+                            Cine<span className="text-[#EAB308]">Tube</span>
                         </span>
                     </Link>
 
-                    {/* Desktop links */}
-                    <div className="hidden md:flex items-center gap-1">
+                    {/* Desktop Links - Minimalist & Spaced */}
+                    <div className="hidden md:flex items-center gap-8">
                         {links.map((link) => (
                             <Link
                                 key={link.href}
                                 href={link.href}
                                 className={cn(
-                                    "px-3 py-1.5 rounded-md text-sm font-medium transition-colors duration-200",
+                                    "relative text-[13px] font-bold uppercase tracking-[0.1em] transition-all duration-300 font-jakarta",
                                     pathname === link.href
-                                        ? "text-primary bg-primary/10"
-                                        : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                                        ? "text-[#EAB308]"
+                                        : "text-black hover:text-[#EAB308]"
                                 )}
                             >
                                 {link.label}
+                                {pathname === link.href && (
+                                    <span className="absolute -bottom-1 left-0 h-[2px] w-full bg-[#EAB308] rounded-full" />
+                                )}
                             </Link>
                         ))}
                     </div>
 
-                    {/* Right side */}
-                    <div className="flex items-center gap-2">
-                        <Link href="/browse">
-                            <Button variant="ghost" size="icon" className="text-muted-foreground">
-                                <Search size={18} />
-                            </Button>
-                        </Link>
-                        <Button variant="ghost" size="icon" className="text-muted-foreground">
-                            <User size={18} />
+                    {/* Action Icons & CTA */}
+                    <div className="flex items-center gap-3">
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="text-slate-300 hover:text-[#EAB308] transition-colors"
+                        >
+                            <Search size={20} />
                         </Button>
-                        <Button variant="outline" size="sm" className="hidden sm:inline-flex">
-                            Sign In
-                        </Button>
+
+                        <div className="hidden sm:block">
+                            <Link href="/login">
+                                <Button
+                                    size="sm"
+                                    className="bg-[#EAB308] text-[#0B0E14] hover:bg-[#EAB308]/90 font-bold px-6 shadow-lg shadow-[#EAB308]/10 font-jakarta uppercase tracking-wider text-[11px]"
+                                >
+                                    Join the Cinema
+                                </Button>
+                            </Link>
+                        </div>
+
+                        {/* Mobile Menu Trigger */}
                         <button
-                            className="md:hidden p-2 text-muted-foreground"
+                            className="md:hidden p-2 text-slate-300"
                             onClick={() => setMobileOpen(!mobileOpen)}
                         >
-                            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+                            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
                         </button>
                     </div>
                 </div>
             </div>
 
-            {/* Mobile menu */}
+            {/* Mobile Menu Overlay */}
             {mobileOpen && (
-                <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-xl animate-fade-in">
-                    <div className="px-4 py-3 space-y-1">
+                <div className="md:hidden border-t border-white/5 bg-[#0B0E14] shadow-2xl animate-in slide-in-from-top-4 duration-300">
+                    <div className="px-6 py-8 space-y-6">
                         {links.map((link) => (
                             <Link
                                 key={link.href}
                                 href={link.href}
                                 onClick={() => setMobileOpen(false)}
                                 className={cn(
-                                    "block px-3 py-2 rounded-md text-sm font-medium",
+                                    "block text-lg font-bold font-playfair tracking-wide uppercase transition-colors",
                                     pathname === link.href
-                                        ? "text-primary bg-primary/10"
-                                        : "text-muted-foreground hover:text-foreground"
+                                        ? "text-[#EAB308]"
+                                        : "text-slate-400"
                                 )}
                             >
                                 {link.label}
                             </Link>
                         ))}
-                        <div className="pt-2">
-                            <Button variant="outline" className="w-full">Sign In</Button>
+                        <div className="pt-4">
+                            <Button className="w-full bg-[#EAB308] text-[#0B0E14] font-bold py-6 font-playfair uppercase">
+                                Sign In
+                            </Button>
                         </div>
                     </div>
                 </div>
@@ -100,4 +130,3 @@ export default function Navbar() {
         </nav>
     );
 }
-
