@@ -30,6 +30,7 @@ const httpGet = async <T>(options: ApiRequestOptions): Promise<ApiResponse<T>> =
     const { url, params, headers, timeout } = options;
     try {
         const response = await axiosInstance().get<ApiResponse<T>>(url, { params, headers, timeout });
+        console.log("Response from httpGet", response)
         return response.data;
     } catch (error) {
         throw error;

@@ -73,7 +73,6 @@ const AppField = ({
                         hasError && "border-destructive focus-visible:ring-destructive/20",
                     )}
                 />
-
                 {
                     append && (<div className="absolute inset-y-0 right-0 items-center pr-3 pointer-events-none z-10">
                         {append}
