@@ -2,6 +2,12 @@
 import { httpClient } from "@/lib/axios/httpClient"
 
 export const getAllMedia = async () => {
-    const medias = await httpClient.get({ url: "/media" })
-    return medias;
+    try {
+        const medias = await httpClient.get({ url: "/v1/media" })
+        console.log("response from all media", medias);
+        return medias;
+    } catch (error) {
+        console.error("Error fetching all media:", error);
+        return [];
+    }
 };

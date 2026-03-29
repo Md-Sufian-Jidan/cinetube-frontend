@@ -5,29 +5,21 @@ import { Badge } from "@/components/ui/badge";
 import { BarChart3, Star, Film, TrendingUp, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getMediaAnalytics } from "./_actions";
+import { MediaAnalytics } from "@/types/media.types";
 
 export default async function MediaAnalyticsPage() {
-    // const analyticsData = await getMediaAnalytics();
-    const analyticsData = {
-        success: true,
-        statusCode: 200,
-        message: "Media analytics fetched successfully",
-        data: [
-            {
-                id: "36e35107-8ef2-4df6-a5d9-8e2be6bd372b",
-                title: "Breaking Bad",
-                totalReviews: 2,
-                averageRating: 10
-            },
-        ]
-    }
+    const data: MediaAnalytics[] = await getMediaAnalytics();
+    console.log("data from getmedia analytics", data);
 
     // Calculate quick stats
-    const totalMedia = analyticsData.data.length;
-    const totalReviews = analyticsData.data.reduce((acc: number, item: any) => acc + item.totalReviews, 0);
-    const topRated = analyticsData.data.reduce((prev: any, current: any) =>
+    const totalMedia = data?.length || 0;
+    const totalReviews = data?.reduce((acc: number, item: MediaAnalytics) => acc + item.totalReviews, 0) || 0;
+    const topRated = data?.length > 0 ? data?.reduce((prev: MediaAnalytics, current: MediaAnalytics) =>
         (prev.averageRating > current.averageRating) ? prev : current
-        , analyticsData.data[0]);
+        , data[0]) : null;
+    const totalPendingMedia = data?.filter((item: MediaAnalytics) => item.status === "PENDING") || [];
+    const publishedMedia = data?.filter((item: MediaAnalytics) => item.status === "PUBLISHED") || [];
+    const unpublishedMedia = data?.filter((item: MediaAnalytics) => item.status === "UNPUBLISHED") || [];
 
     return (
         <div className="p-6 space-y-8 bg-white min-h-screen font-jakarta">
@@ -43,12 +35,12 @@ export default async function MediaAnalyticsPage() {
             <div className="grid gap-4 md:grid-cols-3">
                 <Card className="border-slate-100 shadow-sm bg-slate-50/50">
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-xs font-bold uppercase tracking-widest text-slate-500">Total Media</CardTitle>
+                        <CardTitle className="text-xs font-bold uppercase tracking-widest text-slate-500">Total Pending Reviews</CardTitle>
                         <Film className="h-4 w-4 text-[#EAB308]" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-slate-900">{totalMedia}</div>
-                        <p className="text-[10px] text-slate-400 mt-1 uppercase">Titles in library</p>
+                        <div className="text-2xl font-bold text-slate-900">{totalPendingMedia.length}</div>
+                        <p className="text-[10px] text-slate-400 mt-1 uppercase">Pending reviews</p>
                     </CardContent>
                 </Card>
 
@@ -60,6 +52,39 @@ export default async function MediaAnalyticsPage() {
                     <CardContent>
                         <div className="text-2xl font-bold text-slate-900">{totalReviews}</div>
                         <p className="text-[10px] text-slate-400 mt-1 uppercase">Community reviews</p>
+                    </CardContent>
+                </Card>
+
+                <Card className="border-slate-100 shadow-sm bg-slate-50/50">
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-xs font-bold uppercase tracking-widest text-slate-500">Total Pending Media</CardTitle>
+                        <TrendingUp className="h-4 w-4 text-[#EAB308]" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold text-slate-900 truncate">{totalPendingMedia.length || "N/A"}</div>
+                        <p className="text-[10px] text-slate-400 mt-1 uppercase">Pending media</p>
+                    </CardContent>
+                </Card>
+
+                <Card className="border-slate-100 shadow-sm bg-slate-50/50">
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-xs font-bold uppercase tracking-widest text-slate-500">Total Published Media</CardTitle>
+                        <TrendingUp className="h-4 w-4 text-[#EAB308]" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold text-slate-900 truncate">{publishedMedia.length || "N/A"}</div>
+                        <p className="text-[10px] text-slate-400 mt-1 uppercase">Published media</p>
+                    </CardContent>
+                </Card>
+
+                <Card className="border-slate-100 shadow-sm bg-slate-50/50">
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-xs font-bold uppercase tracking-widest text-slate-500">Total Unpublished Media</CardTitle>
+                        <Users className="h-4 w-4 text-[#EAB308]" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold text-slate-900">{unpublishedMedia.length}</div>
+                        <p className="text-[10px] text-slate-400 mt-1 uppercase">Unpublished media</p>
                     </CardContent>
                 </Card>
 
@@ -94,17 +119,25 @@ export default async function MediaAnalyticsPage() {
                                 <TableHead className="font-bold text-slate-900">Media Title</TableHead>
                                 <TableHead className="font-bold text-slate-900">Total Reviews</TableHead>
                                 <TableHead className="font-bold text-slate-900">Average Rating</TableHead>
+                                <TableHead className="font-bold text-slate-900">Published</TableHead>
+                                <TableHead className="font-bold text-slate-900">Unpublished</TableHead>
                                 <TableHead className="text-right font-bold text-slate-900">Reception</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {analyticsData.data.map((media: any) => (
+                            {data?.map((media: MediaAnalytics) => (
                                 <TableRow key={media.id} className="hover:bg-slate-50/50 transition-colors">
                                     <TableCell className="font-bold text-slate-700">{media.title}</TableCell>
                                     <TableCell>
                                         <Badge variant="outline" className="bg-slate-100 text-slate-600 border-slate-200">
                                             {media.totalReviews} Reviews
                                         </Badge>
+                                    </TableCell>
+                                    <TableCell>
+                                        {media.status}
+                                    </TableCell>
+                                    <TableCell>
+                                        {media.status}
                                     </TableCell>
                                     <TableCell>
                                         <div className="flex items-center gap-2">

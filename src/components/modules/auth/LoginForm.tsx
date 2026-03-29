@@ -36,20 +36,14 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
             setServerError(null);
 
             try {
-                // 🔥 IMPORTANT PART
                 const res = await axios.post(
                     `${API_BASE_URL}/auth/sign-in/email`,
                     value,
                     {
-                        withCredentials: true, // ✅ MUST
+                        withCredentials: true,
                     }
                 );
-                console.log("Login response:", res);
-
                 const data = res.data;
-
-                console.log("Login data:", data);
-
                 if (!data?.user) {
                     setServerError("Login failed");
                     return;
@@ -66,7 +60,6 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
                 router.refresh();
 
             } catch (error: any) {
-                console.log("Login error:", error);
                 setServerError(
                     error?.response?.data?.message || "Login failed"
                 );

@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Star, User, Clapperboard } from "lucide-react";
+import { QueryClient, useQuery } from "@tanstack/react-query";
+import { getAllMedia } from "@/app/(commonLayout)/all-movie/_actions";
 
 const picks = [
     {
@@ -45,9 +47,15 @@ const picks = [
 ];
 
 export default function EditorsPicks() {
+    const { data } = useQuery({
+        queryKey: ['medias'],
+        queryFn: getAllMedia,
+    });
+    console.log("Data from editors picks", data);
+
     return (
         <section className="bg-[#0B0E14] py-24">
-            <div className="container px-6">
+            <div className="container mx-auto px-6">
                 <div className="mb-12 flex items-end justify-between">
                     <div className="space-y-2">
                         <Badge className="bg-[#EAB308] text-[#0B0E14] font-bold">PREMIUM SELECTION</Badge>

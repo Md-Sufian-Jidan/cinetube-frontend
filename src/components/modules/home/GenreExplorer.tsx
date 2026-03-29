@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Zap, Brain, Heart, Ghost, Target, Coffee } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MovieCard } from "../movies/MovieCard";
+import { Pricing } from "@/types/media.types";
 
 const moods = [
     { id: "all", label: "Surprise Me", icon: Coffee, color: "hover:text-white" },
@@ -23,13 +24,13 @@ export default function GenreExplorer({ initialMedia }: { initialMedia: any[] })
         : initialMedia.filter(m => m.genres.some((g: any) => g.name === activeGenre));
 
     return (
-        <section className="bg-[#0B0E14] py-20">
-            <div className="container px-6">
+        <section className="bg-[#FAFAFA] py-20">
+            <div className="container mx-auto px-6">
                 <div className="mb-12 text-center">
-                    <h2 className="font-playfair text-3xl font-bold text-white md:text-5xl">
+                    <h2 className="font-playfair text-3xl font-bold text-black md:text-5xl">
                         What's your <span className="text-[#EAB308]">mood</span> tonight?
                     </h2>
-                    <p className="mt-4 text-slate-400 font-dm-sans uppercase tracking-widest text-xs">
+                    <p className="mt-4 text-slate-600 font-dm-sans uppercase tracking-widest text-xs">
                         Tap a vibe to discover your next obsession
                     </p>
                 </div>
@@ -46,20 +47,20 @@ export default function GenreExplorer({ initialMedia }: { initialMedia: any[] })
                                 onClick={() => setActiveGenre(mood.id)}
                                 className={cn(
                                     "group relative flex flex-col items-center justify-center gap-3 transition-all duration-300",
-                                    "h-28 w-28 rounded-full border border-white/5 bg-[#161B22]/50 backdrop-blur-sm",
+                                    "h-28 w-28 rounded-full border border-[#EAB308] bg-[#161B22]/50 backdrop-blur-sm",
                                     isActive ? "border-[#EAB308] bg-[#EAB308]/10 shadow-[0_0_20px_rgba(234,179,8,0.1)]" : "hover:border-white/20"
                                 )}
                             >
                                 <Icon
                                     className={cn(
                                         "h-7 w-7 transition-colors duration-300",
-                                        isActive ? "text-[#EAB308]" : "text-slate-500 group-hover:text-white",
+                                        isActive ? "text-[#EAB308]" : "text-slate-600 group-hover:text-white",
                                         !isActive && mood.color
                                     )}
                                 />
                                 <span className={cn(
                                     "text-[10px] font-bold uppercase tracking-tighter transition-colors",
-                                    isActive ? "text-[#EAB308]" : "text-slate-500 group-hover:text-white"
+                                    isActive ? "text-[#EAB308]" : "text-slate-600 group-hover:text-white"
                                 )}>
                                     {mood.label}
                                 </span>
@@ -98,7 +99,7 @@ export default function GenreExplorer({ initialMedia }: { initialMedia: any[] })
                                     rating={movie.averageRating || 8.5} // Fallback for your mock data
                                     genres={movie.genres.map((g: any) => g.name)}
                                     year={movie.releaseYear}
-                                    isPremium={movie.pricing === "PREMIUM"}
+                                    isPremium={movie.pricing === Pricing.PREMIUM}
                                     type={movie.type}
                                 />
                             </motion.div>

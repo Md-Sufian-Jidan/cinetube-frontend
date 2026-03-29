@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Star, Play, Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { MediaType } from "@/types/media.types";
 
 interface MovieCardProps {
     id: string;
@@ -14,7 +15,7 @@ interface MovieCardProps {
     genres: string[];
     year: number;
     isPremium: boolean;
-    type: "MOVIE" | "SERIES";
+    type: MediaType;
 }
 
 export function MovieCard({
@@ -33,7 +34,7 @@ export function MovieCard({
             transition={{ duration: 0.3, ease: "easeOut" }}
             className="group relative"
         >
-            <Card className="overflow-hidden border-none bg-[#161B22] shadow-2xl">
+            <Card className="overflow-hidden border-none bg-white shadow-lg">
                 {/* Image Container */}
                 <div className="relative aspect-[2/3] w-full overflow-hidden">
                     <Image
@@ -47,30 +48,30 @@ export function MovieCard({
                     {/* Top Overlays: Premium & Type */}
                     <div className="absolute left-3 top-3 flex flex-col gap-2">
                         {isPremium && (
-                            <Badge className="bg-[#EAB308] font-black text-[#0B0E14] hover:bg-[#EAB308]">
+                            <Badge className="bg-[#EAB308] font-black text-white hover:bg-[#EAB308]">
                                 PREMIUM
                             </Badge>
                         )}
-                        <Badge variant="secondary" className="bg-black/60 text-[10px] text-white backdrop-blur-md">
+                        <Badge variant="secondary" className="bg-black/50 text-xs text-white backdrop-blur-md">
                             {type}
                         </Badge>
                     </div>
 
                     {/* Hover Play Button Overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                         <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#EAB308] text-[#0B0E14] shadow-lg shadow-[#EAB308]/20">
                             <Play className="h-6 w-6 fill-current" />
                         </div>
                     </div>
 
                     {/* Bottom Gradient Fade */}
-                    <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#161B22] to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-[#EAB308] to-transparent" />
                 </div>
 
                 {/* Content Section */}
                 <CardContent className="p-4">
                     <div className="mb-2 flex items-center justify-between">
-                        <h3 className="line-clamp-1 font-playfair text-lg font-bold text-white group-hover:text-[#EAB308] transition-colors">
+                        <h3 className="line-clamp-1 font-playfair text-lg font-bold text-black group-hover:text-[#EAB308] transition-colors">
                             {title}
                         </h3>
                         <div className="flex items-center gap-1">

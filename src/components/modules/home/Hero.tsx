@@ -40,7 +40,7 @@ export default function Hero() {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0B0E14] via-transparent to-transparent" />
             </div>
 
-            <div className="container relative z-10 flex h-full items-center px-6">
+            <div className="container mx-auto relative z-10 flex h-full items-center px-6">
                 <motion.div
                     variants={containerVariants}
                     initial="hidden"
@@ -88,7 +88,7 @@ export default function Hero() {
                     >
                         <Button
                             size="lg"
-                            className="group h-14 bg-[#EAB308] px-8 text-lg font-bold text-[#0B0E14] border-2 border-[#EAB308] hover:bg-transparent hover:border-[#EAB308] hover:border-2 hover:text-[#EAB308]"
+                            className="group h-14 bg-[#EAB308] px-8 text-lg font-bold text-[#0B0E14] border-2 border-[#EAB308] hover:bg-transparent hover:border-[#EAB308] hover:border-2 hover:text-[#EAB308] cursor-pointer"
                         >
                             <Play className="mr-2 h-5 w-5 fill-current transition-transform group-hover:scale-110" />
                             Watch Trailer
@@ -97,7 +97,7 @@ export default function Hero() {
                         <Button
                             size="lg"
                             variant="outline"
-                            className="h-14 border-2 border-[#EAB308] px-8 text-lg text-[#EAB308] font-bold bg-transparent hover:bg-[#EAB308] hover:border-[#EAB308] hover:border-2 hover:text-[#0B0E14]"
+                            className="h-14 border-2 border-[#EAB308] px-8 text-lg text-[#EAB308] font-bold bg-transparent hover:bg-[#EAB308] hover:border-[#EAB308] hover:border-2 hover:text-[#0B0E14] cursor-pointer"
                         >
                             <Info className="mr-2 h-5 w-5" />
                             View Details

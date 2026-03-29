@@ -1,19 +1,21 @@
 "use server";
 
 import { httpClient } from "@/lib/axios/httpClient";
+import { MediaAnalytics } from "@/types/media.types";
 import { cookies } from "next/headers";
 
-export const getMediaAnalytics = async () => {
+export const getMediaAnalytics = async (): Promise<MediaAnalytics[]> => {
     const cookieStore = await cookies();
-    const sessionToken = cookieStore.get("better-auth.session_token")?.value;
+    const sessionToken = cookieStore.get("cinetube.session_token")?.value;
 
     try {
-        const res = await httpClient.get({ 
+        const res = await httpClient.get<MediaAnalytics[]>({
             url: "/v1/admin/media-analytics",
             headers: {
-                Cookie: `better-auth.session_token=${sessionToken}`
+                Cookie: `cinetube.session_token=${sessionToken}`
             }
         });
+        console.log("response from getmedia Analytics", res);
         if (res?.success) {
             return res.data;
         }

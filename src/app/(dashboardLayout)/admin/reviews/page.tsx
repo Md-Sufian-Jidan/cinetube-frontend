@@ -1,67 +1,26 @@
-import { updateReviewStatus } from "./_actions";
-import { httpClient } from "@/lib/axios/httpClient";
-import { cookies } from "next/headers";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { getPendingReviews, updateReviewStatus } from "./_actions";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-    CheckCircle,
     XCircle,
     MessageSquare,
     AlertTriangle,
     User,
     Film,
-    Calendar
+    Calendar,
+    Loader2,
 } from "lucide-react";
 import { format } from "date-fns";
-import { cn } from "@/lib/utils";
-
-// This would typically come from your fetch call
-const getPendingReviews = async () => {
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get("better-auth.session_token")?.value;
-
-    try {
-        const res = await httpClient.get<any>({
-            url: "/v1/admin/reviews/pending",
-            headers: {
-                Cookie: `better-auth.session_token=${sessionToken}`
-            }
-        });
-        return res.data;
-    } catch (error) {
-        console.error("Error fetching pending reviews:", error);
-        return [];
-    }
-};
+import { IReview } from "@/types/review.types";
+import ApproveButton from "@/components/modules/dashboard/admin/reviews/ApproveButton";
+import { useQuery } from "@tanstack/react-query";
 
 export default async function AdminReviewsPage() {
-    // const reviews = await getPendingReviews();
-    const reviews = [
-        {
-            id: "bccdcdcb-ca2e-4e59-aa20-0008e683e80e",
-            rating: 10,
-            content: "Absolutely mind-bending! Christopher Nolan outdid himself with Inception. The layers of dreams and the music are just perfect.",
-            tags: [
-                "Mind-blowing",
-                "Must-watch",
-                "Sci-Fi"
-            ],
-            isSpoiler: false,
-            status: "PENDING",
-            userId: "K5uD2QulSA2Mn9URkGemBdvXpOiytg6A",
-            mediaId: "36e35107-8ef2-4df6-a5d9-8e2be6bd372b",
-            createdAt: "2026-03-19T16:18:49.173Z",
-            updatedAt: "2026-03-19T16:30:14.429Z",
-            user: {
-                name: "Admin",
-                email: "cinetube@admin.gmail.com"
-            },
-            media: {
-                title: "Breaking Bad"
-            }
-        },
-    ]
+    const { data: reviews, isLoading } = useQuery({
+        queryKey: ["pending-reviews"],
+        queryFn: getPendingReviews,
+    })
 
     return (
         <div className="p-6 space-y-8 bg-white min-h-screen font-jakarta">
@@ -74,13 +33,18 @@ export default async function AdminReviewsPage() {
             </div>
 
             <div className="grid gap-6">
-                {!reviews || reviews.length === 0 ? (
+                {isLoading ? (
+                    <div className="flex flex-col items-center justify-center py-20 border-2 border-dashed border-slate-100 rounded-3xl">
+                        <Loader2 className="w-12 h-12 text-slate-200 mb-4 animate-spin" />
+                        <p className="text-slate-400 font-medium">Loading reviews...</p>
+                    </div>
+                ) : !reviews || reviews.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-20 border-2 border-dashed border-slate-100 rounded-3xl">
                         <MessageSquare className="w-12 h-12 text-slate-200 mb-4" />
                         <p className="text-slate-400 font-medium">No pending reviews found.</p>
                     </div>
                 ) : (
-                    reviews.map((review: any) => (
+                    reviews.map((review: IReview) => (
                         <Card key={review.id} className="border-slate-200 shadow-sm hover:shadow-md transition-shadow">
                             <CardContent className="p-0">
                                 <div className="flex flex-col lg:flex-row">
@@ -114,6 +78,9 @@ export default async function AdminReviewsPage() {
                                                 </span>
                                             ))}
                                         </div>
+                                        <p className="text-slate-600 leading-relaxed text-sm italic">
+                                            Status: {review.status}
+                                        </p>
                                     </div>
 
                                     {/* Sidebar / Actions Area */}
@@ -135,14 +102,7 @@ export default async function AdminReviewsPage() {
                                         </div>
 
                                         <div className="flex flex-col gap-2">
-                                            <form action={async () => { "use server"; await updateReviewStatus(review.id, "PUBLISHED"); }}>
-                                                <Button
-                                                    type="submit"
-                                                    className="w-full bg-[#EAB308] text-white hover:bg-[#EAB308]/90 font-bold h-9 text-xs uppercase tracking-wider"
-                                                >
-                                                    <CheckCircle className="mr-2 h-4 w-4" /> Approve
-                                                </Button>
-                                            </form>
+                                            <ApproveButton review={review} />
 
                                             <form action={async () => { "use server"; await updateReviewStatus(review.id, "PENDING"); }}>
                                                 <Button

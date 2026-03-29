@@ -13,20 +13,24 @@ import {
     CardTitle,
     CardDescription
 } from "@/components/ui/card";
+import { getDashboardStats } from "./_actions";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-export default function AdminDashboardPage() {
-    // Mocking the data based on your API structure
-    const stats = {
-        userCount: 7,
-        mediaCount: 5,
-        pendingReviewsCount: 3,
-        totalRevenue: 0
-    };
+interface DashboardStats {
+    userCount: number;
+    mediaCount: number;
+    pendingReviewsCount: number;
+    totalRevenue: number;
+}
+
+export default async function AdminDashboardPage() {
+    const stats = await getDashboardStats() as DashboardStats;
 
     const statCards = [
         {
             title: "Total Audience",
-            value: stats.userCount,
+            value: stats?.userCount,
             description: "+2 new this week",
             icon: Users,
             color: "text-blue-600",
@@ -34,7 +38,7 @@ export default function AdminDashboardPage() {
         },
         {
             title: "Media Library",
-            value: stats.mediaCount,
+            value: stats?.mediaCount,
             description: "Movies & Series",
             icon: Film,
             color: "text-[#EAB308]",
@@ -42,7 +46,7 @@ export default function AdminDashboardPage() {
         },
         {
             title: "Pending Reviews",
-            value: stats.pendingReviewsCount,
+            value: stats?.pendingReviewsCount,
             description: "Needs Moderation",
             icon: MessageSquare,
             color: "text-orange-600",
@@ -50,7 +54,7 @@ export default function AdminDashboardPage() {
         },
         {
             title: "Total Revenue",
-            value: `$${stats.totalRevenue.toFixed(2)}`,
+            value: `$${stats?.totalRevenue.toFixed(2)}`,
             description: "Lifetime Earnings",
             icon: DollarSign,
             color: "text-green-600",
@@ -126,13 +130,19 @@ export default function AdminDashboardPage() {
                     <CardHeader>
                         <CardTitle className="font-playfair text-xl">Quick Actions</CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-3">
-                        <button className="w-full flex items-center justify-between p-3 rounded-xl bg-[#EAB308] text-white font-bold text-xs uppercase tracking-widest shadow-lg shadow-[#EAB308]/20 hover:opacity-90 transition-opacity">
-                            Add New Media <Film size={16} />
-                        </button>
-                        <button className="w-full flex items-center justify-between p-3 rounded-xl border border-slate-200 text-slate-600 font-bold text-xs uppercase tracking-widest hover:bg-slate-50 transition-colors">
-                            Manage Reviews <MessageSquare size={16} />
-                        </button>
+                    <CardContent className="flex flex-col gap-3">
+                        <Link href={"/admin/add-media"}>
+                            <Button className="w-full h-14 bg-[#EAB308] px-8 text-lg font-bold text-[#0B0E14] border-2 border-[#EAB308] hover:bg-transparent hover:border-[#EAB308] hover:border-2 hover:text-[#EAB308] cursor-pointer">
+                                Add New Media <Film size={16} />
+                            </Button>
+                        </Link>
+                        <Link href={"/admin/reviews"}>
+                            <Button
+                                variant={"outline"}
+                                className="w-full h-14 border-2 border-[#EAB308] px-8 text-lg text-[#EAB308] font-bold bg-transparent hover:bg-[#EAB308] hover:border-[#EAB308] hover:border-2 hover:text-[#0B0E14] cursor-pointer">
+                                Manage Reviews <MessageSquare size={16} />
+                            </Button>
+                        </Link>
                     </CardContent>
                 </Card>
             </div>

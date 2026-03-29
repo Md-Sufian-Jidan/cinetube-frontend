@@ -6,7 +6,7 @@ import AppField from "@/components/shared/form/AppField";
 import AppSubmitButton from "@/components/shared/form/AppSubmitButton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ROLES } from "@/constant/role";
 import { IRegisterPayload, registerZodSchema } from "@/zod/auth.validation";
 import { useForm } from "@tanstack/react-form";
@@ -168,7 +168,14 @@ export const RegisterForm = ({ redirectPath }: RegisterFormProps) => {
                     </form.Subscribe>
                 </form>
             </CardContent>
-
+            <CardFooter className="justify-center border-t pt-4">
+                <p className="text-sm text-muted-foreground">
+                    Already have an account?{" "}
+                    <Link href="/login" className="text-primary">
+                        Sign In
+                    </Link>
+                </p>
+            </CardFooter>
         </Card>
     );
 }

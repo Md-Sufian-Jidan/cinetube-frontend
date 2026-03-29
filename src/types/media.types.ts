@@ -1,5 +1,15 @@
-export type MediaType = "MOVIE" | "SERIES";
-export type MediaPricing = "FREE" | "PREMIUM";
+export const MediaTypeEnum = {
+    MOVIE: "MOVIE",
+    SERIES: "SERIES"
+} as const;
+
+export type MediaType = (typeof MediaTypeEnum)[keyof typeof MediaTypeEnum];
+
+export const Pricing = {
+    FREE: "FREE",
+    PREMIUM: "PREMIUM"
+} as const;
+export type MediaPricing = (typeof Pricing)[keyof typeof Pricing];
 
 export interface IGenre {
     id: string;
@@ -39,8 +49,24 @@ export interface CreateMediaDto {
     pricing: MediaPricing;
     streamingLink: string;
     posterUrl: string;
-    genres: string[]; 
+    genres: string[];
     cast: { name: string; role: string }[];
 }
 
-export interface UpdateMediaDto extends Partial<CreateMediaDto> {}
+export interface UpdateMediaDto extends Partial<CreateMediaDto> { }
+
+export interface MediaAnalytics {
+    id: string;
+    title: string;
+    synopsis: string;
+    releaseYear: number;
+    director: string;
+    type: string;
+    pricing: string;
+    streamingLink: string;
+    posterUrl: string;
+    ownerId: string;
+    totalReviews: number;
+    averageRating: number;
+    status: string;
+}

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search, Menu, X, Film, PlayCircle } from "lucide-react";
+import { Search, Menu, X, Film } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -30,11 +30,11 @@ export default function Navbar() {
             className={cn(
                 "fixed top-0 left-0 right-0 z-[100] transition-all duration-300 border-b",
                 scrolled
-                    ? "bg-[#0B0E14]/80 backdrop-blur-xl border-white/10 py-2 shadow-2xl"
+                    ? "bg-white backdrop-blur-xl border-white/10 py-2 shadow-sm"
                     : "bg-transparent border-transparent py-4"
             )}
         >
-            <div className="mx-auto max-w-7xl px-6 lg:px-12">
+            <div className="container mx-auto px-6">
                 <div className="flex h-12 items-center justify-between">
 
                     {/* Logo Section */}
@@ -82,7 +82,7 @@ export default function Navbar() {
                             <Link href="/login">
                                 <Button
                                     size="sm"
-                                    className="bg-[#EAB308] text-[#0B0E14] hover:bg-[#EAB308]/90 font-bold px-6 shadow-lg shadow-[#EAB308]/10 font-jakarta uppercase tracking-wider text-[11px]"
+                                    className="h-12 bg-[#EAB308] px-6 text-lg font-bold text-white border-2 border-[#EAB308] hover:bg-transparent hover:border-[#EAB308] hover:border-2 hover:text-[#EAB308] cursor-pointer"
                                 >
                                     Join the Cinema
                                 </Button>

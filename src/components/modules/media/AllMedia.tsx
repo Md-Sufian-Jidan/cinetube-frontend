@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import {
     Search,
     Play,
@@ -18,9 +18,18 @@ import Link from "next/link";
 import MediaCta from "./MediaCta";
 import MediaPagination from "./MediaPagination";
 import MediaCard from "./MediaCard";
+import { useQuery } from "@tanstack/react-query";
+import { getAllMedia } from "@/app/(commonLayout)/all-movie/_actions";
 
 export default function PublicMoviesPage() {
     const [searchTerm, setSearchTerm] = useState("");
+
+    const { data } = useQuery({
+        queryKey: ['medias'],
+        queryFn: getAllMedia,
+    });
+
+    console.log("Data from all media component", data)
 
     // Using the data from your API response
     const movies = [

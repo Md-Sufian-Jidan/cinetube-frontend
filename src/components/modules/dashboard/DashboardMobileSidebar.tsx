@@ -16,7 +16,6 @@ interface DashboardMobileSidebarProps {
     dashboardHome: string;
 }
 
-
 const DashboardMobileSidebar = ({ dashboardHome, navItems, userInfo }: DashboardMobileSidebarProps) => {
     const pathname = usePathname()
     return (

@@ -45,8 +45,8 @@ function Counter({ value, suffix = "", label, duration = 2 }: StatItemProps) {
 
 export default function CineStats() {
     return (
-        <section className="bg-[#0B0E14] py-24 border-y border-white/5">
-            <div className="container px-6">
+        <section className="bg-white py-24 border-y border-white/5">
+            <div className="container mx-auto px-6">
                 <div className="grid grid-cols-1 gap-16 md:grid-cols-3 md:gap-8">
                     <Counter
                         value={500}
