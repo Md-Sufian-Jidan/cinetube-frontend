@@ -29,7 +29,6 @@ export const registerAction = async (payload: IRegisterPayload, redirectPath?: s
         };
 
     } catch (error) {
-        console.log("RegisterAction Error:", error);
         return {
             success: false,
             message: "Error from register action. Registration failed",

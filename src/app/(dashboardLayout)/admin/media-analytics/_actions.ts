@@ -15,7 +15,6 @@ export const getMediaAnalytics = async (): Promise<MediaAnalytics[]> => {
                 Cookie: `cinetube.session_token=${sessionToken}`
             }
         });
-        console.log("response from getmedia Analytics", res);
         if (res?.success) {
             return res.data;
         }

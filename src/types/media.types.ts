@@ -70,3 +70,10 @@ export interface MediaAnalytics {
     averageRating: number;
     status: string;
 }
+
+export interface IMediaMeta {
+    limit: number;
+    page: number;
+    total: number;
+    totalPage: number;
+}

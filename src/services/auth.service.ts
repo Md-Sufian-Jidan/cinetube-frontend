@@ -2,7 +2,6 @@ import { cookies } from "next/headers";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL as string;
 
-
 export async function getSession() {
     try {
         const cookieStore = await cookies();
@@ -19,7 +18,6 @@ export async function getSession() {
         }
         return { data: session, error: null, status: true };
     } catch (error) {
-        console.log(error);
         return {
             data: null,
             message: "Failed to fetch session data",

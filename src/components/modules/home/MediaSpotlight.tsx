@@ -2,12 +2,11 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Star, Play, Calendar, User, Clock, ShieldCheck } from "lucide-react";
+import { Star, Play, Calendar, User, Clock, ShieldCheck, Plus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
-// Data from your API response
 const mediaData = {
     title: "Breaking Bad",
     synopsis: "A high school chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine in order to secure his family's future.",
@@ -31,97 +30,106 @@ const mediaData = {
 
 export default function MediaSpotlight() {
     return (
-        <section className="relative w-full bg-[#0B0E14] py-20 overflow-hidden">
-            <div className="container px-6">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <section className="relative w-full bg-[#FAFAFA] py-24 overflow-hidden font-jakarta">
+            <div className="container mx-auto px-6">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
 
                     {/* Left: Poster Image */}
                     <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.8 }}
-                        className="lg:col-span-4 relative group"
+                        className="lg:col-span-5 relative group"
                     >
-                        <div className="relative aspect-[2/3] overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
+                        <div className="relative aspect-[2/3] overflow-hidden rounded-[2rem] border border-slate-100 shadow-[0_30px_60px_rgba(0,0,0,0.15)] group-hover:shadow-[0_40px_80px_rgba(234,179,8,0.2)] transition-all duration-500">
                             <Image
                                 src={mediaData.posterUrl}
                                 alt={mediaData.title}
                                 fill
-                                className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                className="object-cover transition-transform duration-1000 group-hover:scale-110"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-[#0B0E14] via-transparent to-transparent opacity-60" />
+                            {/* Soft Gradient for bottom-text legibility if needed */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                         </div>
-                        {/* Floating Rating Badge */}
-                        <div className="absolute -bottom-6 -right-6 bg-[#EAB308] p-4 rounded-xl shadow-lg transform rotate-3">
-                            <p className="text-[#0B0E14] font-black text-2xl leading-none">{mediaData.review.rating}.0</p>
-                            <p className="text-[#0B0E14] text-[10px] font-bold uppercase tracking-tighter">IMDB Score</p>
-                        </div>
+
+                        {/* Floating Rating Badge - Midnight Gold Accent */}
+                        <motion.div
+                            initial={{ x: 20, rotate: 10 }}
+                            whileInView={{ x: 0, rotate: 3 }}
+                            className="absolute -bottom-6 -right-6 bg-[#EAB308] p-6 rounded-2xl shadow-2xl z-20"
+                        >
+                            <p className="text-white font-black text-4xl leading-none tracking-tighter">{mediaData.review.rating}.0</p>
+                            <p className="text-white/80 text-[10px] font-black uppercase tracking-[0.2em] mt-1">Critic Score</p>
+                        </motion.div>
                     </motion.div>
 
                     {/* Right: Content */}
                     <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
+                        initial={{ opacity: 0, x: 30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                        className="lg:col-span-8 flex flex-col space-y-6"
+                        className="lg:col-span-7 flex flex-col space-y-8"
                     >
-                        <div className="flex flex-wrap gap-2">
-                            <Badge variant="outline" className="border-[#EAB308] text-[#EAB308] font-bold">
+                        <div className="flex flex-wrap gap-3">
+                            <Badge className="bg-[#EAB308] text-white border-none px-4 py-1 font-black">
                                 {mediaData.pricing}
                             </Badge>
-                            <Badge className="bg-white/10 text-slate-300 hover:bg-white/20">
+                            <Badge variant="outline" className="border-slate-200 text-slate-500 px-4 py-1 font-bold">
                                 {mediaData.type}
                             </Badge>
                         </div>
 
-                        <h2 className="font-playfair text-5xl md:text-7xl font-black text-white">
-                            {mediaData.title}
-                        </h2>
-
-                        <div className="flex flex-wrap items-center gap-6 text-slate-400 text-sm font-medium">
-                            <span className="flex items-center gap-1.5"><Calendar size={16} className="text-[#EAB308]" /> {mediaData.releaseYear}</span>
-                            <span className="flex items-center gap-1.5"><User size={16} className="text-[#EAB308]" /> {mediaData.director}</span>
-                            <div className="flex gap-2">
-                                {mediaData.genres.map((g) => (
-                                    <span key={g} className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-[11px] uppercase tracking-wider">{g}</span>
-                                ))}
+                        <div className="space-y-4">
+                            <h2 className="font-playfair text-6xl md:text-8xl font-black text-slate-900 leading-[0.9]">
+                                {mediaData.title}
+                            </h2>
+                            <div className="flex flex-wrap items-center gap-6 text-slate-400 text-sm font-bold uppercase tracking-widest">
+                                <span className="flex items-center gap-2"><Calendar size={18} className="text-[#EAB308]" /> {mediaData.releaseYear}</span>
+                                <span className="flex items-center gap-2"><User size={18} className="text-[#EAB308]" /> {mediaData.director}</span>
+                                <div className="flex gap-2">
+                                    {mediaData.genres.map((g) => (
+                                        <span key={g} className="px-3 py-1 rounded-full bg-slate-50 border border-slate-100 text-[10px] text-slate-600">{g}</span>
+                                    ))}
+                                </div>
                             </div>
                         </div>
 
-                        <p className="text-slate-300 text-lg leading-relaxed font-dm-sans max-w-2xl">
+                        <p className="text-slate-600 text-xl leading-relaxed max-w-2xl font-medium">
                             {mediaData.synopsis}
                         </p>
 
-                        <div className="space-y-4 pt-4">
-                            <h4 className="font-playfair text-xl font-bold text-white">Top Cast</h4>
-                            <div className="flex gap-8">
+                        {/* Top Cast Section */}
+                        <div className="space-y-4">
+                            <h4 className="font-playfair text-2xl font-black text-slate-900">Featured Cast</h4>
+                            <div className="flex gap-10">
                                 {mediaData.cast.map((c) => (
-                                    <div key={c.name} className="flex flex-col">
-                                        <span className="text-white font-bold tracking-tight">{c.name}</span>
-                                        <span className="text-xs text-[#EAB308] uppercase tracking-widest">{c.role}</span>
+                                    <div key={c.name} className="flex flex-col group/cast">
+                                        <span className="text-slate-900 font-black text-lg tracking-tight group-hover/cast:text-[#EAB308] transition-colors">{c.name}</span>
+                                        <span className="text-xs text-[#EAB308] font-black uppercase tracking-widest">{c.role}</span>
                                     </div>
                                 ))}
                             </div>
                         </div>
 
-                        <Separator className="bg-white/10" />
+                        <Separator className="bg-slate-100" />
 
-                        {/* Featured Review Snippet */}
-                        <div className="bg-[#161B22] p-4 rounded-lg border-l-4 border-[#EAB308]">
-                            <p className="text-slate-300 italic text-sm font-dm-sans">
+                        {/* Featured Review Snippet - Light Stylized */}
+                        <div className="bg-slate-50 p-6 rounded-2xl border-l-8 border-[#EAB308] shadow-sm">
+                            <p className="text-slate-700 italic text-lg font-medium">
                                 "{mediaData.review.content}"
                             </p>
-                            <p className="text-[#EAB308] text-xs font-bold mt-2 uppercase tracking-widest">— {mediaData.review.user}</p>
+                            <p className="text-[#EAB308] text-xs font-black mt-3 uppercase tracking-[0.3em]">— {mediaData.review.user}</p>
                         </div>
 
-                        <div className="flex flex-wrap gap-4 pt-6">
-                            <Button asChild className="h-14 px-8 bg-[#EAB308] text-[#0B0E14] font-bold hover:bg-[#EAB308]/90">
+                        {/* Primary Actions */}
+                        <div className="flex flex-wrap gap-4 pt-4">
+                            <Button asChild className="h-16 px-10 bg-[#EAB308] text-white font-black hover:bg-[#EAB308]/90 rounded-2xl shadow-xl shadow-[#EAB308]/20 text-lg">
                                 <a href={mediaData.streamingLink} target="_blank" rel="noopener noreferrer">
-                                    <Play className="mr-2 h-5 w-5 fill-current" /> Stream on Netflix
+                                    <Play className="mr-3 h-6 w-6 fill-current" /> Play Now
                                 </a>
                             </Button>
-                            <Button variant="outline" className="h-14 px-8 border-white/20 bg-white/5 text-white hover:bg-white/10">
-                                Add to Watchlist
+                            <Button variant="outline" className="h-16 px-10 border-slate-200 bg-white text-slate-900 font-black hover:bg-slate-50 rounded-2xl text-lg gap-3">
+                                <Plus size={24} /> Add Watchlist
                             </Button>
                         </div>
                     </motion.div>

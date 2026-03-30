@@ -37,19 +37,18 @@ export default function AllMedia() {
     const [searchTerm, setSearchTerm] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
 
-    // const { data: movies } = useQuery({
-    //     queryKey: ['medias'],
-    //     queryFn: () => getAllMedia(),
-    // });
-    const movies = [
-        { id: "1", title: "Friends", releaseYear: 1994, type: "SERIES", pricing: "FREE", averageRating: 4.8, posterUrl: "https://image.tmdb.org/t/p/w500/f496p9HiSms5p6gJu2SIvXnSFA4.jpg", genres: ["Comedy", "Romance"] },
-        { id: "2", title: "Stranger Things", releaseYear: 2016, type: "SERIES", pricing: "PREMIUM", averageRating: 4.9, posterUrl: "https://image.tmdb.org/t/p/w500/49WJfev0moxmBEEpA7R690PjH6m.jpg", genres: ["Drama", "Horror"] },
-        { id: "3", title: "The Dark Knight", releaseYear: 2008, type: "MOVIE", pricing: "FREE", averageRating: 5.0, posterUrl: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDr9p1v3hvZBnbiBRXm.jpg", genres: ["Action", "Crime"] },
-        { id: "4", title: "Breaking Bad", releaseYear: 2008, type: "SERIES", pricing: "PREMIUM", averageRating: 4.9, posterUrl: "https://image.tmdb.org/t/p/w500/ggm8bbEA9gnxa9KiYvH0o9ihr2W.jpg", genres: ["Crime", "Drama"] },
-    ];
-    console.log(movies);
+    const { data: movies } = useQuery({
+        queryKey: ['medias'],
+        queryFn: () => getAllMedia(),
+    });
+    // const movies = [
+    //     { id: "1", title: "Friends", releaseYear: 1994, type: "SERIES", pricing: "FREE", averageRating: 4.8, posterUrl: "https://image.tmdb.org/t/p/w500/f496p9HiSms5p6gJu2SIvXnSFA4.jpg", genres: ["Comedy", "Romance"] },
+    //     { id: "2", title: "Stranger Things", releaseYear: 2016, type: "SERIES", pricing: "PREMIUM", averageRating: 4.9, posterUrl: "https://image.tmdb.org/t/p/w500/49WJfev0moxmBEEpA7R690PjH6m.jpg", genres: ["Drama", "Horror"] },
+    //     { id: "3", title: "The Dark Knight", releaseYear: 2008, type: "MOVIE", pricing: "FREE", averageRating: 5.0, posterUrl: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDr9p1v3hvZBnbiBRXm.jpg", genres: ["Action", "Crime"] },
+    //     { id: "4", title: "Breaking Bad", releaseYear: 2008, type: "SERIES", pricing: "PREMIUM", averageRating: 4.9, posterUrl: "https://image.tmdb.org/t/p/w500/ggm8bbEA9gnxa9KiYvH0o9ihr2W.jpg", genres: ["Crime", "Drama"] },
+    // ];
 
-    const filteredMovies = movies?.filter(movie =>
+    const filteredMovies = movies?.data?.filter(movie =>
         movie.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
     return (

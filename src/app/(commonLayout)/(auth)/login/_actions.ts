@@ -29,7 +29,6 @@ export const loginAction = async (payload: ILoginPayload, redirectPath?: string)
         };
 
     } catch (error: any) {
-        console.log("LoginAction Error:", error);
         return {
             success: false,
             message: error.response.data.message || "Login failed",

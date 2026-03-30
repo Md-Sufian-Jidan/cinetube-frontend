@@ -24,7 +24,7 @@ const DashboardSidebarContent = ({ dashboardHome, navItems, userInfo }: Dashboar
         <div className="hidden md:flex h-full w-64 flex-col border-r border-slate-200 bg-white overflow-y-auto">
             {/* Logo / Brand */}
             <div className="flex h-16 items-center border-b border-slate-100 px-6">
-                <Link href={dashboardHome} className="flex items-center gap-2 group">
+                <Link href={"/"} className="flex items-center gap-2 group">
                     <div className="p-1.5 rounded-lg bg-[#EAB308]/10 group-hover:bg-[#EAB308]/20 transition-colors duration-200">
                         <Film size={20} className="text-[#EAB308]" />
                     </div>

@@ -9,8 +9,6 @@ import { MediaAnalytics } from "@/types/media.types";
 
 export default async function MediaAnalyticsPage() {
     const data: MediaAnalytics[] = await getMediaAnalytics();
-    console.log("data from getmedia analytics", data);
-
     // Calculate quick stats
     const totalMedia = data?.length || 0;
     const totalReviews = data?.reduce((acc: number, item: MediaAnalytics) => acc + item.totalReviews, 0) || 0;

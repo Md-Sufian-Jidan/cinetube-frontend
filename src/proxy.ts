@@ -21,7 +21,6 @@ export default async function proxy(request: NextRequest) {
     try {
         // 🔥 MOST IMPORTANT LINE
         const cookieHeader = request.headers.get("cookie");
-        console.log("cookieHeader", cookieHeader);
 
         const res = await fetch(
             `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/get-session`,
@@ -33,11 +32,7 @@ export default async function proxy(request: NextRequest) {
             }
         );
 
-        console.log("res", res);
-
         const session = await res.json();
-
-        console.log("Session from proxy:", session);
 
         // ❌ session null check
         if (!session || !session.user) {
@@ -48,7 +43,6 @@ export default async function proxy(request: NextRequest) {
         userRole = session.user.role;
 
     } catch (error) {
-        console.log("Middleware error:", error);
         return NextResponse.redirect(new URL("/login", request.url));
     }
 

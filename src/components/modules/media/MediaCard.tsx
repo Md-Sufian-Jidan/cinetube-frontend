@@ -25,11 +25,9 @@ export default function MediaCard({ movie }: { movie: any }) {
 
                 {/* Hover Action Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <Link href={`/movies/${movie.id}`}>
-                        <Button className="bg-[#EAB308] hover:bg-[#EAB308]/90 text-white rounded-full p-4 h-14 w-14 shadow-xl shadow-[#EAB308]/40">
-                            <Play fill="currentColor" size={24} className="ml-1" />
-                        </Button>
-                    </Link>
+                    <Button className="bg-[#EAB308] hover:bg-[#EAB308]/90 text-white rounded-full p-4 h-14 w-14 shadow-xl shadow-[#EAB308]/40">
+                        <Play fill="currentColor" size={24} className="ml-1" />
+                    </Button>
                 </div>
             </div>
 

@@ -5,7 +5,7 @@ import { ApiResponse } from "@/types/api.types";
 import { IReview, ReviewStatus } from "@/types/review.types";
 import { cookies } from "next/headers";
 
-export const getPendingReviews = async (): Promise<IReview[]> => {
+export const getPendingReviews = async (): Promise<ApiResponse<IReview[]>> => {
     const cookieStore = await cookies();
     const sessionToken = cookieStore.get("cinetube.session_token")?.value;
 
@@ -16,14 +16,9 @@ export const getPendingReviews = async (): Promise<IReview[]> => {
                 Cookie: `cinetube.session_token=${sessionToken}`
             }
         });
-        console.log("response from get pending reviews", res);
-        if (res?.success) {
-            return res.data;
-        }
-        return [];
+        return res;
     } catch (error) {
-        console.error("Error fetching pending reviews:", error);
-        return [];
+        return { success: false, message: "Failed to fetch pending reviews", data: [] };
     }
 };
 
@@ -38,7 +33,7 @@ export const updateReviewStatus = async (reviewId: string, status: ReviewStatus)
                 Cookie: `cinetube.session_token=${sessionToken}`
             }
         });
-        console.log(res);
+        console.log("updateReviewStatus", res);
         if (res?.success) {
             await getPendingReviews();
             return { success: true, message: res.message };

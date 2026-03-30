@@ -51,15 +51,14 @@ export default function EditorsPicks() {
         queryKey: ['medias'],
         queryFn: getAllMedia,
     });
-    console.log("Data from editors picks", data);
 
     return (
-        <section className="bg-[#0B0E14] py-24">
+        <section className="bg-white py-20">
             <div className="container mx-auto px-6">
                 <div className="mb-12 flex items-end justify-between">
                     <div className="space-y-2">
                         <Badge className="bg-[#EAB308] text-[#0B0E14] font-bold">PREMIUM SELECTION</Badge>
-                        <h2 className="font-playfair text-4xl font-bold text-white md:text-5xl">
+                        <h2 className="font-playfair text-4xl font-bold text-black md:text-5xl">
                             Editor’s <span className="text-[#EAB308]">Picks</span>
                         </h2>
                     </div>

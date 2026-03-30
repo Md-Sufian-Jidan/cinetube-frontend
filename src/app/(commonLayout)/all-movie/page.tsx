@@ -1,4 +1,4 @@
-import { QueryClient, HydrationBoundary, dehydrate, useQuery } from "@tanstack/react-query"
+import { QueryClient, HydrationBoundary, dehydrate } from "@tanstack/react-query"
 import { getAllMedia } from "./_actions"
 import AllMedia from "@/components/modules/media/AllMedia"
 

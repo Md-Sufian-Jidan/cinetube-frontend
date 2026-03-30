@@ -24,30 +24,30 @@ export default function Footer() {
     const currentYear = new Date().getFullYear();
 
     return (
-        <footer className="bg-[#0B0E14] border-t border-white/5 pt-16 pb-8">
-            <div className="mx-auto max-w-7xl px-5">
-                <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
+        <footer className="bg-white border-t border-[#EAB308] pt-20 pb-10 font-jakarta">
+            <div className="mx-auto max-w-7xl px-6">
+                <div className="grid grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-4">
 
                     {/* Brand Column */}
-                    <div className="space-y-6">
+                    <div className="space-y-8">
                         <Link href="/" className="group inline-block">
                             <span className="font-playfair text-3xl font-black tracking-tighter text-[#EAB308]">
-                                CINE<span className="text-slate-50">TUBE</span>
+                                CINE<span className="text-slate-900">TUBE</span>
                             </span>
                         </Link>
-                        <p className="text-sm leading-relaxed text-slate-400 max-w-xs">
+                        <p className="text-sm font-medium leading-relaxed text-slate-500 max-w-xs">
                             The ultimate destination for cinephiles. Discover, rate, and stream
                             the world's most iconic stories with our community-driven portal.
                         </p>
-                        <div className="flex space-x-4">
+                        <div className="flex space-x-5">
                             {[Facebook, Twitter, Instagram, Youtube].map((Icon, i) => (
                                 <motion.a
                                     key={i}
                                     href="#"
-                                    whileHover={{ y: -3, color: "#EAB308" }}
-                                    className="text-slate-500 transition-colors"
+                                    whileHover={{ y: -4, color: "#EAB308" }}
+                                    className="text-slate-400 transition-colors p-2 rounded-full bg-slate-50 border border-slate-100 hover:border-[#EAB308]/20"
                                 >
-                                    <Icon size={20} />
+                                    <Icon size={18} />
                                 </motion.a>
                             ))}
                         </div>
@@ -55,11 +55,11 @@ export default function Footer() {
 
                     {/* Quick Links */}
                     <div>
-                        <h4 className="font-playfair text-lg font-bold text-slate-50 mb-6">Platform</h4>
+                        <h4 className="font-playfair text-xl font-black text-slate-900 mb-8 tracking-tight">Platform</h4>
                         <ul className="space-y-4">
                             {footerLinks.platform.map((link) => (
                                 <li key={link.name}>
-                                    <Link href={link.href} className="text-sm text-slate-400 hover:text-[#EAB308] transition-colors">
+                                    <Link href={link.href} className="text-sm font-bold text-slate-500 hover:text-[#EAB308] transition-colors">
                                         {link.name}
                                     </Link>
                                 </li>
@@ -69,11 +69,11 @@ export default function Footer() {
 
                     {/* Support */}
                     <div>
-                        <h4 className="font-playfair text-lg font-bold text-slate-50 mb-6">Legal & Support</h4>
+                        <h4 className="font-playfair text-xl font-black text-slate-900 mb-8 tracking-tight">Legal & Support</h4>
                         <ul className="space-y-4">
                             {footerLinks.support.map((link) => (
                                 <li key={link.name}>
-                                    <Link href={link.href} className="text-sm text-slate-400 hover:text-[#EAB308] transition-colors">
+                                    <Link href={link.href} className="text-sm font-bold text-slate-500 hover:text-[#EAB308] transition-colors">
                                         {link.name}
                                     </Link>
                                 </li>
@@ -82,29 +82,30 @@ export default function Footer() {
                     </div>
 
                     {/* Contact Info */}
-                    <div className="space-y-4">
-                        <h4 className="font-playfair text-lg font-bold text-slate-50 mb-6">Contact Us</h4>
-                        <div className="flex items-start space-x-3 text-sm text-slate-400">
-                            <MapPin size={18} className="text-[#EAB308] shrink-0" />
-                            <span>123 Cinema Lane, Movie District<br />Hollywood, CA 90210</span>
+                    <div className="space-y-6">
+                        <h4 className="font-playfair text-xl font-black text-slate-900 mb-8 tracking-tight">Contact Us</h4>
+                        <div className="flex items-start space-x-4 text-sm font-bold text-slate-500">
+                            <MapPin size={20} className="text-[#EAB308] shrink-0" />
+                            <span className="leading-relaxed">123 Cinema Lane, Movie District<br />Hollywood, CA 90210</span>
                         </div>
-                        <div className="flex items-center space-x-3 text-sm text-slate-400">
-                            <Phone size={18} className="text-[#EAB308] shrink-0" />
+                        <div className="flex items-center space-x-4 text-sm font-bold text-slate-500">
+                            <Phone size={20} className="text-[#EAB308] shrink-0" />
                             <span>+1 (555) 000-CINE</span>
                         </div>
-                        <div className="flex items-center space-x-3 text-sm text-slate-400">
-                            <Mail size={18} className="text-[#EAB308] shrink-0" />
+                        <div className="flex items-center space-x-4 text-sm font-bold text-slate-500">
+                            <Mail size={20} className="text-[#EAB308] shrink-0" />
                             <span>support@cinetube.com</span>
                         </div>
                     </div>
                 </div>
 
-                <Separator className="my-12 bg-white/5" />
+                <Separator className="my-16 bg-slate-100" />
 
-                <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500 uppercase tracking-widest font-medium">
+                <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] text-slate-400 font-black uppercase tracking-[0.3em]">
                     <p>© {currentYear} CineTube Portal. Built for Cinephiles.</p>
-                    <div className="flex items-center space-x-6">
-                        <span>Powered by Next.js & Prisma</span>
+                    <div className="flex items-center space-x-8">
+                        <span className="hover:text-slate-900 transition-colors cursor-default">Powered by Next.js & Prisma</span>
+                        <span className="hover:text-slate-900 transition-colors cursor-default">Verified by shadcn/ui</span>
                     </div>
                 </div>
             </div>

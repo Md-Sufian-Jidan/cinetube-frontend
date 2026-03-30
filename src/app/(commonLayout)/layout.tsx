@@ -1,12 +1,14 @@
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
+import { getSession } from "@/services/auth.service";
 
-export default function CommonLayout(
+export default async function CommonLayout(
     { children, }: Readonly<{ children: React.ReactNode; }
     >) {
+    const session = await getSession();
     return (
         <>
-            <Navbar />
+            <Navbar user={session?.data} />
             <div className="min-h-screen pt-20">
                 {children}
             </div>

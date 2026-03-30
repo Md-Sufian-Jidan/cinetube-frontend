@@ -46,8 +46,6 @@ export const RegisterForm = ({ redirectPath }: RegisterFormProps) => {
             setServerError(null);
             try {
                 const result = await mutateAsync(registerData) as any;
-
-                console.log("Register result from register form: ", result);
                 if (!result.success) {
                     setServerError(result.message || "Registration failed");
                     return;
@@ -57,7 +55,6 @@ export const RegisterForm = ({ redirectPath }: RegisterFormProps) => {
                 toast.success("Registration successful! Please login.");
                 window.location.href = "/login";
             } catch (error: any) {
-                console.log(`Registration failed: ${error.message}`);
                 setServerError(`Registration failed: ${error.message}`);
             }
         }

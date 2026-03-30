@@ -1,13 +1,15 @@
 "use server"
 import { httpClient } from "@/lib/axios/httpClient"
+import { IMedia } from "@/types/media.types"
 
-export const getAllMedia = async () => {
+import { ApiResponse } from "@/types/api.types";
+
+export const getAllMedia = async (): Promise<ApiResponse<IMedia[]>> => {
     try {
-        const medias = await httpClient.get({ url: "/v1/media" })
-        console.log("response from all media", medias);
-        return medias;
+        const res = await httpClient.get<IMedia[]>({ url: "/v1/media" });
+        return res;
     } catch (error) {
         console.error("Error fetching all media:", error);
-        return [];
+        return { success: false, message: "Failed to fetch all media", data: [] };
     }
 };

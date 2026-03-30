@@ -1,26 +1,20 @@
-import { getPendingReviews, updateReviewStatus } from "./_actions";
+import { getPendingReviews } from "./_actions";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
-    XCircle,
     MessageSquare,
     AlertTriangle,
     User,
     Film,
     Calendar,
-    Loader2,
 } from "lucide-react";
 import { format } from "date-fns";
 import { IReview } from "@/types/review.types";
 import ApproveButton from "@/components/modules/dashboard/admin/reviews/ApproveButton";
-import { useQuery } from "@tanstack/react-query";
+import RejectButton from "@/components/modules/dashboard/admin/reviews/RejectButton";
 
 export default async function AdminReviewsPage() {
-    const { data: reviews, isLoading } = useQuery({
-        queryKey: ["pending-reviews"],
-        queryFn: getPendingReviews,
-    })
+    const reviews = await getPendingReviews();
 
     return (
         <div className="p-6 space-y-8 bg-white min-h-screen font-jakarta">
@@ -33,18 +27,13 @@ export default async function AdminReviewsPage() {
             </div>
 
             <div className="grid gap-6">
-                {isLoading ? (
-                    <div className="flex flex-col items-center justify-center py-20 border-2 border-dashed border-slate-100 rounded-3xl">
-                        <Loader2 className="w-12 h-12 text-slate-200 mb-4 animate-spin" />
-                        <p className="text-slate-400 font-medium">Loading reviews...</p>
-                    </div>
-                ) : !reviews || reviews.length === 0 ? (
+                {!reviews?.success || !reviews?.data || reviews.data.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-20 border-2 border-dashed border-slate-100 rounded-3xl">
                         <MessageSquare className="w-12 h-12 text-slate-200 mb-4" />
                         <p className="text-slate-400 font-medium">No pending reviews found.</p>
                     </div>
                 ) : (
-                    reviews.map((review: IReview) => (
+                    reviews.data.map((review: IReview) => (
                         <Card key={review.id} className="border-slate-200 shadow-sm hover:shadow-md transition-shadow">
                             <CardContent className="p-0">
                                 <div className="flex flex-col lg:flex-row">
@@ -104,15 +93,7 @@ export default async function AdminReviewsPage() {
                                         <div className="flex flex-col gap-2">
                                             <ApproveButton review={review} />
 
-                                            <form action={async () => { "use server"; await updateReviewStatus(review.id, "PENDING"); }}>
-                                                <Button
-                                                    type="submit"
-                                                    variant="outline"
-                                                    className="w-full border-slate-200 text-slate-500 hover:bg-red-50 hover:text-red-500 hover:border-red-100 font-bold h-9 text-xs uppercase tracking-wider transition-all"
-                                                >
-                                                    <XCircle className="mr-2 h-4 w-4" /> Reject
-                                                </Button>
-                                            </form>
+                                            <RejectButton review={review} />
                                         </div>
                                     </div>
                                 </div>
