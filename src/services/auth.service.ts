@@ -1,6 +1,26 @@
+"use server";
+
 import { cookies } from "next/headers";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL as string;
+
+export async function logoutAction() {
+    const cookieStore = await cookies();
+    try {
+        // Optional: Notify backend about sign-out
+        await fetch(`${API_BASE_URL}/auth/sign-out`, {
+            method: "POST",
+            headers: {
+                Cookie: cookieStore.toString(),
+            },
+        });
+    } catch (error) {
+        console.error("Logout backend call failed:", error);
+    } finally {
+        // Always clear the session token on the server
+        cookieStore.delete("cinetube.session_token");
+    }
+}
 
 export async function getSession() {
     try {

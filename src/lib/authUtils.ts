@@ -22,7 +22,7 @@ export const ROUTES = {
         exact: [
             "/dashboard",
             "/dashboard/media",
-            "/dashboard/my-profile",
+            "/my-profile",
             "/dashboard/reviews",
         ],
         pattern: [/^\/dashboard(\/.*)?$/],
@@ -34,7 +34,7 @@ export const ROUTES = {
             "/admin/media-analytics",
             "/admin/reviews",
             "/admin/user-activity",
-            "/admin/profile",
+            "/my-profile",
         ],
         pattern: [/^\/admin(\/.*)?$/],
     },

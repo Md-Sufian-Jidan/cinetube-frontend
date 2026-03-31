@@ -6,25 +6,26 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import MediaCta from "./MediaCta";
 import MediaPagination from "./MediaPagination";
-import MediaCard from "./MediaCard";
+import { MovieCard } from "../movies/MovieCard";
 import { useQuery } from "@tanstack/react-query";
 import { getAllMedia } from "@/app/(commonLayout)/all-movie/_actions";
 import { IMedia, IMediaMeta } from "@/types/media.types";
+import { useDebounce } from "@/hooks/useDebounce";
 
-export default function PublicMoviesPage() {
+export default function AllMedias() {
     const [searchTerm, setSearchTerm] = useState("");
+    const [page, setPage] = useState(1);
+    const limit = 8;
 
-    const { data } = useQuery({
-        queryKey: ['medias'],
-        queryFn: getAllMedia,
+    const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
+    const { data, isLoading } = useQuery({
+        queryKey: ['medias', page, limit, debouncedSearchTerm],
+        queryFn: () => getAllMedia(page, limit, debouncedSearchTerm),
     });
 
-    const meta = data && 'meta' in data ? data.meta : undefined;
-    const movies = (data && 'data' in data ? data.data : []) as IMedia[];
-
-    const filteredMovies = movies.filter((movie: IMedia) =>
-        movie.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const meta = data?.meta;
+    const movies = (data?.data || []) as IMedia[];
 
     return (
         <div className="bg-white min-h-screen font-jakarta">
@@ -47,11 +48,14 @@ export default function PublicMoviesPage() {
                                 placeholder="Search movies, series..."
                                 className="pl-12 h-14 rounded-full border-slate-200 bg-white shadow-xl shadow-slate-200/50 focus:ring-[#EAB308]"
                                 value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
+                                onChange={(e) => {
+                                    setSearchTerm(e.target.value);
+                                    setPage(1); // Reset to page 1 on new search
+                                }}
                             />
                         </div>
-                        <Button variant="outline" className="rounded-full h-14 px-8 gap-2 border-slate-200 font-bold">
-                            <Filter size={18} /> Filters
+                        <Button variant="outline" className="rounded-full h-14 px-8 gap-2 border-slate-200 font-bold hover:bg-[#EAB308]/10 group">
+                            <Filter size={18} className="group-hover:rotate-180 transition-transform duration-500" /> Filters
                         </Button>
                     </div>
                 </div>
@@ -59,15 +63,37 @@ export default function PublicMoviesPage() {
 
             {/* Movie Grid Section */}
             <section className="container mx-auto px-6 py-20">
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
-                    {filteredMovies.map((movie: IMedia) => (
-                        <MediaCard movie={movie} />
-                    ))}
-                </div>
+                {isLoading ? (
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 animate-pulse">
+                        {[...Array(limit)].map((_, i) => (
+                            <div key={i} className="aspect-[2/3] bg-slate-100 rounded-2xl" />
+                        ))}
+                    </div>
+                ) : movies.length > 0 ? (
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+                        {movies.map((movie: IMedia) => (
+                            <MovieCard key={movie.id} movie={movie} />
+                        ))}
+                    </div>
+                ) : (
+                    <div className="flex flex-col items-center justify-center py-20 space-y-4">
+                        <div className="bg-slate-50 p-6 rounded-full">
+                            <Search size={48} className="text-slate-300" />
+                        </div>
+                        <div className="text-center">
+                            <p className="text-xl font-bold text-slate-900">No movies found</p>
+                            <p className="text-slate-500">Try adjusting your search or filters.</p>
+                        </div>
+                    </div>
+                )}
 
-                {/* Public Pagination */}
                 <div className="mt-16 flex items-center justify-center">
-                    {meta && <MediaPagination meta={meta as unknown as IMediaMeta} />}
+                    {
+                        <MediaPagination
+                            meta={meta}
+                            onPageChange={(newPage: number) => setPage(newPage)}
+                        />
+                    }
                 </div>
             </section>
 

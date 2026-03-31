@@ -29,3 +29,22 @@ export interface IReview {
     user: IReviewUser;
     media: IReviewMedia;
 }
+
+export interface Review {
+    id: string;
+    rating: number;
+    content: string;
+    tags: string[];
+    isSpoiler: boolean;
+    status: string;
+    createdAt: string;
+    media: {
+        title: string;
+        posterUrl: string;
+    };
+}
+
+export interface ReviewResponse {
+    success: boolean;
+    data: Review[];
+}

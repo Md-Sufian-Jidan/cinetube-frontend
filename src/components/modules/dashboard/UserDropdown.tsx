@@ -46,13 +46,6 @@ const UserDropdown = ({ userInfo }: UserDropdownProps) => {
                     </Link>
                 </DropdownMenuItem>
 
-                <DropdownMenuItem>
-                    <Link href={"/change-password"} className="flex items-center gap-2">
-                        <Key className="mr-2 h-4 w-4" />
-                        Change Password
-                    </Link>
-                </DropdownMenuItem>
-
                 <DropdownMenuSeparator />
 
 

@@ -1,18 +1,21 @@
 import { QueryClient, HydrationBoundary, dehydrate } from "@tanstack/react-query"
 import { getAllMedia } from "./_actions"
-import AllMedia from "@/components/modules/media/AllMedia"
+import AllMovies from "@/components/modules/media/AllMedia";
 
 export default async function AllMoviePage() {
+    const page = 1;
+    const limit = 8;
+    const searchTerm = "";
 
     const queryClient = new QueryClient()
     await queryClient.prefetchQuery({
-        queryKey: ['medias'],
-        queryFn: getAllMedia,
+        queryKey: ['medias', page, limit, searchTerm],
+        queryFn: () => getAllMedia(page, limit, searchTerm),
     });
 
     return (
         <HydrationBoundary state={dehydrate(queryClient)}>
-            <AllMedia />
+            <AllMovies />
         </HydrationBoundary>
     )
 }

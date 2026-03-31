@@ -2,27 +2,46 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { IMediaMeta } from "@/types/media.types";
 
-export default function MediaPagination({ meta }: { meta: IMediaMeta }) {
+interface Props {
+    meta: IMediaMeta;
+    onPageChange: (page: number) => void;
+}
+
+export default function MediaPagination({ meta, onPageChange }: Props) {
     return (
-        <div className="mt-16 flex items-center justify-center gap-4">
-            <Button variant="ghost" className="rounded-full h-12 w-12 border border-slate-100 shadow-sm text-slate-400">
+        <div className="flex items-center gap-2">
+            <Button
+                variant="ghost"
+                disabled={meta?.page === 1}
+                onClick={() => onPageChange(meta.page - 1)}
+                className="rounded-full h-12 w-12 border border-slate-100"
+            >
                 <ChevronLeft size={20} />
             </Button>
-            <div className="flex gap-2">
-                {Array.from({ length: meta.totalPage }).map((_, index) => (
+
+            {Array.from({ length: meta.totalPage }).map((_, index) => {
+                const p = index + 1;
+                return (
                     <Button
-                        key={index}
-                        className={index + 1 === meta.page
-                            ? "bg-[#EAB308] text-white rounded-full h-12 w-12 font-black shadow-lg shadow-[#EAB308]/20"
-                            : "bg-transparent text-slate-400 rounded-full h-12 w-12 hover:bg-slate-50 font-bold"}
+                        key={p}
+                        onClick={() => onPageChange(p)}
+                        className={p === meta.page
+                            ? "bg-[#EAB308] text-white rounded-full h-12 w-12 font-black"
+                            : "bg-transparent text-slate-400 rounded-full h-12 w-12 hover:bg-slate-50"}
                     >
-                        {index + 1}
+                        {p}
                     </Button>
-                ))}
-            </div>
-            <Button variant="ghost" className="rounded-full h-12 w-12 border border-slate-100 shadow-sm text-[#EAB308]">
+                );
+            })}
+
+            <Button
+                variant="ghost"
+                disabled={meta.page === meta.totalPage}
+                onClick={() => onPageChange(meta.page + 1)}
+                className="rounded-full h-12 w-12 border border-slate-100"
+            >
                 <ChevronRight size={20} />
             </Button>
         </div>
-    )
-};
+    );
+}

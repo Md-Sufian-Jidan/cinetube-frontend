@@ -31,7 +31,7 @@ export default async function AdminDashboardPage() {
         {
             title: "Total Audience",
             value: stats?.userCount,
-            description: "+2 new this week",
+            description: `+${stats?.userCount} new this week`,
             icon: Users,
             color: "text-blue-600",
             bg: "bg-blue-50",

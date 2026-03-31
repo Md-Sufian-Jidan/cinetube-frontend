@@ -14,7 +14,7 @@ export const getCommonNavItems = (role: UserRole): NavSection[] => {
                 },
                 {
                     title: "Browse Movies",
-                    href: "/movies",
+                    href: "/all-movie",
                     icon: "HardDrive",
                 }
             ]
@@ -64,18 +64,13 @@ export const userNavItems = (): NavSection[] => {
                     icon: "LayoutDashboard",
                 },
                 {
-                    title: "Media",
-                    href: "/dashboard/media",
-                    icon: "HardDrive",
-                },
-                {
                     title: "Reviews",
                     href: "/dashboard/reviews",
                     icon: "User",
                 },
                 {
                     title: "Profile",
-                    href: "/dashboard/my-profile",
+                    href: "/my-profile",
                     icon: "Settings",
                 },
             ]

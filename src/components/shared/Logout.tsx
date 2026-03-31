@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
-import { httpClient } from "@/lib/axios/httpClient";
+import { logoutAction } from "@/services/auth.service";
 
 export default function Logout() {
     const { push, refresh } = useRouter();
@@ -14,28 +14,24 @@ export default function Logout() {
     const handleLogout = async () => {
         setIsLoading(true);
         try {
-            const res = await httpClient.post(null, {
-                url: "/auth/sign-out",
+            await logoutAction();
+
+            // Clear any local state if necessary before redirecting
+            push("/login");
+            refresh();
+
+            toast.success("See you next time, Cinephile!", {
+                style: {
+                    background: "#FFFFFF",
+                    color: "#0F172A", // Slate-900
+                    border: "1px solid #F1F5F9", // Slate-100
+                    fontFamily: "var(--font-jakarta)",
+                    fontWeight: "600"
+                },
+                icon: <LogOutIcon className="h-4 w-4 text-[#EAB308]" />
             });
-
-            if (res?.success) {
-                // Clear any local state if necessary before redirecting
-                push("/");
-                refresh();
-
-                toast.success("See you next time, Cinephile!", {
-                    style: {
-                        background: "#FFFFFF",
-                        color: "#0F172A", // Slate-900
-                        border: "1px solid #F1F5F9", // Slate-100
-                        fontFamily: "var(--font-jakarta)",
-                        fontWeight: "600"
-                    },
-                    icon: <LogOutIcon className="h-4 w-4 text-[#EAB308]" />
-                });
-            }
         } catch (error) {
-            toast.error("Logout failed. Please try again.");
+            toast.error("Logout failed. Please check your connection.");
         } finally {
             setIsLoading(false);
         }
