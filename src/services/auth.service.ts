@@ -2,11 +2,18 @@
 
 import { cookies } from "next/headers";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL as string;
+const getApiBaseUrl = () => {
+    const url = process.env.NEXT_PUBLIC_API_BASE_URL;
+    if (!url) {
+        throw new Error("NEXT_PUBLIC_API_BASE_URL is not defined in environment variables");
+    }
+    return url;
+};
 
 export async function logoutAction() {
     const cookieStore = await cookies();
     try {
+        const API_BASE_URL = getApiBaseUrl();
         // Optional: Notify backend about sign-out
         await fetch(`${API_BASE_URL}/auth/sign-out`, {
             method: "POST",
@@ -25,6 +32,7 @@ export async function logoutAction() {
 export async function getSession() {
     try {
         const cookieStore = await cookies();
+        const API_BASE_URL = getApiBaseUrl();
 
         const res = await fetch(`${API_BASE_URL}/auth/get-session`, {
             headers: {
@@ -49,6 +57,7 @@ export async function getSession() {
 export async function getUserInfo() {
     try {
         const cookieStore = await cookies();
+        const API_BASE_URL = getApiBaseUrl();
         const token = cookieStore.get("auth_token")?.value;
         const sessionToken = cookieStore.get("better-auth.session_token")?.value
 

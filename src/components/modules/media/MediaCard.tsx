@@ -4,6 +4,7 @@ import { Play, Star } from "lucide-react";
 import { IMedia } from "@/types/media.types";
 
 export default function MediaCard({ movie }: { movie: IMedia }) {
+
     return (
         <Link href={`/all-movie/${movie.id}`} className="group block">
             <div className="relative aspect-[2/3] rounded-2xl overflow-hidden shadow-lg transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-2xl group-hover:shadow-[#EAB308]/20">

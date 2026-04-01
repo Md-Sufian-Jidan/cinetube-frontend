@@ -3,7 +3,6 @@ import getUserDashboardData from "./_actions";
 
 export default async function DashboardPage() {
     const stats = await getUserDashboardData();
-    console.log("Dashboard stats from page", stats);
 
     if (!stats || !stats.success) {
         return (

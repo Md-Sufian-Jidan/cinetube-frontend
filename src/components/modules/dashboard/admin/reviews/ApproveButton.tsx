@@ -26,8 +26,6 @@ export default function ApproveButton({ review }: { review: any }) {
         },
     });
 
-    console.log("review from approve button", review);
-
     return (
         <Button
             onClick={() => mutateAsync()}

@@ -33,7 +33,6 @@ export const updateReviewStatus = async (reviewId: string, status: ReviewStatus)
                 Cookie: `cinetube.session_token=${sessionToken}`
             }
         });
-        console.log("updateReviewStatus", res);
         if (res?.success) {
             await getPendingReviews();
             return { success: true, message: res.message };

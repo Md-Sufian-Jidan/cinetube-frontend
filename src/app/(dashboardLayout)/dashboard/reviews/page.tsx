@@ -5,7 +5,6 @@ import { ReviewResponse } from "@/types/review.types";
 
 export default async function ReviewsPage() {
     const reviews = await getUserReviews() as ReviewResponse;
-    console.log("Reviews from actions", reviews);
     if (!reviews?.data || reviews.data.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center py-24 px-6 text-center bg-white">

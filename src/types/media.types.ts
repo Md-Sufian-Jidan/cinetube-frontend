@@ -71,9 +71,16 @@ export interface MediaAnalytics {
     status: string;
 }
 
+import { IReview } from "./review.types";
+
+export interface IMediaDetail {
+    media: IMedia;
+    reviews: IReview[];
+}
+
 export interface IMediaMeta {
     limit: number;
     page: number;
     total: number;
-    totalPage: number;
+    totalPages: number;
 }

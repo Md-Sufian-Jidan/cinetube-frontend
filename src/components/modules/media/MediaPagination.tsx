@@ -8,18 +8,20 @@ interface Props {
 }
 
 export default function MediaPagination({ meta, onPageChange }: Props) {
+    if (!meta || meta.totalPages <= 1) return null;
+
     return (
         <div className="flex items-center gap-2">
             <Button
                 variant="ghost"
-                disabled={meta?.page === 1}
+                disabled={meta.page === 1}
                 onClick={() => onPageChange(meta.page - 1)}
                 className="rounded-full h-12 w-12 border border-slate-100"
             >
                 <ChevronLeft size={20} />
             </Button>
 
-            {Array.from({ length: meta.totalPage }).map((_, index) => {
+            {Array.from({ length: meta.totalPages }).map((_, index) => {
                 const p = index + 1;
                 return (
                     <Button
@@ -36,7 +38,7 @@ export default function MediaPagination({ meta, onPageChange }: Props) {
 
             <Button
                 variant="ghost"
-                disabled={meta.page === meta.totalPage}
+                disabled={meta.page === meta.totalPages}
                 onClick={() => onPageChange(meta.page + 1)}
                 className="rounded-full h-12 w-12 border border-slate-100"
             >

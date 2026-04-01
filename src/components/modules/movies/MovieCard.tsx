@@ -12,7 +12,7 @@ interface MovieCardProps {
     movie: IMedia;
 }
 
-export function MovieCard({ movie }: MovieCardProps) {
+export function MovieCard({ movie }: { movie: any }) {
     const { id, title, posterUrl, averageRating, releaseYear, type, pricing, genres } = movie;
     const isPremium = pricing === "PREMIUM";
 
@@ -48,7 +48,7 @@ export function MovieCard({ movie }: MovieCardProps) {
 
                         {/* Hover Play Button Overlay */}
                         <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-10">
-                            <motion.div 
+                            <motion.div
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
                                 className="flex h-14 w-14 items-center justify-center rounded-full bg-[#EAB308] text-[#0F172A] shadow-xl shadow-[#EAB308]/20"

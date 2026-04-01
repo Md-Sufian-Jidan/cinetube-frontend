@@ -49,7 +49,7 @@ const picks = [
 export default function EditorsPicks() {
     const { data } = useQuery({
         queryKey: ['medias'],
-        queryFn: getAllMedia,
+        queryFn: () => getAllMedia(1, 4),
     });
 
     return (

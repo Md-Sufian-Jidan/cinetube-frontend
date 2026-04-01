@@ -10,7 +10,6 @@ import { getSession } from "@/services/auth.service";
 export default async function ChangePasswordPage() {
     const session = await getSession();
     const userInfo = session?.data?.user;
-    console.log(userInfo);
     return (
         <div className="min-h-[80vh] flex items-center justify-center p-6 font-jakarta bg-white">
             <motion.div
