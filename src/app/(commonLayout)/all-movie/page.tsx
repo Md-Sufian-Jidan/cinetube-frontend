@@ -9,8 +9,8 @@ export default async function AllMoviePage() {
 
     const queryClient = new QueryClient()
     await queryClient.prefetchQuery({
-        queryKey: ['medias', page, limit, searchTerm],
-        queryFn: () => getAllMedia(page, limit, searchTerm),
+        queryKey: ['medias', page, limit, searchTerm, 'ALL', 'ALL', 'latest'],
+        queryFn: () => getAllMedia(page, limit, searchTerm, 'ALL', 'ALL', 'latest'),
     });
 
     return (

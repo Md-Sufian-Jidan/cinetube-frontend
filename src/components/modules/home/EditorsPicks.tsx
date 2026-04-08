@@ -3,9 +3,11 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import { Star, User, Clapperboard, PlayCircle } from "lucide-react";
+import { Star, Clapperboard, PlayCircle } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getAllMedia } from "@/app/(commonLayout)/all-movie/_actions";
+import { initialMedia } from "@/lib/mockData";
+import { IMedia } from "@/types/media.types";
 import Link from "next/link";
 
 function cn(...classes: (string | boolean | undefined)[]) {
@@ -13,15 +15,102 @@ function cn(...classes: (string | boolean | undefined)[]) {
 }
 
 export default function EditorsPicks() {
-    const { data, isLoading } = useQuery({
+    const { data, isLoading, error } = useQuery({
         queryKey: ['medias', 'editors-picks'],
         queryFn: () => getAllMedia(1, 5),
     });
 
-    const picks = data?.data || [];
+    console.log("API Data:", data);
+
+    // Use API data if available, otherwise fallback to mock data
+    const picks = (data?.data && data.data.length > 0) ? data.data : initialMedia.slice(0, 5);
     console.log(picks);
 
     if (isLoading) return <div className="h-96 flex items-center justify-center text-slate-400">Loading Masterpieces...</div>;
+
+    // Only show error state if API failed AND we have no mock data
+    if (error && picks.length === 0) {
+        return (
+            <section className="bg-white py-24">
+                <div className="container mx-auto px-6">
+                    {/* Header Section */}
+                    <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
+                        <div className="space-y-4">
+                            <Badge className="bg-[#EAB308] hover:bg-[#EAB308]/90 text-[#0F172A] font-black px-4 py-1 rounded-full">
+                                PREMIUM SELECTION
+                            </Badge>
+                            <h2 className="font-playfair text-5xl font-black text-[#0F172A] leading-tight">
+                                Editor’s <span className="text-[#EAB308]">Picks</span>
+                            </h2>
+                        </div>
+                        <p className="max-w-xs text-left md:text-right text-base text-slate-500 font-medium leading-relaxed">
+                            Hand-picked masterpieces curated by our <span className="text-[#0F172A] font-bold">internal cinema experts</span>.
+                        </p>
+                    </div>
+
+                    {/* Error State */}
+                    <div className="flex flex-col items-center justify-center py-20 space-y-6">
+                        <div className="bg-red-50 p-8 rounded-full">
+                            <Clapperboard size={64} className="text-red-300" />
+                        </div>
+                        <div className="text-center space-y-2">
+                            <h3 className="text-2xl font-bold text-slate-900">Unable to Load Editor's Picks</h3>
+                            <p className="text-slate-500 max-w-md">
+                                We're having trouble loading our premium selection. Please try again later.
+                            </p>
+                        </div>
+                        <Link href="/all-movie">
+                            <button className="bg-[#EAB308] hover:bg-[#EAB308]/90 text-black font-bold px-8 py-3 rounded-xl transition-all duration-300 hover:shadow-lg">
+                                Browse All Movies
+                            </button>
+                        </Link>
+                    </div>
+                </div>
+            </section>
+        );
+    }
+
+    // This condition should never be reached now due to mock data fallback
+    if (picks.length === 0) {
+        return (
+            <section className="bg-white py-24">
+                <div className="container mx-auto px-6">
+                    {/* Header Section */}
+                    <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
+                        <div className="space-y-4">
+                            <Badge className="bg-[#EAB308] hover:bg-[#EAB308]/90 text-[#0F172A] font-black px-4 py-1 rounded-full">
+                                PREMIUM SELECTION
+                            </Badge>
+                            <h2 className="font-playfair text-5xl font-black text-[#0F172A] leading-tight">
+                                Editor’s <span className="text-[#EAB308]">Picks</span>
+                            </h2>
+                        </div>
+                        <p className="max-w-xs text-left md:text-right text-base text-slate-500 font-medium leading-relaxed">
+                            Hand-picked masterpieces curated by our <span className="text-[#0F172A] font-bold">internal cinema experts</span>.
+                        </p>
+                    </div>
+
+                    {/* Empty State */}
+                    <div className="flex flex-col items-center justify-center py-20 space-y-6">
+                        <div className="bg-slate-50 p-8 rounded-full">
+                            <Clapperboard size={64} className="text-slate-300" />
+                        </div>
+                        <div className="text-center space-y-2">
+                            <h3 className="text-2xl font-bold text-slate-900">No Editor's Picks Available</h3>
+                            <p className="text-slate-500 max-w-md">
+                                Our cinema experts are curating the best movies for you. Check back soon for our premium selection!
+                            </p>
+                        </div>
+                        <Link href="/all-movie">
+                            <button className="bg-[#EAB308] hover:bg-[#EAB308]/90 text-black font-bold px-8 py-3 rounded-xl transition-all duration-300 hover:shadow-lg">
+                                Browse All Movies
+                            </button>
+                        </Link>
+                    </div>
+                </div>
+            </section>
+        );
+    }
 
     return (
         <section className="bg-white py-24">
@@ -43,7 +132,7 @@ export default function EditorsPicks() {
 
                 {/* Grid Layout */}
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                    {picks.map((movie: any, index: number) => {
+                    {picks.map((movie: IMedia, index: number) => {
                         const isLarge = index === 0;
 
                         return (

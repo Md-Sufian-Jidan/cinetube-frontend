@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Search, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -9,23 +9,53 @@ import MediaPagination from "./MediaPagination";
 import { MovieCard } from "../movies/MovieCard";
 import { useQuery } from "@tanstack/react-query";
 import { getAllMedia } from "@/app/(commonLayout)/all-movie/_actions";
+import { ApiResponse } from "@/types/api.types";
 import { IMedia, IMediaMeta } from "@/types/media.types";
 import { useDebounce } from "@/hooks/useDebounce";
+
+const typeOptions = [
+    { label: "All Types", value: "ALL" },
+    { label: "Movies", value: "MOVIE" },
+    { label: "Series", value: "SERIES" },
+];
+
+const pricingOptions = [
+    { label: "All Prices", value: "ALL" },
+    { label: "Free", value: "FREE" },
+    { label: "Premium", value: "PREMIUM" },
+];
+
+const sortOptions = [
+    { label: "Newest First", value: "latest" },
+    { label: "Top Rated", value: "rating" },
+    { label: "A → Z", value: "title" },
+];
 
 export default function AllMedias() {
     const [searchTerm, setSearchTerm] = useState("");
     const [page, setPage] = useState(1);
+    const [mediaType, setMediaType] = useState<string>("ALL");
+    const [pricing, setPricing] = useState<string>("ALL");
+    const [sortBy, setSortBy] = useState<string>("latest");
     const limit = 8;
 
     const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-    const { data, isLoading } = useQuery({
-        queryKey: ['medias', page, limit, debouncedSearchTerm],
-        queryFn: () => getAllMedia(page, limit, debouncedSearchTerm),
+    const { data, isLoading } = useQuery<ApiResponse<IMedia[]>, Error>({
+        queryKey: ['medias', page, limit, debouncedSearchTerm, mediaType, pricing, sortBy],
+        queryFn: () => getAllMedia(page, limit, debouncedSearchTerm, mediaType, pricing, sortBy),
     });
 
     const meta = data?.meta;
-    const movies = (data?.data || []) as IMedia[];
+    const movies = data?.data || [];
+
+    const activeFilters = useMemo(() => {
+        const items = [] as string[];
+        if (mediaType !== "ALL") items.push(mediaType);
+        if (pricing !== "ALL") items.push(pricing);
+        if (sortBy !== "latest") items.push(`Sort: ${sortOptions.find((option) => option.value === sortBy)?.label}`);
+        return items;
+    }, [mediaType, pricing, sortBy]);
 
     return (
         <div className="bg-white min-h-screen font-jakarta">
@@ -41,8 +71,8 @@ export default function AllMedias() {
                         Share your thoughts and join the community.
                     </p>
 
-                    <div className="flex flex-col md:flex-row gap-4 items-center pt-4">
-                        <div className="relative w-full md:w-96">
+                    <div className="grid gap-6 xl:grid-cols-[minmax(320px,1fr)_auto] xl:items-end">
+                        <div className="relative w-full">
                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
                             <Input
                                 placeholder="Search movies, series..."
@@ -50,14 +80,89 @@ export default function AllMedias() {
                                 value={searchTerm}
                                 onChange={(e) => {
                                     setSearchTerm(e.target.value);
-                                    setPage(1); // Reset to page 1 on new search
+                                    setPage(1);
                                 }}
                             />
                         </div>
-                        <Button variant="outline" className="rounded-full h-14 px-8 gap-2 border-slate-200 font-bold hover:bg-[#EAB308]/10 group">
-                            <Filter size={18} className="group-hover:rotate-180 transition-transform duration-500" /> Filters
+                        <Button
+                            variant="outline"
+                            onClick={() => {
+                                setMediaType("ALL");
+                                setPricing("ALL");
+                                setSortBy("latest");
+                                setPage(1);
+                            }}
+                            className="rounded-full h-14 px-8 gap-2 border-slate-200 font-bold hover:bg-[#EAB308]/10 transition-colors"
+                        >
+                            <Filter size={18} className="text-slate-600" /> Reset filters
                         </Button>
                     </div>
+
+                    <div className="mt-8 grid gap-4 sm:grid-cols-3">
+                        <div className="space-y-2">
+                            <label className="text-sm font-semibold text-slate-700">Category</label>
+                            <select
+                                value={mediaType}
+                                onChange={(e) => {
+                                    setMediaType(e.target.value);
+                                    setPage(1);
+                                }}
+                                className="h-14 w-full rounded-2xl border border-slate-200 bg-white px-4 text-slate-700 shadow-sm outline-none transition focus:border-[#EAB308]"
+                            >
+                                {typeOptions.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-sm font-semibold text-slate-700">Pricing</label>
+                            <select
+                                value={pricing}
+                                onChange={(e) => {
+                                    setPricing(e.target.value);
+                                    setPage(1);
+                                }}
+                                className="h-14 w-full rounded-2xl border border-slate-200 bg-white px-4 text-slate-700 shadow-sm outline-none transition focus:border-[#EAB308]"
+                            >
+                                {pricingOptions.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-sm font-semibold text-slate-700">Sort by</label>
+                            <select
+                                value={sortBy}
+                                onChange={(e) => {
+                                    setSortBy(e.target.value);
+                                    setPage(1);
+                                }}
+                                className="h-14 w-full rounded-2xl border border-slate-200 bg-white px-4 text-slate-700 shadow-sm outline-none transition focus:border-[#EAB308]"
+                            >
+                                {sortOptions.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+
+                    {activeFilters.length > 0 && (
+                        <div className="mt-6 flex flex-wrap gap-2">
+                            {activeFilters.map((filter) => (
+                                <span key={filter} className="rounded-full border border-slate-200 bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700">
+                                    {filter}
+                                </span>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </section>
 
@@ -67,7 +172,7 @@ export default function AllMedias() {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {[...Array(limit)].map((_, i) => (
                             <div key={i} className="bg-white rounded-2xl shadow-lg overflow-hidden animate-pulse">
-                                <div className="aspect-[2/3] bg-slate-200"></div>
+                                <div className="aspect-2/3 bg-slate-200"></div>
                                 <div className="p-4 space-y-3">
                                     <div className="flex justify-between items-start">
                                         <div className="h-5 bg-slate-200 rounded w-3/4"></div>

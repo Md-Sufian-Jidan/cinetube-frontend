@@ -15,7 +15,11 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+const DEMO_CREDENTIALS = {
+    email: "demo@cinetube.com",
+    password: "Demo1234!",
+};
 
 const LoginForm = () => {
     const [serverError, setServerError] = useState<string | null>(null);
@@ -124,6 +128,30 @@ const LoginForm = () => {
                                 </AlertDescription>
                             </Alert>
                         )}
+
+                        <div className="grid gap-3 sm:grid-cols-2">
+                            <Button
+                                type="button"
+                                onClick={() => {
+                                    form.setFieldValue("email", DEMO_CREDENTIALS.email);
+                                    form.setFieldValue("password", DEMO_CREDENTIALS.password);
+                                    setTimeout(() => form.handleSubmit(), 10);
+                                }}
+                                className="h-14 rounded-2xl border border-slate-200 bg-white text-slate-700 font-bold hover:border-[#EAB308] hover:bg-[#EAB308]/10"
+                            >
+                                Demo Login
+                            </Button>
+
+                            <Button
+                                type="button"
+                                onClick={() => {
+                                    window.location.href = `${API_BASE_URL}/auth/sign-in/google`;
+                                }}
+                                className="h-14 rounded-2xl bg-[#EAB308] text-black font-bold hover:bg-[#EAB308]/90"
+                            >
+                                Continue with Google
+                            </Button>
+                        </div>
 
                         <form.Subscribe
                             selector={(s) => [s.canSubmit, s.isSubmitting] as const}

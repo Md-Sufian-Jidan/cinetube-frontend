@@ -7,12 +7,15 @@ import { cookies } from "next/headers";
 export const getAllMedia = async (
     page = 1,
     limit = 8,
-    searchTerm = ""
+    searchTerm = "",
+    mediaType = "ALL",
+    pricing = "ALL",
+    sortBy = "latest"
 ): Promise<ApiResponse<IMedia[]>> => {
     try {
         const res = await httpClient.get<IMedia[]>({
             url: "/v1/media",
-            params: { page, limit, searchTerm }
+            params: { page, limit, searchTerm, mediaType, pricing, sortBy }
         });
         return res;
     } catch (error) {

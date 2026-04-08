@@ -15,6 +15,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+
 interface RegisterFormProps {
     redirectPath?: string;
 }
@@ -74,6 +76,21 @@ export const RegisterForm = ({ redirectPath }: RegisterFormProps) => {
                 </CardHeader>
 
                 <CardContent className="pt-8">
+                    <div className="space-y-4">
+                        <Button
+                            type="button"
+                            onClick={() => {
+                                window.location.href = `${API_BASE_URL}/auth/sign-in/google`;
+                            }}
+                            className="w-full h-14 rounded-2xl bg-[#EAB308] text-black font-bold hover:bg-[#EAB308]/90"
+                        >
+                            Continue with Google
+                        </Button>
+                        <div className="relative text-center text-sm text-slate-400">
+                            <span className="relative z-10 bg-white px-4">or register with email</span>
+                            <div className="absolute inset-x-0 top-1/2 h-px bg-slate-200" />
+                        </div>
+                    </div>
                     <form
                         noValidate
                         onSubmit={(e) => {

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Facebook, Twitter, Instagram, Youtube, Mail, MapPin, Phone } from "lucide-react";
+import { Facebook, Twitter, Instagram, Youtube, Mail, MapPin, Phone, Film } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 const footerLinks = {
@@ -25,16 +25,19 @@ export default function Footer() {
 
     return (
         <footer className="bg-white border-t border-[#EAB308] pt-20 pb-10 font-jakarta">
-            <div className="mx-auto max-w-7xl px-6">
+            <div className="mx-auto container px-6">
                 <div className="grid grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-4">
 
                     {/* Brand Column */}
                     <div className="space-y-8">
-                        <Link href="/" className="group inline-block">
-                            <span className="font-playfair text-3xl font-black tracking-tighter text-[#EAB308]">
-                                CINE<span className="text-slate-900">TUBE</span>
-                            </span>
-                        </Link>
+                        <Link href="/" className="flex items-center gap-3 group shrink-0">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#EAB308] text-white shadow-lg shadow-[#EAB308]/20 transition-transform group-hover:scale-110">
+                            <Film size={22} />
+                        </div>
+                        <span className="font-playfair text-2xl font-black tracking-tighter text-slate-900 uppercase">
+                            Cine<span className="text-[#EAB308]">Tube</span>
+                        </span>
+                    </Link>
                         <p className="text-sm font-medium leading-relaxed text-slate-500 max-w-xs">
                             The ultimate destination for cinephiles. Discover, rate, and stream
                             the world's most iconic stories with our community-driven portal.
