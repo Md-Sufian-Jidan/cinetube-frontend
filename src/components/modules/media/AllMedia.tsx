@@ -64,13 +64,30 @@ export default function AllMedias() {
             {/* Movie Grid Section */}
             <section className="container mx-auto px-6 py-20">
                 {isLoading ? (
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 animate-pulse">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {[...Array(limit)].map((_, i) => (
-                            <div key={i} className="aspect-[2/3] bg-slate-100 rounded-2xl" />
+                            <div key={i} className="bg-white rounded-2xl shadow-lg overflow-hidden animate-pulse">
+                                <div className="aspect-[2/3] bg-slate-200"></div>
+                                <div className="p-4 space-y-3">
+                                    <div className="flex justify-between items-start">
+                                        <div className="h-5 bg-slate-200 rounded w-3/4"></div>
+                                        <div className="h-6 w-12 bg-slate-200 rounded"></div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <div className="h-4 bg-slate-200 rounded w-full"></div>
+                                        <div className="h-4 bg-slate-200 rounded w-2/3"></div>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <div className="h-3 bg-slate-200 rounded w-1/2"></div>
+                                        <div className="h-3 bg-slate-200 rounded w-1/4"></div>
+                                    </div>
+                                    <div className="h-10 bg-slate-200 rounded-xl w-full"></div>
+                                </div>
+                            </div>
                         ))}
                     </div>
                 ) : movies.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {movies.map((movie: IMedia) => (
                             <MovieCard key={movie.id} movie={movie} />
                         ))}

@@ -25,7 +25,7 @@ export default function Hero() {
     };
 
     return (
-        <section className="relative h-[95vh] w-full overflow-hidden bg-[#0B0E14] px-5">
+        <section className="relative h-[90vh] w-full overflow-hidden bg-[#0B0E14] px-5">
             {/* Background Image with Cinematic Overlay */}
             <div className="absolute inset-0">
                 <Image
@@ -88,7 +88,7 @@ export default function Hero() {
                     >
                         <Button
                             size="lg"
-                            className="group h-14 bg-[#EAB308] px-8 text-lg font-bold text-[#0B0E14] border-2 border-[#EAB308] hover:bg-transparent hover:border-[#EAB308] hover:border-2 hover:text-[#EAB308] cursor-pointer"
+                            className="group h-14 bg-[#EAB308] px-8 text-lg font-bold text-white border-2 border-[#EAB308] hover:bg-transparent hover:border-[#EAB308] hover:border-2 hover:text-[#EAB308] cursor-pointer"
                         >
                             <Play className="mr-2 h-5 w-5 fill-current transition-transform group-hover:scale-110" />
                             Watch Trailer
@@ -97,7 +97,7 @@ export default function Hero() {
                         <Button
                             size="lg"
                             variant="outline"
-                            className="h-14 border-2 border-[#EAB308] px-8 text-lg text-[#EAB308] font-bold bg-transparent hover:bg-[#EAB308] hover:border-[#EAB308] hover:border-2 hover:text-[#0B0E14] cursor-pointer"
+                            className="h-14 border-2 border-[#EAB308] px-8 text-lg text-[#EAB308] font-bold bg-transparent hover:bg-[#EAB308] hover:border-[#EAB308] hover:border-2 hover:text-white cursor-pointer"
                         >
                             <Info className="mr-2 h-5 w-5" />
                             View Details

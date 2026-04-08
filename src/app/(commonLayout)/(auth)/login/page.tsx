@@ -5,12 +5,10 @@ interface LoginParams {
 }
 
 const LoginPage = async ({ searchParams }: LoginParams) => {
-    const params = await searchParams;
-    const redirectPath = params.redirect;
     return (
-        <div className="py-12">
-            <LoginForm redirectPath={redirectPath} />
-        </div>
+        <main className="py-6">
+            <LoginForm />
+        </main>
     )
 }
 

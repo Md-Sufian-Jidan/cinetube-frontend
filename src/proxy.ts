@@ -1,45 +1,53 @@
 import { getRouteRole } from "@/lib/authUtils";
 import { NextRequest, NextResponse } from "next/server";
+import { httpClient } from "./lib/axios/httpClient";
+import { cookies } from "next/headers";
 
 export default async function proxy(request: NextRequest) {
     const pathname = request.nextUrl.pathname;
 
-    const token = request.cookies.get("cinetube.session_token")?.value;
+    const token = request.cookies.get("session_token")?.value;
 
-    // // Public route
     if (!getRouteRole(pathname)) {
         return NextResponse.next();
     }
 
-    // // Not logged in
+    console.log("Proxy hit");
+
     if (!token) {
+        console.log("Token nai. mane user nai");
         return NextResponse.redirect(new URL("/login", request.url));
     }
 
     let userRole: "USER" | "ADMIN" = "USER";
 
     try {
-        // 🔥 MOST IMPORTANT LINE
-        const cookieHeader = request.headers.get("cookie");
+        // const cookieHeader = request.headers.get("cookie");
+        const cookieStore = await cookies();
 
         const res = await fetch(
             `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/get-session`,
             {
-                headers: {
-                    Cookie: cookieHeader || "", // ✅ CORRECT WAY
-                },
                 cache: "no-store",
-            }
+                headers: {
+                    Cookie: cookieStore.toString(),
+                },
+            },
         );
 
+        // const res = await httpClient.get({
+        //     url: "/auth/get-session",
+        //     headers: { Cookie: cookieHeader || "" },
+        //     timeout: 20000
+        // });
+
+        // const session = await res.data;
         const session = await res.json();
 
-        // ❌ session null check
         if (!session || !session.user) {
             return NextResponse.redirect(new URL("/login", request.url));
         }
 
-        // ✅ FIX: role nested inside user
         userRole = session.user.role;
 
     } catch (error) {

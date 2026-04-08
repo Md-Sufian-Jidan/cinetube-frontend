@@ -48,9 +48,10 @@ export default function TopTrending() {
                             </span>
 
                             {/* Movie Poster */}
-                            <div className="relative z-10 h-96 w-[270px] overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 transition-all duration-500 group-hover:-translate-y-4 group-hover:shadow-[0_30px_60px_rgba(234,179,8,0.2)]">
+                            <div className="relative z-10 h-96 w-80 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 transition-all duration-500 group-hover:-translate-y-4 group-hover:shadow-[0_30px_60px_rgba(234,179,8,0.2)]">
                                 <Image
-                                    src={movie.posterUrl}
+                                    src={"https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059"}
+                                    // movie.posterUrl
                                     alt={movie.title}
                                     fill
                                     className="object-cover transition-transform duration-700 group-hover:scale-110"

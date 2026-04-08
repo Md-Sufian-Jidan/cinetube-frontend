@@ -23,14 +23,18 @@ export const getAllMedia = async (
 
 export const getMediaById = async (id: string): Promise<ApiResponse<IMediaDetail>> => {
     const cookieStore = await cookies();
-    const sessionToken = cookieStore.get("cinetube.session_token")?.value;
+    const sessionToken = cookieStore.get("session_token")?.value;
+
+    const headers: Record<string, string> = {};
+    if (sessionToken) {
+        headers["Cookie"] = `session_token=${sessionToken}`;
+    }
+
     try {
         const res = await httpClient.get<IMediaDetail>(
             {
                 url: `/v1/media/${id}`,
-                headers: {
-                    Cookie: `cinetube.session_token=${sessionToken}`
-                }
+                headers
             });
         return res;
     } catch (error) {
@@ -41,13 +45,13 @@ export const getMediaById = async (id: string): Promise<ApiResponse<IMediaDetail
 
 export const toggleLike = async (reviewId: string) => {
     const cookieStore = await cookies();
-    const sessionToken = cookieStore.get("cinetube.session_token")?.value;
+    const sessionToken = cookieStore.get("session_token")?.value;
 
     try {
         const res = await httpClient.post({ data: null }, {
             url: `/v1/reviews/${reviewId}/like`,
             headers: {
-                Cookie: `cinetube.session_token=${sessionToken}`
+                Cookie: `session_token=${sessionToken}`
             },
         });
         return { success: true, data: res };
@@ -59,13 +63,13 @@ export const toggleLike = async (reviewId: string) => {
 
 export const addComment = async (reviewId: string, text: string) => {
     const cookieStore = await cookies();
-    const sessionToken = cookieStore.get("cinetube.session_token")?.value;
+    const sessionToken = cookieStore.get("session_token")?.value;
 
     try {
         const res = await httpClient.post({ data: { text } }, {
             url: `/v1/reviews/${reviewId}/comments`,
             headers: {
-                Cookie: `cinetube.session_token=${sessionToken}`
+                Cookie: `session_token=${sessionToken}`
             }
         });
         return { success: true, data: res };

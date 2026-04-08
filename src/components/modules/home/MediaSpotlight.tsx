@@ -43,7 +43,8 @@ export default function MediaSpotlight() {
                     >
                         <div className="relative aspect-[2/3] overflow-hidden rounded-[2rem] border border-slate-100 shadow-[0_30px_60px_rgba(0,0,0,0.15)] group-hover:shadow-[0_40px_80px_rgba(234,179,8,0.2)] transition-all duration-500">
                             <Image
-                                src={mediaData.posterUrl}
+                                // media.posterUrl
+                                src={"https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059"}
                                 alt={mediaData.title}
                                 fill
                                 className="object-cover transition-transform duration-1000 group-hover:scale-110"
@@ -123,12 +124,12 @@ export default function MediaSpotlight() {
 
                         {/* Primary Actions */}
                         <div className="flex flex-wrap gap-4 pt-4">
-                            <Button asChild className="h-16 px-10 bg-[#EAB308] text-white font-black hover:bg-[#EAB308]/90 rounded-2xl shadow-xl shadow-[#EAB308]/20 text-lg">
+                            <Button asChild className="h-14 bg-[#EAB308] px-8 text-lg font-bold text-white border-2 border-[#EAB308] hover:bg-transparent hover:border-[#EAB308] hover:border-2 hover:text-[#EAB308] cursor-pointer">
                                 <a href={mediaData.streamingLink} target="_blank" rel="noopener noreferrer">
                                     <Play className="mr-3 h-6 w-6 fill-current" /> Play Now
                                 </a>
                             </Button>
-                            <Button variant="outline" className="h-16 px-10 border-slate-200 bg-white text-slate-900 font-black hover:bg-slate-50 rounded-2xl text-lg gap-3">
+                            <Button variant="outline" className="h-14 border-2 border-[#EAB308] px-8 text-lg text-[#EAB308] font-bold bg-transparent hover:bg-[#EAB308] hover:border-[#EAB308] hover:border-2 hover:text-white cursor-pointer">
                                 <Plus size={24} /> Add Watchlist
                             </Button>
                         </div>

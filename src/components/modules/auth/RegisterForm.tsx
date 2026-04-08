@@ -1,7 +1,6 @@
-"use client"
+"use client";
 
 import { registerAction } from "@/app/(commonLayout)/(auth)/register/_actions";
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import AppField from "@/components/shared/form/AppField";
 import AppSubmitButton from "@/components/shared/form/AppSubmitButton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -11,7 +10,7 @@ import { ROLES } from "@/constant/role";
 import { IRegisterPayload, registerZodSchema } from "@/zod/auth.validation";
 import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, UserPlus, Mail, Lock, User } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -26,7 +25,7 @@ export const RegisterForm = ({ redirectPath }: RegisterFormProps) => {
 
     const { mutateAsync, isPending } = useMutation({
         mutationFn: (payload: IRegisterPayload) => registerAction(payload, redirectPath),
-    })
+    });
 
     const form = useForm({
         defaultValues: {
@@ -35,14 +34,13 @@ export const RegisterForm = ({ redirectPath }: RegisterFormProps) => {
             password: "",
             role: ROLES.USER,
         },
-
         onSubmit: async ({ value }) => {
             const registerData = {
                 name: value.name,
                 email: value.email,
                 password: value.password,
                 role: ROLES.USER,
-            }
+            };
             setServerError(null);
             try {
                 const result = await mutateAsync(registerData) as any;
@@ -50,129 +48,129 @@ export const RegisterForm = ({ redirectPath }: RegisterFormProps) => {
                     setServerError(result.message || "Registration failed");
                     return;
                 }
-
-                // ✅ success case
                 toast.success("Registration successful! Please login.");
                 window.location.href = "/login";
             } catch (error: any) {
                 setServerError(`Registration failed: ${error.message}`);
             }
         }
-    })
+    });
+
     return (
-        <Card className="w-full max-w-md mx-auto shadow-md">
-            <CardHeader className="text-center">
-                <CardTitle className="text-2xl font-bold">Welcome!</CardTitle>
-                <CardDescription>
-                    Please enter your credentials to register.
-                </CardDescription>
-            </CardHeader>
-
-            <CardContent>
-                <form
-                    method="POST"
-                    action="#"
-                    noValidate
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        form.handleSubmit();
-                    }}
-                    className="space-y-4"
-                >
-                    <form.Field
-                        name="name"
-                        validators={{ onChange: registerZodSchema.shape.name }}
-                    >
-                        {(field) => (
-                            <AppField
-                                field={field}
-                                label="Name"
-                                type="text"
-                                placeholder="Enter your name"
-                            />
-                        )}
-                    </form.Field>
-
-                    <form.Field
-                        name="email"
-                        validators={{ onChange: registerZodSchema.shape.email }}
-                    >
-                        {(field) => (
-                            <AppField
-                                field={field}
-                                label="Email"
-                                type="email"
-                                placeholder="Enter your email"
-                            />
-                        )}
-                    </form.Field>
-
-                    <form.Field
-                        name="password"
-                        validators={{ onChange: registerZodSchema.shape.password }}
-                    >
-                        {(field) => (
-                            <AppField
-                                field={field}
-                                label="Password"
-                                type={showPassword ? "text" : "password"}
-                                // type="text"
-                                placeholder="Enter your password"
-                                aria-label={showPassword ? "Hide password" : "Show password"}
-                                className="cursor-pointer"
-                                append={
-                                    <Button
-                                        type="button"
-                                        onClick={() => setShowPassword((value) => !value)}
-                                        variant="ghost"
-                                        size="icon"
-                                    >
-                                        {showPassword ? (
-                                            <EyeOff className="size-4" aria-hidden="true" />
-                                        ) : (
-                                            <Eye className="size-4" aria-hidden="true" />
-                                        )}
-                                    </Button>
-                                }
-                            />
-                        )}
-                    </form.Field>
-
-                    <div className="text-right mt-2">
-                        <Link
-                            href="/forgot-password"
-                            className="text-sm text-primary hover:underline underline-offset-4"
-                        >
-                            Forgot password?
-                        </Link>
+        <div className="flex min-h-[80vh] items-center justify-center">
+            <Card className="w-full max-w-md border-slate-200 bg-white shadow-2xl rounded-[2rem] overflow-hidden">
+                <CardHeader className="space-y-3 pb-8 pt-10 text-center bg-[#0F172A] text-white">
+                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-[#EAB308] text-[#0F172A]">
+                        <UserPlus className="h-6 w-6" />
                     </div>
+                    <div className="space-y-1">
+                        <CardTitle className="font-playfair text-3xl font-black tracking-tight">
+                            Join Cine<span className="text-[#EAB308]">Tube</span>
+                        </CardTitle>
+                        <CardDescription className="text-slate-400 font-medium">
+                            Create your premiere account to start watching
+                        </CardDescription>
+                    </div>
+                </CardHeader>
 
-                    {serverError && (
-                        <Alert variant={"destructive"}>
-                            <AlertDescription>{serverError}</AlertDescription>
-                        </Alert>
-                    )}
-
-                    <form.Subscribe
-                        selector={(s) => [s.canSubmit, s.isSubmitting] as const}
+                <CardContent className="pt-8">
+                    <form
+                        noValidate
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            form.handleSubmit();
+                        }}
+                        className="space-y-4"
                     >
-                        {([canSubmit, isSubmitting]) => (
-                            <AppSubmitButton isPending={isSubmitting || isPending} pendingLabel="Signing Up...." disabled={!canSubmit}>
-                                Sign Up
-                            </AppSubmitButton>
+                        <form.Field
+                            name="name"
+                            validators={{ onChange: registerZodSchema.shape.name }}
+                        >
+                            {(field) => (
+                                <AppField
+                                    field={field}
+                                    label="Full Name"
+                                    type="text"
+                                    placeholder="John Doe"
+                                    className="font-sans"
+                                />
+                            )}
+                        </form.Field>
+
+                        <form.Field
+                            name="email"
+                            validators={{ onChange: registerZodSchema.shape.email }}
+                        >
+                            {(field) => (
+                                <AppField
+                                    field={field}
+                                    label="Email Address"
+                                    type="email"
+                                    placeholder="name@example.com"
+                                />
+                            )}
+                        </form.Field>
+
+                        <form.Field
+                            name="password"
+                            validators={{ onChange: registerZodSchema.shape.password }}
+                        >
+                            {(field) => (
+                                <AppField
+                                    field={field}
+                                    label="Password"
+                                    type={showPassword ? "text" : "password"}
+                                    placeholder="••••••••"
+                                    append={
+                                        <Button
+                                            type="button"
+                                            onClick={() => setShowPassword((v) => !v)}
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-8 w-8 text-slate-500 hover:bg-slate-100 transition-colors"
+                                        >
+                                            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                        </Button>
+                                    }
+                                />
+                            )}
+                        </form.Field>
+
+                        {serverError && (
+                            <Alert variant="destructive" className="rounded-xl border-red-100 bg-red-50 text-red-600">
+                                <AlertDescription className="font-medium text-center">
+                                    {serverError}
+                                </AlertDescription>
+                            </Alert>
                         )}
-                    </form.Subscribe>
-                </form>
-            </CardContent>
-            <CardFooter className="justify-center border-t pt-4">
-                <p className="text-sm text-muted-foreground">
-                    Already have an account?{" "}
-                    <Link href="/login" className="text-primary">
-                        Sign In
-                    </Link>
-                </p>
-            </CardFooter>
-        </Card>
+
+                        <form.Subscribe
+                            selector={(s) => [s.canSubmit, s.isSubmitting] as const}
+                        >
+                            {([canSubmit, isSubmitting]) => (
+                                <AppSubmitButton
+                                    isPending={isSubmitting || isPending}
+                                    pendingLabel="Creating Account..."
+                                    disabled={!canSubmit}
+                                    className="w-full bg-[#0F172A] hover:bg-[#1e293b] text-white font-bold py-6 rounded-xl transition-all shadow-lg active:scale-[0.98]"
+                                >
+                                    Get Started
+                                </AppSubmitButton>
+                            )}
+                        </form.Subscribe>
+                    </form>
+                </CardContent>
+
+                <CardFooter className="flex flex-col space-y-4 border-t border-slate-50 bg-slate-50/50 py-6 text-center">
+                    <p className="text-sm font-medium text-slate-500">
+                        Already have an account?{" "}
+                        <Link href="/login" className="font-bold text-[#0F172A] hover:text-[#EAB308] transition-colors underline-offset-4 hover:underline">
+                            Sign In Instead
+                        </Link>
+                    </p>
+                </CardFooter>
+            </Card>
+        </div>
     );
-}
+};

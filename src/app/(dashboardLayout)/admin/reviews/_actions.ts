@@ -7,13 +7,13 @@ import { cookies } from "next/headers";
 
 export const getPendingReviews = async (): Promise<ApiResponse<IReview[]>> => {
     const cookieStore = await cookies();
-    const sessionToken = cookieStore.get("cinetube.session_token")?.value;
+    const sessionToken = cookieStore.get("session_token")?.value;
 
     try {
         const res = await httpClient.get<IReview[]>({
             url: `/v1/admin/pending-reviews`,
             headers: {
-                Cookie: `cinetube.session_token=${sessionToken}`
+                Cookie: `session_token=${sessionToken}`
             }
         });
         return res;
@@ -24,13 +24,13 @@ export const getPendingReviews = async (): Promise<ApiResponse<IReview[]>> => {
 
 export const updateReviewStatus = async (reviewId: string, status: ReviewStatus) => {
     const cookieStore = await cookies();
-    const sessionToken = cookieStore.get("cinetube.session_token")?.value;
+    const sessionToken = cookieStore.get("session_token")?.value;
 
     try {
         const res = await httpClient.patch({ status }, {
             url: `/v1/reviews/${reviewId}`,
             headers: {
-                Cookie: `cinetube.session_token=${sessionToken}`
+                Cookie: `session_token=${sessionToken}`
             }
         });
         if (res?.success) {

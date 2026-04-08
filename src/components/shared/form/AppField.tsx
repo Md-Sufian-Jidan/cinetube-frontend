@@ -63,7 +63,10 @@ const AppField = ({
                     value={field.state.value}
                     placeholder={placeholder}
                     onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
+                    onChange={(e) => {
+                        const val = e.target.value;
+                        field.handleChange(type === "number" ? (val === "" ? undefined : Number(val)) : val);
+                    }}
                     disabled={disabled}
                     aria-invalid={hasError}
                     aria-describedby={hasError ? `${field.name}-error` : undefined}
@@ -74,7 +77,7 @@ const AppField = ({
                     )}
                 />
                 {
-                    append && (<div className="absolute inset-y-0 right-0 items-center pr-3 pointer-events-none z-10">
+                    append && (<div className="absolute inset-y-0 right-0 items-center pr-3 z-10">
                         {append}
                     </div>)
                 }

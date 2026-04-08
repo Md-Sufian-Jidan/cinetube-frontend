@@ -23,13 +23,13 @@ export interface IUserActivity {
 
 export const getUserActivity = async (): Promise<IUserActivity | null> => {
     const cookieStore = await cookies();
-    const sessionToken = cookieStore.get("cinetube.session_token")?.value;
+    const sessionToken = cookieStore.get("session_token")?.value;
 
     try {
         const res = await httpClient.get<IUserActivity>({
             url: `/v1/admin/user-activity`,
             headers: {
-                Cookie: `cinetube.session_token=${sessionToken}`
+                Cookie: `session_token=${sessionToken}`
             }
         });
         if (res?.success) {

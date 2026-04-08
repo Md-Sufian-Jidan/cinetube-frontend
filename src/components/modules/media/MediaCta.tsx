@@ -12,7 +12,7 @@ export default function MediaCta() {
                     <p className="text-slate-500 text-lg max-w-md">
                         Your opinion matters! Help others discover great stories by reviewing your favorites.
                     </p>
-                    <Button className="bg-[#EAB308] hover:bg-[#EAB308]/90 text-white rounded-full px-8 h-14 font-black text-lg gap-2 mt-4">
+                    <Button className="h-14 bg-[#EAB308] px-8 text-lg font-bold text-white border-2 border-[#EAB308] hover:bg-transparent hover:border-[#EAB308] hover:border-2 hover:text-[#EAB308] cursor-pointer">
                         Get Started <ArrowRight size={20} />
                     </Button>
                 </div>

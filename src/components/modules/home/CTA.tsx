@@ -55,7 +55,7 @@ export default function CTA() {
                         >
                             <Button
                                 size="lg"
-                                className="h-14 bg-[#EAB308] px-8 text-lg font-bold text-[#0B0E14] border-2 border-[#EAB308] hover:bg-transparent hover:border-[#EAB308] hover:border-2 hover:text-[#EAB308] cursor-pointer"
+                                className="h-14 bg-[#EAB308] px-8 text-lg font-bold text-white border-2 border-[#EAB308] hover:bg-transparent hover:border-[#EAB308] hover:border-2 hover:text-[#EAB308] cursor-pointer"
                             >
                                 Get Started Now
                                 <ArrowRight className="ml-3 h-6 w-6 transition-transform group-hover:translate-x-2" />
@@ -64,7 +64,7 @@ export default function CTA() {
                             <Button
                                 variant="outline"
                                 size="lg"
-                                className="h-14 border-2 border-[#EAB308] px-8 text-lg text-[#EAB308] font-bold bg-transparent hover:bg-[#EAB308] hover:border-[#EAB308] hover:border-2 hover:text-[#0B0E14] cursor-pointer"
+                                className="h-14 border-2 border-[#EAB308] px-8 text-lg text-[#EAB308] font-bold bg-transparent hover:bg-[#EAB308] hover:border-[#EAB308] hover:border-2 hover:text-white cursor-pointer"
                             >
                                 Explore Titles
                             </Button>

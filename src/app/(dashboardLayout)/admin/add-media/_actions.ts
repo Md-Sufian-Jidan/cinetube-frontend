@@ -6,14 +6,17 @@ import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 
 export const createMediaAction = async (data: CreateMediaDto) => {
+    // Log the payload clearly for debugging
+    console.log("Creating Media with payload:", JSON.stringify(data, null, 2));
+
     const cookieStore = await cookies();
-    const sessionToken = cookieStore.get("cinetube.session_token")?.value;
+    const sessionToken = cookieStore.get("session_token")?.value;
 
     try {
         const res = await httpClient.post<IMedia>(data, {
-            url: "/media",
+            url: "/v1/media",
             headers: {
-                Cookie: `cinetube.session_token=${sessionToken}`
+                Cookie: `session_token=${sessionToken}`
             }
         });
 

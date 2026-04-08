@@ -22,7 +22,8 @@ import Logout from "./Logout";
 const links = [
     { href: "/", label: "Home" },
     { href: "/all-movie", label: "All Movie" },
-    { href: "/watchlist", label: "Watchlist" },
+    { href: "/pricing", label: "Pricing" },
+    { href: "/about", label: "About" },
 ];
 
 export default function Navbar({ user }: { user: any }) {
@@ -129,6 +130,17 @@ export default function Navbar({ user }: { user: any }) {
                                             </DropdownMenuItem>
                                         </Link>
                                         <DropdownMenuSeparator className="bg-slate-50" />
+                                        <Link href="/my-profile">
+                                            <DropdownMenuItem className="rounded-xl font-bold text-slate-600 focus:bg-slate-50 focus:text-[#EAB308] cursor-pointer py-3">
+                                                <UserIcon className="mr-3 h-4 w-4" /> My Profile
+                                            </DropdownMenuItem>
+                                        </Link>
+                                        <Link href="/change-password">
+                                            <DropdownMenuItem className="rounded-xl font-bold text-slate-600 focus:bg-slate-50 focus:text-[#EAB308] cursor-pointer py-3">
+                                                <Settings className="mr-3 h-4 w-4" /> Change Password
+                                            </DropdownMenuItem>
+                                        </Link>
+                                        <DropdownMenuSeparator className="bg-slate-50" />
                                         <Logout />
                                     </DropdownMenuContent>
                                 </DropdownMenu>
@@ -138,7 +150,7 @@ export default function Navbar({ user }: { user: any }) {
                                 <Link href="/login">
                                     <Button
                                         size="sm"
-                                        className="h-11 bg-slate-900 px-8 text-xs font-black uppercase tracking-widest text-white rounded-xl hover:bg-[#EAB308] transition-all duration-300"
+                                        className="h-14 bg-[#EAB308] px-8 text-lg font-bold text-white border-2 border-[#EAB308] hover:bg-transparent hover:border-[#EAB308] hover:border-2 hover:text-[#EAB308] cursor-pointer"
                                     >
                                         Sign In
                                     </Button>

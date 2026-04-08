@@ -25,7 +25,7 @@ export async function logoutAction() {
         console.error("Logout backend call failed:", error);
     } finally {
         // Always clear the session token on the server
-        cookieStore.delete("cinetube.session_token");
+        cookieStore.delete("session_token");
     }
 }
 

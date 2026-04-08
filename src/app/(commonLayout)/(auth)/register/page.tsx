@@ -8,8 +8,8 @@ export default async function RegisterPage({ searchParams }: RegisterParams) {
     const params = await searchParams;
     const redirectPath = params.redirect;
     return (
-        <div className="py-12">
+        <main className="py-6">
             <RegisterForm redirectPath={redirectPath} />
-        </div>
+        </main>
     )
 }
