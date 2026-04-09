@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { ROLES } from "@/constant/role";
 import { loginZodSchema } from "@/zod/auth.validation";
 import { useForm } from "@tanstack/react-form";
-import { Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { Eye, EyeOff, Lock } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -17,9 +17,14 @@ import { useRouter } from "next/navigation";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
 const DEMO_CREDENTIALS = {
-    email: "demo@cinetube.com",
-    password: "Demo1234!",
+    email: "cinetube@admin.gmail.com",
+    password: "Cinetube123$",
 };
+
+const DEMO_USER_CREDENTIALS = {
+    email: "user@gmail.com",
+    password: "User123$",
+}
 
 const LoginForm = () => {
     const [serverError, setServerError] = useState<string | null>(null);
@@ -139,19 +144,31 @@ const LoginForm = () => {
                                 }}
                                 className="h-14 rounded-2xl border border-slate-200 bg-white text-slate-700 font-bold hover:border-[#EAB308] hover:bg-[#EAB308]/10"
                             >
-                                Demo Login
+                                Demo Admin Login
                             </Button>
 
                             <Button
                                 type="button"
                                 onClick={() => {
-                                    window.location.href = `${API_BASE_URL}/auth/sign-in/google`;
+                                    form.setFieldValue("email", DEMO_USER_CREDENTIALS.email);
+                                    form.setFieldValue("password", DEMO_USER_CREDENTIALS.password);
+                                    setTimeout(() => form.handleSubmit(), 10);
                                 }}
-                                className="h-14 rounded-2xl bg-[#EAB308] text-black font-bold hover:bg-[#EAB308]/90"
+                                className="h-14 rounded-2xl border border-slate-200 bg-white text-slate-700 font-bold hover:border-[#EAB308] hover:bg-[#EAB308]/10"
                             >
-                                Continue with Google
+                                Demo User Login
                             </Button>
                         </div>
+
+                        <Button
+                            type="button"
+                            onClick={() => {
+                                window.location.href = `${API_BASE_URL}/auth/sign-in/google`;
+                            }}
+                            className="h-14 w-full rounded-2xl bg-[#EAB308] text-black font-bold hover:bg-[#EAB308]/90"
+                        >
+                            Continue with Google
+                        </Button>
 
                         <form.Subscribe
                             selector={(s) => [s.canSubmit, s.isSubmitting] as const}

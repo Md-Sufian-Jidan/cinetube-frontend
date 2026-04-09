@@ -4,14 +4,36 @@ import { createMediaAction } from "@/app/(dashboardLayout)/admin/add-media/_acti
 import AppField from "@/components/shared/form/AppField";
 import AppSubmitButton from "@/components/shared/form/AppSubmitButton";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { mediaZodSchema } from "@/zod/media.validation";
 import { useForm } from "@tanstack/react-form";
-import { Plus, Trash2, Film, Clapperboard, Globe, Image as ImageIcon, Users, Tags } from "lucide-react";
+import {
+    Plus,
+    Trash2,
+    Film,
+    Clapperboard,
+    Globe,
+    Users,
+    Tags,
+} from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+
+const CAST_ROLES = ["ACTOR", "DIRECTOR", "PRODUCER", "WRITER"] as const;
 
 const AddMediaForm = () => {
     const router = useRouter();
@@ -27,36 +49,36 @@ const AddMediaForm = () => {
             streamingLink: "",
             posterUrl: "",
             genres: [""],
-            cast: [{ name: "", role: "" }]
+            cast: [{ name: "", role: "ACTOR" as (typeof CAST_ROLES)[number], bio: "" }],
         },
         onSubmit: async ({ value }) => {
-            // 1. Prepare cleaned data for validation
+            // 1. Clean data before validation
             const cleanedValues = {
                 ...value,
                 releaseYear: Number(value.releaseYear),
-                genres: value.genres.filter(g => g.trim() !== ""),
+                genres: value.genres
+                    .map((g) => g.trim())
+                    .filter((g) => g !== ""),
                 cast: value.cast
-                    .map(c => ({
-                        name: String(c.name).trim(),
-                        role: String(c.role).trim()
+                    .map((c) => ({
+                        name: c.name.trim(),
+                        role: c.role,
+                        bio: c.bio?.trim() || undefined,
                     }))
-                    .filter(c => c.name !== "")
+                    .filter((c) => c.name !== ""),
             };
 
-            // 2. Validate the cleaned data with Zod
+            // 2. Validate with Zod
             const validation = mediaZodSchema.safeParse(cleanedValues);
-
             if (!validation.success) {
-                // Show a human-readable error from the first failing field
                 const firstError = validation.error.issues[0].message;
                 toast.error(`Validation Error: ${firstError}`);
                 return;
             }
 
             try {
-                // 3. Send the validated data to the server action
+                // 3. Submit to server action
                 const res = await createMediaAction(validation.data);
-
                 if (res.success) {
                     toast.success("Media created successfully!");
                     form.reset();
@@ -93,6 +115,7 @@ const AddMediaForm = () => {
                         </div>
                     </div>
                 </CardHeader>
+
                 <CardContent className="pt-8 bg-white">
                     <form
                         onSubmit={(e) => {
@@ -101,19 +124,27 @@ const AddMediaForm = () => {
                         }}
                         className="space-y-8"
                     >
-                        {/* Basic Information Section */}
+                        {/* ── Basic Information ── */}
                         <section className="space-y-6">
                             <div className="flex items-center gap-2 text-amber-600 mb-4">
                                 <Clapperboard className="w-4 h-4" />
-                                <h3 className="text-xs font-bold uppercase tracking-widest">Basic Information</h3>
+                                <h3 className="text-xs font-bold uppercase tracking-widest">
+                                    Basic Information
+                                </h3>
                             </div>
+
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <form.Field
                                     name="title"
                                     validators={{ onChange: mediaZodSchema.shape.title }}
                                 >
                                     {(field) => (
-                                        <AppField field={field} label="Title" placeholder="e.g. Inception" className="bg-white border-slate-200" />
+                                        <AppField
+                                            field={field}
+                                            label="Title"
+                                            placeholder="e.g. Inception"
+                                            className="bg-white border-slate-200"
+                                        />
                                     )}
                                 </form.Field>
 
@@ -122,7 +153,13 @@ const AddMediaForm = () => {
                                     validators={{ onChange: mediaZodSchema.shape.releaseYear }}
                                 >
                                     {(field) => (
-                                        <AppField field={field} label="Release Year" type="number" placeholder="2024" className="bg-white border-slate-200" />
+                                        <AppField
+                                            field={field}
+                                            label="Release Year"
+                                            type="number"
+                                            placeholder="2024"
+                                            className="bg-white border-slate-200"
+                                        />
                                     )}
                                 </form.Field>
 
@@ -131,7 +168,12 @@ const AddMediaForm = () => {
                                     validators={{ onChange: mediaZodSchema.shape.director }}
                                 >
                                     {(field) => (
-                                        <AppField field={field} label="Director" placeholder="e.g. Christopher Nolan" className="bg-white border-slate-200" />
+                                        <AppField
+                                            field={field}
+                                            label="Director"
+                                            placeholder="e.g. Christopher Nolan"
+                                            className="bg-white border-slate-200"
+                                        />
                                     )}
                                 </form.Field>
 
@@ -139,7 +181,9 @@ const AddMediaForm = () => {
                                     <form.Field name="type">
                                         {(field) => (
                                             <div className="space-y-2">
-                                                <label className="text-sm font-medium text-slate-700">Type</label>
+                                                <label className="text-sm font-medium text-slate-700">
+                                                    Type
+                                                </label>
                                                 <Select
                                                     value={field.state.value}
                                                     onValueChange={(v: any) => field.handleChange(v)}
@@ -155,10 +199,13 @@ const AddMediaForm = () => {
                                             </div>
                                         )}
                                     </form.Field>
+
                                     <form.Field name="pricing">
                                         {(field) => (
                                             <div className="space-y-2">
-                                                <label className="text-sm font-medium text-slate-700">Pricing</label>
+                                                <label className="text-sm font-medium text-slate-700">
+                                                    Pricing
+                                                </label>
                                                 <Select
                                                     value={field.state.value}
                                                     onValueChange={(v: any) => field.handleChange(v)}
@@ -176,13 +223,16 @@ const AddMediaForm = () => {
                                     </form.Field>
                                 </div>
                             </div>
+
                             <form.Field
                                 name="synopsis"
                                 validators={{ onChange: mediaZodSchema.shape.synopsis }}
                             >
                                 {(field) => (
                                     <div className="space-y-2">
-                                        <label className="text-sm font-medium text-slate-700">Synopsis</label>
+                                        <label className="text-sm font-medium text-slate-700">
+                                            Synopsis
+                                        </label>
                                         <textarea
                                             value={field.state.value}
                                             onChange={(e) => field.handleChange(e.target.value)}
@@ -190,19 +240,24 @@ const AddMediaForm = () => {
                                             placeholder="Write a brief overview..."
                                         />
                                         {field.state.meta.errors.length > 0 && (
-                                            <p className="text-xs text-red-500">{field.state.meta.errors[0]?.message as string}</p>
+                                            <p className="text-xs text-red-500">
+                                                {field.state.meta.errors[0]?.message as string}
+                                            </p>
                                         )}
                                     </div>
                                 )}
                             </form.Field>
                         </section>
 
-                        {/* Media Links Section */}
+                        {/* ── Media Links ── */}
                         <section className="space-y-6">
                             <div className="flex items-center gap-2 text-amber-600 mb-4">
                                 <Globe className="w-4 h-4" />
-                                <h3 className="text-xs font-bold uppercase tracking-widest">Media Links</h3>
+                                <h3 className="text-xs font-bold uppercase tracking-widest">
+                                    Media Links
+                                </h3>
                             </div>
+
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <form.Field
                                     name="streamingLink"
@@ -217,6 +272,7 @@ const AddMediaForm = () => {
                                         />
                                     )}
                                 </form.Field>
+
                                 <form.Field
                                     name="posterUrl"
                                     validators={{ onChange: mediaZodSchema.shape.posterUrl }}
@@ -233,23 +289,29 @@ const AddMediaForm = () => {
                             </div>
                         </section>
 
-                        {/* Genres Section */}
+                        {/* ── Genres ── */}
                         <section className="space-y-4">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-2 text-amber-600">
                                     <Tags className="w-4 h-4" />
-                                    <h3 className="text-xs font-bold uppercase tracking-widest">Genres</h3>
+                                    <h3 className="text-xs font-bold uppercase tracking-widest">
+                                        Genres
+                                    </h3>
                                 </div>
                                 <Button
                                     type="button"
                                     variant="outline"
                                     size="sm"
-                                    onClick={() => form.setFieldValue("genres", (prev) => [...prev, ""])}
+                                    onClick={() =>
+                                        form.setFieldValue("genres", (prev) => [...prev, ""])
+                                    }
                                     className="border-slate-200 hover:bg-slate-50 text-slate-600"
                                 >
-                                    <Plus className="w-4 h-4 mr-1" /> Add Genre
+                                    <Plus className="w-4 h-4 mr-1" />
+                                    Add Genre
                                 </Button>
                             </div>
+
                             <div className="flex flex-wrap gap-3">
                                 <form.Field name="genres">
                                     {(field) => (
@@ -265,8 +327,9 @@ const AddMediaForm = () => {
                                                     <input
                                                         value={genre}
                                                         onChange={(e) => {
-                                                            const newValue = e.target.value;
-                                                            const newGenres = field.state.value.map((g, i) => i === index ? newValue : g);
+                                                            const newGenres = field.state.value.map((g, i) =>
+                                                                i === index ? e.target.value : g
+                                                            );
                                                             field.handleChange(newGenres);
                                                         }}
                                                         className="h-9 px-3 rounded-md border border-slate-200 bg-white text-sm md:w-[150px] text-slate-900 focus:outline-none focus:border-amber-500 transition-colors"
@@ -278,7 +341,9 @@ const AddMediaForm = () => {
                                                             variant="ghost"
                                                             size="icon"
                                                             onClick={() => {
-                                                                const newGenres = field.state.value.filter((_, i) => i !== index);
+                                                                const newGenres = field.state.value.filter(
+                                                                    (_, i) => i !== index
+                                                                );
                                                                 field.handleChange(newGenres);
                                                             }}
                                                             className="h-9 w-9 text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors"
@@ -294,23 +359,32 @@ const AddMediaForm = () => {
                             </div>
                         </section>
 
-                        {/* Cast Section */}
+                        {/* ── Cast & Crew ── */}
                         <section className="space-y-4">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-2 text-amber-600">
                                     <Users className="w-4 h-4" />
-                                    <h3 className="text-xs font-bold uppercase tracking-widest">Cast & Crew</h3>
+                                    <h3 className="text-xs font-bold uppercase tracking-widest">
+                                        Cast & Crew
+                                    </h3>
                                 </div>
                                 <Button
                                     type="button"
                                     variant="outline"
                                     size="sm"
-                                    onClick={() => form.setFieldValue("cast", (prev) => [...prev, { name: "", role: "" }])}
+                                    onClick={() =>
+                                        form.setFieldValue("cast", (prev) => [
+                                            ...prev,
+                                            { name: "", role: "ACTOR" as const, bio: "" },
+                                        ])
+                                    }
                                     className="border-slate-200 hover:bg-slate-50 text-slate-600"
                                 >
-                                    <Plus className="w-4 h-4 mr-1" /> Add Cast
+                                    <Plus className="w-4 h-4 mr-1" />
+                                    Add Cast
                                 </Button>
                             </div>
+
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <form.Field name="cast">
                                     {(field) => (
@@ -321,35 +395,67 @@ const AddMediaForm = () => {
                                                     initial={{ opacity: 0, x: -10 }}
                                                     animate={{ opacity: 1, x: 0 }}
                                                     exit={{ opacity: 0, x: 10 }}
-                                                    className="flex items-center gap-3 bg-slate-50 p-3 rounded-lg border border-slate-100 group relative"
+                                                    className="flex flex-col gap-2 bg-slate-50 p-3 rounded-lg border border-slate-100 group relative"
                                                 >
+                                                    {/* Name */}
                                                     <input
                                                         value={member.name}
                                                         onChange={(e) => {
-                                                            const newValue = e.target.value;
-                                                            const newCast = field.state.value.map((c, i) => i === index ? { ...c, name: newValue } : c);
+                                                            const newCast = field.state.value.map((c, i) =>
+                                                                i === index
+                                                                    ? { ...c, name: e.target.value }
+                                                                    : c
+                                                            );
                                                             field.handleChange(newCast);
                                                         }}
-                                                        className="flex-1 h-9 px-3 rounded-md border border-slate-200 bg-white text-sm text-slate-900 focus:outline-none focus:border-amber-500"
+                                                        className="h-9 px-3 rounded-md border border-slate-200 bg-white text-sm text-slate-900 focus:outline-none focus:border-amber-500"
                                                         placeholder="Name"
                                                     />
-                                                    <input
+
+                                                    {/* Role — dropdown instead of free text */}
+                                                    <Select
                                                         value={member.role}
-                                                        onChange={(e) => {
-                                                            const newValue = e.target.value;
-                                                            const newCast = field.state.value.map((c, i) => i === index ? { ...c, role: newValue } : c);
+                                                        onValueChange={(v: any) => {
+                                                            const newCast = field.state.value.map((c, i) =>
+                                                                i === index ? { ...c, role: v } : c
+                                                            );
                                                             field.handleChange(newCast);
                                                         }}
-                                                        className="flex-1 h-9 px-3 rounded-md border border-slate-200 bg-white text-sm text-slate-900 focus:outline-none focus:border-amber-500"
-                                                        placeholder="Role"
+                                                    >
+                                                        <SelectTrigger className="h-9 bg-white border-slate-200 text-sm text-slate-900">
+                                                            <SelectValue placeholder="Select role" />
+                                                        </SelectTrigger>
+                                                        <SelectContent className="bg-white border-slate-200">
+                                                            {CAST_ROLES.map((r) => (
+                                                                <SelectItem key={r} value={r}>
+                                                                    {r.charAt(0) + r.slice(1).toLowerCase()}
+                                                                </SelectItem>
+                                                            ))}
+                                                        </SelectContent>
+                                                    </Select>
+
+                                                    {/* Bio (optional) */}
+                                                    <input
+                                                        value={member.bio ?? ""}
+                                                        onChange={(e) => {
+                                                            const newCast = field.state.value.map((c, i) =>
+                                                                i === index ? { ...c, bio: e.target.value } : c
+                                                            );
+                                                            field.handleChange(newCast);
+                                                        }}
+                                                        className="h-9 px-3 rounded-md border border-slate-200 bg-white text-sm text-slate-900 focus:outline-none focus:border-amber-500"
+                                                        placeholder="Bio (optional)"
                                                     />
+
                                                     {field.state.value.length > 1 && (
                                                         <Button
                                                             type="button"
                                                             variant="ghost"
                                                             size="icon"
                                                             onClick={() => {
-                                                                const newCast = field.state.value.filter((_, i) => i !== index);
+                                                                const newCast = field.state.value.filter(
+                                                                    (_, i) => i !== index
+                                                                );
                                                                 field.handleChange(newCast);
                                                             }}
                                                             className="absolute -right-2 -top-2 h-7 w-7 rounded-full bg-white shadow-sm text-red-500 border border-slate-100 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-50"

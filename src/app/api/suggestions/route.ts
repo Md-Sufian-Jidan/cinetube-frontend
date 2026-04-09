@@ -1,5 +1,3 @@
-import { prisma } from "@/lib/prisma"
-
 export const runtime = "nodejs"
 
 export async function GET(request: Request) {
@@ -12,57 +10,34 @@ export async function GET(request: Request) {
 
     const normalizedQuery = query.toLowerCase()
 
-    const properties = await prisma.property.findMany({
-        where: {
-            isAvailable: true,
-            OR: [
-                {
-                    location: {
-                        contains: query,
-                        mode: "insensitive",
-                    },
-                },
-                {
-                    title: {
-                        contains: query,
-                        mode: "insensitive",
-                    },
-                },
-            ],
-        },
-        orderBy: {
-            createdAt: "desc",
-        },
-        select: {
-            location: true,
-            title: true,
-        },
-        take: 10,
-    })
+    // For now, we'll provide static suggestions based on common movie/TV searches
+    // In a real app, this would query your media database
+    const commonSuggestions = [
+        "Action movies",
+        "Comedy series",
+        "Drama films",
+        "Sci-Fi movies",
+        "Horror series",
+        "Romance movies",
+        "Thriller films",
+        "Animation movies",
+        "Documentary series",
+        "Crime movies",
+        "Adventure films",
+        "Fantasy series",
+        "Mystery movies",
+        "War films",
+        "Western series",
+        "Family movies",
+        "Superhero films",
+        "Classic movies",
+        "New releases",
+        "Award winners",
+    ]
 
-    const suggestions: string[] = []
-    const seen = new Set<string>()
+    const filteredSuggestions = commonSuggestions
+        .filter(suggestion => suggestion.toLowerCase().includes(normalizedQuery))
+        .slice(0, 5)
 
-    for (const property of properties) {
-        const matches = [property.location, property.title].filter((value) =>
-            value.toLowerCase().includes(normalizedQuery)
-        )
-
-        for (const match of matches) {
-            const normalizedMatch = match.toLowerCase()
-
-            if (seen.has(normalizedMatch)) {
-                continue
-            }
-
-            seen.add(normalizedMatch)
-            suggestions.push(match)
-
-            if (suggestions.length === 5) {
-                return Response.json({ suggestions })
-            }
-        }
-    }
-
-    return Response.json({ suggestions })
+    return Response.json({ suggestions: filteredSuggestions })
 }

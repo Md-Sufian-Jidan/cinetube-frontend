@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Search, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,8 @@ import { getAllMedia } from "@/app/(commonLayout)/all-movie/_actions";
 import { ApiResponse } from "@/types/api.types";
 import { IMedia, IMediaMeta } from "@/types/media.types";
 import { useDebounce } from "@/hooks/useDebounce";
+import { useSearchParams } from "next/navigation";
+import { AiSearchForm } from "@/components/ai/ai-search-form";
 
 const typeOptions = [
     { label: "All Types", value: "ALL" },
@@ -25,6 +27,26 @@ const pricingOptions = [
     { label: "Premium", value: "PREMIUM" },
 ];
 
+const genreOptions = [
+    { label: "All Genres", value: "ALL" },
+    { label: "Action", value: "Action" },
+    { label: "Adventure", value: "Adventure" },
+    { label: "Animation", value: "Animation" },
+    { label: "Comedy", value: "Comedy" },
+    { label: "Crime", value: "Crime" },
+    { label: "Documentary", value: "Documentary" },
+    { label: "Drama", value: "Drama" },
+    { label: "Family", value: "Family" },
+    { label: "Fantasy", value: "Fantasy" },
+    { label: "Horror", value: "Horror" },
+    { label: "Mystery", value: "Mystery" },
+    { label: "Romance", value: "Romance" },
+    { label: "Sci-Fi", value: "Sci-Fi" },
+    { label: "Thriller", value: "Thriller" },
+    { label: "War", value: "War" },
+    { label: "Western", value: "Western" },
+];
+
 const sortOptions = [
     { label: "Newest First", value: "latest" },
     { label: "Top Rated", value: "rating" },
@@ -32,17 +54,33 @@ const sortOptions = [
 ];
 
 export default function AllMedias() {
+    const searchParams = useSearchParams();
     const [searchTerm, setSearchTerm] = useState("");
     const [page, setPage] = useState(1);
     const [mediaType, setMediaType] = useState<string>("ALL");
     const [pricing, setPricing] = useState<string>("ALL");
+    const [genre, setGenre] = useState<string>("ALL");
     const [sortBy, setSortBy] = useState<string>("latest");
     const limit = 8;
 
     const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
+    // Read URL parameters on component mount
+    useEffect(() => {
+        const urlSearch = searchParams.get("search") || "";
+        const urlType = searchParams.get("type") || "ALL";
+        const urlPricing = searchParams.get("pricing") || "ALL";
+        const urlGenre = searchParams.get("genre") || "ALL";
+
+        setSearchTerm(urlSearch);
+        setMediaType(urlType);
+        setPricing(urlPricing);
+        setGenre(urlGenre);
+        setPage(1);
+    }, [searchParams]);
+
     const { data, isLoading } = useQuery<ApiResponse<IMedia[]>, Error>({
-        queryKey: ['medias', page, limit, debouncedSearchTerm, mediaType, pricing, sortBy],
+        queryKey: ['medias', page, limit, debouncedSearchTerm, mediaType, pricing, genre, sortBy],
         queryFn: () => getAllMedia(page, limit, debouncedSearchTerm, mediaType, pricing, sortBy),
     });
 
@@ -53,9 +91,10 @@ export default function AllMedias() {
         const items = [] as string[];
         if (mediaType !== "ALL") items.push(mediaType);
         if (pricing !== "ALL") items.push(pricing);
+        if (genre !== "ALL") items.push(genre);
         if (sortBy !== "latest") items.push(`Sort: ${sortOptions.find((option) => option.value === sortBy)?.label}`);
         return items;
-    }, [mediaType, pricing, sortBy]);
+    }, [mediaType, pricing, genre, sortBy]);
 
     return (
         <div className="bg-white min-h-screen font-jakarta">
@@ -89,6 +128,7 @@ export default function AllMedias() {
                             onClick={() => {
                                 setMediaType("ALL");
                                 setPricing("ALL");
+                                setGenre("ALL");
                                 setSortBy("latest");
                                 setPage(1);
                             }}
@@ -98,7 +138,7 @@ export default function AllMedias() {
                         </Button>
                     </div>
 
-                    <div className="mt-8 grid gap-4 sm:grid-cols-3">
+                    <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                         <div className="space-y-2">
                             <label className="text-sm font-semibold text-slate-700">Category</label>
                             <select
@@ -136,6 +176,24 @@ export default function AllMedias() {
                         </div>
 
                         <div className="space-y-2">
+                            <label className="text-sm font-semibold text-slate-700">Genre</label>
+                            <select
+                                value={genre}
+                                onChange={(e) => {
+                                    setGenre(e.target.value);
+                                    setPage(1);
+                                }}
+                                className="h-14 w-full rounded-2xl border border-slate-200 bg-white px-4 text-slate-700 shadow-sm outline-none transition focus:border-[#EAB308]"
+                            >
+                                {genreOptions.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="space-y-2">
                             <label className="text-sm font-semibold text-slate-700">Sort by</label>
                             <select
                                 value={sortBy}
@@ -163,6 +221,11 @@ export default function AllMedias() {
                             ))}
                         </div>
                     )}
+
+                    {/* AI Search Section */}
+                    <div className="mt-12">
+                        <AiSearchForm />
+                    </div>
                 </div>
             </section>
 

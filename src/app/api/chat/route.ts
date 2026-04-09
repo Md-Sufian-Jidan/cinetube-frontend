@@ -48,7 +48,7 @@ export async function POST(request: Request) {
                 {
                     role: "system",
                     content:
-                        "You are EstatePro's AI assistant. Help users with general real estate questions, explain the buying process, and suggest they visit the /explore page when it is relevant. Be concise, helpful, and professional.",
+                        "You are CineTube's AI assistant. Help users with movie and TV show recommendations, explain streaming options, and suggest content based on their preferences. Be concise, helpful, and professional. When relevant, suggest they visit the /all-movie page to explore content.",
                 },
                 ...messages,
             ],

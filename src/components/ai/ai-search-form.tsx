@@ -11,9 +11,10 @@ import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 
 type AiSearchFilters = {
-    bedrooms: "1plus" | "2plus" | "3plus" | "4plus" | "any"
-    location: string
-    price: "500k-1m" | "1m-2m" | "any" | "over-2m" | "under-500k"
+    type: "ALL" | "MOVIE" | "SERIES"
+    pricing: "ALL" | "FREE" | "PREMIUM"
+    genre: string
+    searchTerm: string
 }
 
 type AiSearchFormProps = {
@@ -26,27 +27,31 @@ type AiSearchFormProps = {
 function buildExploreHref(filters: AiSearchFilters) {
     const params = new URLSearchParams()
 
-    if (filters.location) {
-        params.set("location", filters.location)
+    if (filters.searchTerm) {
+        params.set("search", filters.searchTerm)
     }
 
-    if (filters.price !== "any") {
-        params.set("price", filters.price)
+    if (filters.type !== "ALL") {
+        params.set("type", filters.type)
     }
 
-    if (filters.bedrooms !== "any") {
-        params.set("bedrooms", filters.bedrooms)
+    if (filters.pricing !== "ALL") {
+        params.set("pricing", filters.pricing)
+    }
+
+    if (filters.genre !== "ALL") {
+        params.set("genre", filters.genre)
     }
 
     const queryString = params.toString()
-    return queryString ? `/explore?${queryString}` : "/explore"
+    return queryString ? `/all-movie?${queryString}` : "/all-movie"
 }
 
 export function AiSearchForm({
     className,
     compact = false,
-    description = "Describe the home you want in one sentence and we will translate it into live EstatePro filters.",
-    title = "Magic AI Search",
+    description = "Describe the movie or TV show you want in one sentence and we will translate it into live CineTube filters.",
+    title = "AI Movie Search",
 }: AiSearchFormProps) {
     const router = useRouter()
     const containerRef = React.useRef<HTMLDivElement>(null)
@@ -286,7 +291,7 @@ export function AiSearchForm({
                                     setIsDropdownOpen(true)
                                 }
                             }}
-                            placeholder='Try: "Find me a cheap 3-bedroom place in Austin"'
+                            placeholder='Try: "Find me a scary horror movie" or "Show me comedy series"'
                             className="h-12 rounded-2xl"
                         />
 
@@ -362,7 +367,7 @@ export function AiSearchForm({
                     )}
                 >
                     {error ||
-                        "The AI maps your request into the same location, price, and bedroom filters used on the Explore page."}
+                        "The AI maps your request into the same genre, type, and pricing filters used on the Explore page."}
                 </p>
             </CardContent>
         </Card>

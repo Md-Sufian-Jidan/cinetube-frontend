@@ -1,33 +1,52 @@
 import Groq from "groq-sdk"
 import { NextResponse } from "next/server"
 
-const aiSearchPriceValues = [
-    "any",
-    "under-500k",
-    "500k-1m",
-    "1m-2m",
-    "over-2m",
+const aiSearchTypeValues = [
+    "ALL",
+    "MOVIE",
+    "SERIES",
 ] as const
 
-const aiSearchBedroomValues = [
-    "any",
-    "1plus",
-    "2plus",
-    "3plus",
-    "4plus",
+const aiSearchPricingValues = [
+    "ALL",
+    "FREE",
+    "PREMIUM",
 ] as const
 
-type AiSearchPrice = (typeof aiSearchPriceValues)[number]
-type AiSearchBedrooms = (typeof aiSearchBedroomValues)[number]
+const aiSearchGenreValues = [
+    "ALL",
+    "Action",
+    "Adventure",
+    "Animation",
+    "Comedy",
+    "Crime",
+    "Documentary",
+    "Drama",
+    "Family",
+    "Fantasy",
+    "Horror",
+    "Mystery",
+    "Romance",
+    "Sci-Fi",
+    "Thriller",
+    "War",
+    "Western",
+] as const
+
+type AiSearchType = (typeof aiSearchTypeValues)[number]
+type AiSearchPricing = (typeof aiSearchPricingValues)[number]
+type AiSearchGenre = (typeof aiSearchGenreValues)[number]
 
 type AiSearchResponse = {
-    bedrooms: AiSearchBedrooms
-    location: string
-    price: AiSearchPrice
+    type: AiSearchType
+    pricing: AiSearchPricing
+    genre: AiSearchGenre
+    searchTerm: string
 }
 
-const priceValueSet = new Set<string>(aiSearchPriceValues)
-const bedroomValueSet = new Set<string>(aiSearchBedroomValues)
+const typeValueSet = new Set<string>(aiSearchTypeValues)
+const pricingValueSet = new Set<string>(aiSearchPricingValues)
+const genreValueSet = new Set<string>(aiSearchGenreValues)
 
 export const runtime = "nodejs"
 
@@ -41,134 +60,71 @@ function getGroqClient() {
     return new Groq({ apiKey })
 }
 
-function bucketPriceValue(amount: number): AiSearchPrice {
-    if (amount < 500_000) {
-        return "under-500k"
-    }
-
-    if (amount < 1_000_000) {
-        return "500k-1m"
-    }
-
-    if (amount < 2_000_000) {
-        return "1m-2m"
-    }
-
-    return "over-2m"
-}
-
-function parseBudgetValue(value: string): number | null {
-    const normalized = value.trim().toLowerCase()
-    const match = normalized
-        .replaceAll(",", "")
-        .replaceAll("$", "")
-        .match(/(\d+(?:\.\d+)?)(?:\s*)(k|m|million|thousand)?/)
-
-    if (!match) {
-        return null
-    }
-
-    const amount = Number(match[1])
-
-    if (!Number.isFinite(amount) || amount <= 0) {
-        return null
-    }
-
-    const unit = match[2]
-
-    if (unit === "k" || unit === "thousand") {
-        return amount * 1_000
-    }
-
-    if (unit === "m" || unit === "million") {
-        return amount * 1_000_000
-    }
-
-    return amount
-}
-
-function normalizePriceValue(value: unknown): AiSearchPrice {
+function normalizeTypeValue(value: unknown): AiSearchType {
     if (typeof value === "string") {
-        const normalized = value.trim().toLowerCase()
-
-        if (priceValueSet.has(normalized)) {
-            return normalized as AiSearchPrice
+        const normalized = value.trim().toUpperCase()
+        if (typeValueSet.has(normalized)) {
+            return normalized as AiSearchType
         }
-
-        if (
-            normalized.includes("cheap") ||
-            normalized.includes("budget") ||
-            normalized.includes("affordable")
-        ) {
-            return "under-500k"
+        if (normalized.includes("MOVIE") || normalized.includes("FILM")) {
+            return "MOVIE"
         }
-
-        if (
-            normalized.includes("luxury") ||
-            normalized.includes("premium") ||
-            normalized.includes("high-end")
-        ) {
-            return "over-2m"
-        }
-
-        const parsedBudget = parseBudgetValue(normalized)
-
-        if (parsedBudget) {
-            return bucketPriceValue(parsedBudget)
+        if (normalized.includes("SERIES") || normalized.includes("TV") || normalized.includes("SHOW")) {
+            return "SERIES"
         }
     }
-
-    if (typeof value === "number" && Number.isFinite(value) && value > 0) {
-        return bucketPriceValue(value)
-    }
-
-    return "any"
+    return "ALL"
 }
 
-function bucketBedroomValue(count: number): AiSearchBedrooms {
-    if (count >= 4) {
-        return "4plus"
-    }
-
-    if (count >= 3) {
-        return "3plus"
-    }
-
-    if (count >= 2) {
-        return "2plus"
-    }
-
-    if (count >= 1) {
-        return "1plus"
-    }
-
-    return "any"
-}
-
-function normalizeBedroomsValue(value: unknown): AiSearchBedrooms {
+function normalizePricingValue(value: unknown): AiSearchPricing {
     if (typeof value === "string") {
-        const normalized = value.trim().toLowerCase()
-
-        if (bedroomValueSet.has(normalized)) {
-            return normalized as AiSearchBedrooms
+        const normalized = value.trim().toUpperCase()
+        if (pricingValueSet.has(normalized)) {
+            return normalized as AiSearchPricing
         }
-
-        if (normalized.includes("studio")) {
-            return "1plus"
+        if (normalized.includes("FREE") || normalized.includes("BASIC")) {
+            return "FREE"
         }
-
-        const numericMatch = normalized.match(/\d+/)
-
-        if (numericMatch) {
-            return bucketBedroomValue(Number(numericMatch[0]))
+        if (normalized.includes("PREMIUM") || normalized.includes("PAID")) {
+            return "PREMIUM"
         }
     }
+    return "ALL"
+}
 
-    if (typeof value === "number" && Number.isFinite(value) && value > 0) {
-        return bucketBedroomValue(value)
+function normalizeGenreValue(value: unknown): AiSearchGenre {
+    if (typeof value === "string") {
+        const normalized = value.trim()
+        // Check exact matches first
+        if (genreValueSet.has(normalized)) {
+            return normalized as AiSearchGenre
+        }
+        // Check case-insensitive matches
+        const lowerNormalized = normalized.toLowerCase()
+        for (const genre of aiSearchGenreValues) {
+            if (genre.toLowerCase() === lowerNormalized) {
+                return genre
+            }
+        }
+        // Check partial matches
+        if (lowerNormalized.includes("action")) return "Action"
+        if (lowerNormalized.includes("adventure")) return "Adventure"
+        if (lowerNormalized.includes("animation") || lowerNormalized.includes("animated")) return "Animation"
+        if (lowerNormalized.includes("comedy") || lowerNormalized.includes("funny")) return "Comedy"
+        if (lowerNormalized.includes("crime") || lowerNormalized.includes("criminal")) return "Crime"
+        if (lowerNormalized.includes("documentary")) return "Documentary"
+        if (lowerNormalized.includes("drama")) return "Drama"
+        if (lowerNormalized.includes("family")) return "Family"
+        if (lowerNormalized.includes("fantasy")) return "Fantasy"
+        if (lowerNormalized.includes("horror") || lowerNormalized.includes("scary")) return "Horror"
+        if (lowerNormalized.includes("mystery")) return "Mystery"
+        if (lowerNormalized.includes("romance") || lowerNormalized.includes("love")) return "Romance"
+        if (lowerNormalized.includes("sci-fi") || lowerNormalized.includes("science")) return "Sci-Fi"
+        if (lowerNormalized.includes("thriller")) return "Thriller"
+        if (lowerNormalized.includes("war")) return "War"
+        if (lowerNormalized.includes("western")) return "Western"
     }
-
-    return "any"
+    return "ALL"
 }
 
 function normalizeAiSearchResponse(value: unknown): AiSearchResponse {
@@ -177,19 +133,19 @@ function normalizeAiSearchResponse(value: unknown): AiSearchResponse {
             ? (value as Record<string, unknown>)
             : ({} as Record<string, unknown>)
 
-    const rawLocation =
-        typeof parsed.location === "string" ? parsed.location.trim() : ""
-    const location =
-        rawLocation && !/^(any|none|null|n\/a)$/i.test(rawLocation)
-            ? rawLocation
-            : ""
-    const price = normalizePriceValue(parsed.price)
-    const bedrooms = normalizeBedroomsValue(parsed.bedrooms)
+    const rawSearchTerm =
+        typeof parsed.searchTerm === "string" ? parsed.searchTerm.trim() : ""
+    const searchTerm = rawSearchTerm || ""
+
+    const type = normalizeTypeValue(parsed.type)
+    const pricing = normalizePricingValue(parsed.pricing)
+    const genre = normalizeGenreValue(parsed.genre)
 
     return {
-        bedrooms,
-        location,
-        price,
+        type,
+        pricing,
+        genre,
+        searchTerm,
     }
 }
 
@@ -216,18 +172,19 @@ export async function POST(request: Request) {
                 {
                     role: "system",
                     content:
-                        `You convert natural-language real-estate requests into EstatePro explore filters.
+                        `You convert natural-language movie/TV requests into CineTube explore filters.
 Return only a valid JSON object with exactly these keys:
 {
-  "location": string,
-  "price": "any" | "under-500k" | "500k-1m" | "1m-2m" | "over-2m",
-  "bedrooms": "any" | "1plus" | "2plus" | "3plus" | "4plus"
+  "type": "ALL" | "MOVIE" | "SERIES",
+  "pricing": "ALL" | "FREE" | "PREMIUM",
+  "genre": "ALL" | "Action" | "Adventure" | "Animation" | "Comedy" | "Crime" | "Documentary" | "Drama" | "Family" | "Fantasy" | "Horror" | "Mystery" | "Romance" | "Sci-Fi" | "Thriller" | "War" | "Western",
+  "searchTerm": string
 }
 Rules:
-- Use an empty string for location when none is given.
-- Use "any" when price or bedrooms are not specified.
-- Map vague cheap/budget language to "under-500k".
-- Map premium/luxury language to "over-2m".
+- Use "ALL" when type, pricing, or genre are not specified.
+- Extract specific movie/TV show titles or keywords into searchTerm.
+- Map genre descriptions to the closest matching genre from the list.
+- For pricing, use "FREE" for free content, "PREMIUM" for paid content.
 - Never include extra keys, prose, or markdown.`,
                 },
                 {

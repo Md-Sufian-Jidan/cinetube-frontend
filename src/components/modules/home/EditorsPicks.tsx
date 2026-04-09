@@ -20,8 +20,6 @@ export default function EditorsPicks() {
         queryFn: () => getAllMedia(1, 5),
     });
 
-    console.log("API Data:", data);
-
     // Use API data if available, otherwise fallback to mock data
     const picks = (data?.data && data.data.length > 0) ? data.data : initialMedia.slice(0, 5);
     console.log(picks);
@@ -132,83 +130,85 @@ export default function EditorsPicks() {
 
                 {/* Grid Layout */}
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                    {picks.map((movie: IMedia, index: number) => {
-                        const isLarge = index === 0;
+                    {
+                        picks.map((movie, index) => {
+                            const isLarge = index === 0;
+                            return (
+                                <motion.div
+                                    key={movie.id}
+                                    initial={{ opacity: 0, y: 30 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: index * 0.1, duration: 0.5 }}
+                                    className={cn(
+                                        "group relative overflow-hidden rounded-[2rem] border border-slate-100 bg-[#0F172A] shadow-xl",
+                                        isLarge ? "lg:col-span-2 lg:row-span-2 min-h-[500px]" : "lg:col-span-1 min-h-[300px]"
+                                    )}
+                                >
+                                    {/* Media Poster */}
+                                    <Image
+                                        // movie.posterUrl
+                                        src={"https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059"}
+                                        alt={movie.title}
+                                        fill
+                                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 group-hover:opacity-60"
+                                    />
 
-                        return (
-                            <motion.div
-                                key={movie.id}
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: index * 0.1, duration: 0.5 }}
-                                className={cn(
-                                    "group relative overflow-hidden rounded-[2rem] border border-slate-100 bg-[#0F172A] shadow-xl",
-                                    isLarge ? "lg:col-span-2 lg:row-span-2 min-h-[500px]" : "lg:col-span-1 min-h-[300px]"
-                                )}
-                            >
-                                {/* Media Poster */}
-                                <Image
-                                    // movie.posterUrl
-                                    src={"https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059"}
-                                    alt={movie.title}
-                                    fill
-                                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 group-hover:opacity-60"
-                                />
+                                    {/* Overlay Gradient */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A] via-[#0F172A]/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity" />
 
-                                {/* Overlay Gradient */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A] via-[#0F172A]/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity" />
+                                    {/* Content Details */}
+                                    <div className="absolute inset-0 z-10 flex flex-col justify-end p-8">
+                                        <div className="translate-y-4 transition-transform duration-500 group-hover:translate-y-0">
 
-                                {/* Content Details */}
-                                <div className="absolute inset-0 z-10 flex flex-col justify-end p-8">
-                                    <div className="translate-y-4 transition-transform duration-500 group-hover:translate-y-0">
-
-                                        <div className="mb-3 flex items-center justify-between">
-                                            <h3 className={cn(
-                                                "font-playfair font-bold text-white leading-tight",
-                                                isLarge ? "text-3xl" : "text-xl"
-                                            )}>
-                                                {movie.title}
-                                            </h3>
-                                            <div className="flex items-center gap-1.5 bg-[#EAB308] px-2.5 py-1 rounded-lg text-[#0F172A]">
-                                                <Star className="h-3.5 w-3.5 fill-current" />
-                                                <span className="text-xs font-black">{movie.averageRating || "N/A"}</span>
-                                            </div>
-                                        </div>
-
-                                        <div className="space-y-2 overflow-hidden max-h-0 opacity-0 transition-all duration-500 group-hover:max-h-40 group-hover:opacity-100">
-                                            <div className="flex items-center gap-2 text-sm text-slate-300">
-                                                <Clapperboard className="h-4 w-4 text-[#EAB308]" />
-                                                <span className="line-clamp-1">Dir: {movie.director}</span>
+                                            <div className="mb-3 flex items-center justify-between">
+                                                <h3 className={cn(
+                                                    "font-playfair font-bold text-white leading-tight",
+                                                    isLarge ? "text-3xl" : "text-xl"
+                                                )}>
+                                                    {movie.title}
+                                                </h3>
+                                                <div className="flex items-center gap-1.5 bg-[#EAB308] px-2.5 py-1 rounded-lg text-[#0F172A]">
+                                                    <Star className="h-3.5 w-3.5 fill-current" />
+                                                    <span className="text-xs font-black">{movie.averageRating || "N/A"}</span>
+                                                </div>
                                             </div>
 
-                                            <p className="text-sm text-slate-400 line-clamp-2 italic">
-                                                "{movie.synopsis}"
-                                            </p>
+                                            <div className="space-y-2 overflow-hidden max-h-0 opacity-0 transition-all duration-500 group-hover:max-h-40 group-hover:opacity-100">
+                                                <div className="flex items-center gap-2 text-sm text-slate-300">
+                                                    <Clapperboard className="h-4 w-4 text-[#EAB308]" />
+                                                    <span className="line-clamp-1">Dir: {movie.director}</span>
+                                                </div>
 
-                                            <Link
-                                                href={`/movie/${movie.id}`}
-                                                className="mt-4 flex items-center gap-2 text-[#EAB308] font-bold text-sm hover:underline"
-                                            >
-                                                <PlayCircle className="h-5 w-5" />
-                                                WATCH PREMIERE
-                                            </Link>
+                                                <p className="text-sm text-slate-400 line-clamp-2 italic">
+                                                    "{movie.synopsis}"
+                                                </p>
+
+                                                <Link
+                                                    href={`/movie/${movie.id}`}
+                                                    className="mt-4 flex items-center gap-2 text-[#EAB308] font-bold text-sm hover:underline"
+                                                >
+                                                    <PlayCircle className="h-5 w-5" />
+                                                    WATCH PREMIERE
+                                                </Link>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                {/* Pricing Badge (Static) */}
-                                <div className="absolute top-5 right-5 z-20">
-                                    <span className={cn(
-                                        "text-[10px] font-black tracking-widest uppercase px-3 py-1 rounded-full backdrop-blur-md",
-                                        movie.pricing === "PREMIUM" ? "bg-[#EAB308] text-[#0F172A]" : "bg-white/20 text-white"
-                                    )}>
-                                        {movie.pricing}
-                                    </span>
-                                </div>
-                            </motion.div>
-                        );
-                    })}
+                                    {/* Pricing Badge (Static) */}
+                                    <div className="absolute top-5 right-5 z-20">
+                                        <span className={cn(
+                                            "text-[10px] font-black tracking-widest uppercase px-3 py-1 rounded-full backdrop-blur-md",
+                                            movie.pricing === "PREMIUM" ? "bg-[#EAB308] text-[#0F172A]" : "bg-white/20 text-white"
+                                        )}>
+                                            {movie.pricing}
+                                        </span>
+                                    </div>
+                                </motion.div>
+                            );
+
+                        })
+                    }
                 </div>
             </div>
         </section>
