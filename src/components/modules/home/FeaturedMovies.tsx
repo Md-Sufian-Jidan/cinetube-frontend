@@ -3,12 +3,11 @@
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { initialMedia } from "@/lib/mockData";
 import { MovieCard } from "../movies/MovieCard";
 import Link from "next/link";
+import { initialMedia } from "@/data/data";
 
 export default function FeaturedMovies() {
-    // Get first 8 movies for featured section
     const featuredMovies = initialMedia.slice(0, 4);
 
     return (
@@ -16,7 +15,7 @@ export default function FeaturedMovies() {
             <div className="container mx-auto px-6">
                 {/* Header */}
                 <div className="mb-12 text-center space-y-4">
-                    <Badge className="bg-[#EAB308] hover:bg-[#EAB308]/90 text-black font-black px-4 py-1 rounded-full">
+                    <Badge className="bg-[#EAB308] hover:bg-[#EAB308]/90 text-black font-black px-4 py-1 rounded-xl">
                         FEATURED MOVIES
                     </Badge>
                     <motion.h2
@@ -50,7 +49,7 @@ export default function FeaturedMovies() {
                 {/* View All Button */}
                 <div className="text-center">
                     <Link href="/all-movie">
-                        <Button className="bg-[#EAB308] hover:bg-[#EAB308]/90 text-black font-bold px-8 py-3 rounded-xl text-lg transition-all duration-300 hover:shadow-lg">
+                        <Button className="h-12 rounded-xl bg-[#EAB308] px-8 text-lg font-bold text-white border-2 border-[#EAB308] hover:bg-transparent hover:border-[#EAB308] hover:border-2 hover:text-[#EAB308] cursor-pointer">
                             View All Movies
                         </Button>
                     </Link>

@@ -26,7 +26,7 @@ export function MovieCard({ movie }: { movie: any }) {
             transition={{ duration: 0.3, ease: "easeOut" }}
             className="h-full relative group"
         >
-            <Card className="h-full overflow-hidden border-none bg-white shadow-lg flex flex-col rounded-2xl">
+            <Card className="h-full overflow-hidden border-none bg-white shadow-lg flex flex-col rounded-xl">
                 {/* Image Container */}
                 <div className="relative aspect-[2/3] w-full overflow-hidden shrink-0">
                     <Image
@@ -71,7 +71,7 @@ export function MovieCard({ movie }: { movie: any }) {
                             <h3 className="line-clamp-1 font-playfair text-lg font-black text-slate-900 group-hover:text-[#EAB308] transition-colors tracking-tight">
                                 {title}
                             </h3>
-                            <div className="flex items-center gap-1 shrink-0 bg-slate-50 px-2 py-0.5 rounded-md border border-slate-100">
+                            <div className="flex items-center gap-1 shrink-0 bg-slate-50 px-2 py-0.5 rounded-xl border border-slate-100">
                                 <Star className="h-3 w-3 fill-[#EAB308] text-[#EAB308]" />
                                 <span className="text-[11px] font-black text-slate-700">{averageRating > 0 ? averageRating.toFixed(1) : "N/A"}</span>
                             </div>
@@ -99,7 +99,7 @@ export function MovieCard({ movie }: { movie: any }) {
 
                     {/* View Details Button */}
                     <Link href={`/all-movie/${id}`} className="mt-4 block">
-                        <Button className="w-full bg-[#EAB308] hover:bg-[#EAB308]/90 text-black font-bold rounded-xl h-10 transition-all duration-300 hover:shadow-lg">
+                        <Button className="w-full h-12 rounded-xl bg-[#EAB308] px-8 text-lg font-bold text-white border-2 border-[#EAB308] hover:bg-transparent hover:border-[#EAB308] hover:border-2 hover:text-[#EAB308] cursor-pointer">
                             View Details
                         </Button>
                     </Link>

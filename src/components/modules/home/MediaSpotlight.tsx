@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Star, Play, Calendar, User, Clock, ShieldCheck, Plus } from "lucide-react";
+import { Play, Calendar, User, Plus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -41,7 +41,7 @@ export default function MediaSpotlight() {
                         transition={{ duration: 0.8 }}
                         className="lg:col-span-5 relative group"
                     >
-                        <div className="relative aspect-[2/3] overflow-hidden rounded-[2rem] border border-slate-100 shadow-[0_30px_60px_rgba(0,0,0,0.15)] group-hover:shadow-[0_40px_80px_rgba(234,179,8,0.2)] transition-all duration-500">
+                        <div className="relative aspect-[2/3] overflow-hidden rounded-xl border border-slate-100 shadow-[0_30px_60px_rgba(0,0,0,0.15)] group-hover:shadow-[0_40px_80px_rgba(234,179,8,0.2)] transition-all duration-500">
                             <Image
                                 // media.posterUrl
                                 src={"https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059"}
@@ -57,7 +57,7 @@ export default function MediaSpotlight() {
                         <motion.div
                             initial={{ x: 20, rotate: 10 }}
                             whileInView={{ x: 0, rotate: 3 }}
-                            className="absolute -bottom-6 -right-6 bg-[#EAB308] p-6 rounded-2xl shadow-2xl z-20"
+                            className="absolute -bottom-6 -right-6 bg-[#EAB308] p-6 rounded-xl shadow-2xl z-20"
                         >
                             <p className="text-white font-black text-4xl leading-none tracking-tighter">{mediaData.review.rating}.0</p>
                             <p className="text-white/80 text-[10px] font-black uppercase tracking-[0.2em] mt-1">Critic Score</p>
@@ -89,7 +89,7 @@ export default function MediaSpotlight() {
                                 <span className="flex items-center gap-2"><User size={18} className="text-[#EAB308]" /> {mediaData.director}</span>
                                 <div className="flex gap-2">
                                     {mediaData.genres.map((g) => (
-                                        <span key={g} className="px-3 py-1 rounded-full bg-slate-50 border border-slate-100 text-[10px] text-slate-600">{g}</span>
+                                        <span key={g} className="px-3 py-1 rounded-xl bg-slate-50 border border-slate-200 text-[10px] text-slate-600">{g}</span>
                                     ))}
                                 </div>
                             </div>
@@ -115,21 +115,26 @@ export default function MediaSpotlight() {
                         <Separator className="bg-slate-100" />
 
                         {/* Featured Review Snippet - Light Stylized */}
-                        <div className="bg-slate-50 p-6 rounded-2xl border-l-8 border-[#EAB308] shadow-sm">
+                        <div className="bg-slate-50 p-6 rounded-xl border-l-8 border-[#EAB308] shadow-sm">
                             <p className="text-slate-700 italic text-lg font-medium">
-                                "{mediaData.review.content}"
+                                &ldquo;{mediaData.review.content}&ldquo;
                             </p>
                             <p className="text-[#EAB308] text-xs font-black mt-3 uppercase tracking-[0.3em]">— {mediaData.review.user}</p>
                         </div>
 
                         {/* Primary Actions */}
                         <div className="flex flex-wrap gap-4 pt-4">
-                            <Button asChild className="h-14 bg-[#EAB308] px-8 text-lg font-bold text-white border-2 border-[#EAB308] hover:bg-transparent hover:border-[#EAB308] hover:border-2 hover:text-[#EAB308] cursor-pointer">
+                            <Button
+                                size="lg"
+                                asChild
+                                className="h-12 bg-[#EAB308] px-8 text-lg font-bold text-white border-2 border-[#EAB308] hover:bg-transparent hover:border-[#EAB308] hover:border-2 hover:text-[#EAB308] cursor-pointer">
                                 <a href={mediaData.streamingLink} target="_blank" rel="noopener noreferrer">
                                     <Play className="mr-3 h-6 w-6 fill-current" /> Play Now
                                 </a>
                             </Button>
-                            <Button variant="outline" className="h-14 border-2 border-[#EAB308] px-8 text-lg text-[#EAB308] font-bold bg-transparent hover:bg-[#EAB308] hover:border-[#EAB308] hover:border-2 hover:text-white cursor-pointer">
+                            <Button
+                                size="lg"
+                                className="h-12 border-2 border-[#EAB308] px-8 text-lg text-[#EAB308] font-bold bg-transparent hover:bg-[#EAB308] hover:border-[#EAB308] hover:border-2 hover:text-white cursor-pointer">
                                 <Plus size={24} /> Add Watchlist
                             </Button>
                         </div>

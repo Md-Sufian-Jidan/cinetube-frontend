@@ -22,8 +22,9 @@ import Logout from "./Logout";
 const links = [
     { href: "/", label: "Home" },
     { href: "/all-movie", label: "All Movie" },
-    { href: "/pricing", label: "Pricing" },
     { href: "/about", label: "About" },
+    { href: "/pricing", label: "Pricing" },
+    { href: "/contact", label: "Contact" },
 ];
 
 export default function Navbar({ user }: { user: any }) {
@@ -79,7 +80,7 @@ export default function Navbar({ user }: { user: any }) {
                                     "relative text-[13px] font-black uppercase tracking-[0.2em] transition-all duration-300 font-jakarta",
                                     pathname === link.href
                                         ? "text-[#EAB308]"
-                                        : "text-slate-500 hover:text-slate-900"
+                                        : "text-slate-900 hover:text-[#EAB308]"
                                 )}
                             >
                                 {link.label}
@@ -149,8 +150,8 @@ export default function Navbar({ user }: { user: any }) {
                             <div className="hidden sm:block">
                                 <Link href="/login">
                                     <Button
-                                        size="sm"
-                                        className="h-14 bg-[#EAB308] px-8 text-lg font-bold text-white border-2 border-[#EAB308] hover:bg-transparent hover:border-[#EAB308] hover:border-2 hover:text-[#EAB308] cursor-pointer"
+                                        size="lg"
+                                        className="h-12 rounded-xl bg-[#EAB308] px-8 text-lg font-bold text-white border-2 border-[#EAB308] hover:bg-transparent hover:border-[#EAB308] hover:border-2 hover:text-[#EAB308] cursor-pointer"
                                     >
                                         Sign In
                                     </Button>

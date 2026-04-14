@@ -13,7 +13,7 @@ export default function CTA() {
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="relative overflow-hidden rounded-[3rem] bg-white px-8 py-16 shadow-[0_40px_100px_rgba(15,23,42,0.3)] md:px-20 md:py-24 lg:py-28"
+                    className="relative overflow-hidden rounded-xl bg-white px-8 py-16 shadow-[0_40px_100px_rgba(15,23,42,0.3)] md:px-20 md:py-24 lg:py-28"
                 >
                     {/* Background Decorative Accents */}
                     <div className="absolute -top-12 -left-12 text-[#EAB308] opacity-20 pointer-events-none">
@@ -55,16 +55,15 @@ export default function CTA() {
                         >
                             <Button
                                 size="lg"
-                                className="h-14 bg-[#EAB308] px-8 text-lg font-bold text-white border-2 border-[#EAB308] hover:bg-transparent hover:border-[#EAB308] hover:border-2 hover:text-[#EAB308] cursor-pointer"
+                                className="h-12 bg-[#EAB308] px-8 text-lg font-bold text-white border-2 border-[#EAB308] hover:bg-transparent hover:border-[#EAB308] hover:border-2 hover:text-[#EAB308] cursor-pointer"
                             >
                                 Get Started Now
                                 <ArrowRight className="ml-3 h-6 w-6 transition-transform group-hover:translate-x-2" />
                             </Button>
 
                             <Button
-                                variant="outline"
                                 size="lg"
-                                className="h-14 border-2 border-[#EAB308] px-8 text-lg text-[#EAB308] font-bold bg-transparent hover:bg-[#EAB308] hover:border-[#EAB308] hover:border-2 hover:text-white cursor-pointer"
+                                className="h-12 border-2 border-[#EAB308] px-8 text-lg text-[#EAB308] font-bold bg-transparent hover:bg-[#EAB308] hover:border-[#EAB308] hover:border-2 hover:text-white cursor-pointer"
                             >
                                 Explore Titles
                             </Button>

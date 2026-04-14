@@ -6,8 +6,15 @@ import { Toaster } from "@/components/ui/sonner";
 import Transition from "@/components/shared/Transition";
 import QueryProviders from "@/providers/queryProvider";
 
-const dmSans = DM_Sans({ subsets: ['latin'], variable: '--font-dm-sans' });
-const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' });
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  variable: '--font-dm-sans'
+});
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-playfair'
+});
 
 export const metadata: Metadata = {
   title: "CineTube",

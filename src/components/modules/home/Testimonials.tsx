@@ -4,30 +4,7 @@ import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-
-const testimonials = [
-    {
-        name: "Alex Rivera",
-        role: "Movie Critic",
-        content: "CineTube has completely changed how I track my watchlist. The UI is sleek, and the rating system is incredibly intuitive.",
-        avatar: "https://i.pravatar.cc/150?u=alex",
-        rating: 5,
-    },
-    {
-        name: "Sarah Jenkins",
-        role: "Premium Member",
-        content: "The streaming quality is top-notch. I love being able to see what my friends are watching and reading their spoiler-free reviews.",
-        avatar: "https://i.pravatar.cc/150?u=sarah",
-        rating: 5,
-    },
-    {
-        name: "Marcus Chen",
-        role: "Director",
-        content: "As a filmmaker, I appreciate the focus on metadata and cast details. It feels like a platform built by people who actually love cinema.",
-        avatar: "https://i.pravatar.cc/150?u=marcus",
-        rating: 4,
-    },
-];
+import { testimonials } from "@/data/data";
 
 export default function Testimonials() {
     return (
@@ -56,7 +33,7 @@ export default function Testimonials() {
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1, duration: 0.5 }}
                         >
-                            <Card className="relative h-full border-slate-100 bg-white p-8 shadow-[0_10px_40px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(234,179,8,0.15)] group rounded-3xl">
+                            <Card className="relative h-full border-slate-100 bg-white p-8 shadow-[0_10px_40px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(234,179,8,0.15)] group rounded-xl">
                                 {/* Decorative Quote Mark */}
                                 <Quote className="absolute right-8 top-8 h-12 w-12 text-slate-50 opacity-10 group-hover:text-[#EAB308] group-hover:opacity-20 transition-all duration-500" />
 
@@ -72,7 +49,7 @@ export default function Testimonials() {
                                     </div>
 
                                     <p className="mb-8 text-slate-600 text-lg italic font-medium leading-relaxed">
-                                        "{t.content}"
+                                        &ldquo;{t.content}&ldquo;
                                     </p>
 
                                     <div className="flex items-center gap-4 border-t border-slate-50 pt-6">

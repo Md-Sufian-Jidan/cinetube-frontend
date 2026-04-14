@@ -35,7 +35,7 @@ export default function Newsletter() {
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="relative overflow-hidden rounded-[3rem] bg-white px-8 py-16 shadow-[0_40px_100px_rgba(15,23,42,0.3)] md:px-20 md:py-24 lg:py-28"
+                    className="relative overflow-hidden rounded-xl bg-white px-8 py-16 shadow-[0_40px_100px_rgba(15,23,42,0.3)] md:px-20 md:py-24 lg:py-28"
                 >
                     {/* Background Decorative Accents */}
                     <div className="absolute -top-12 -left-12 text-[#EAB308] opacity-20 pointer-events-none">
@@ -43,7 +43,7 @@ export default function Newsletter() {
                     </div>
 
                     <div className="relative z-10 flex flex-col items-center text-center">
-                        <Badge className="bg-[#EAB308] hover:bg-[#EAB308]/90 text-black font-black px-4 py-1 rounded-full mb-6">
+                        <Badge className="bg-[#EAB308] hover:bg-[#EAB308]/90 text-black font-black px-4 py-1 rounded-xl mb-6">
                             STAY UPDATED
                         </Badge>
 
@@ -78,13 +78,13 @@ export default function Newsletter() {
                                 placeholder="Enter your email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="h-14 flex-1 rounded-2xl border-slate-200 bg-white px-6 text-lg font-medium placeholder:text-slate-400 focus:border-[#EAB308] focus:ring-[#EAB308]"
+                                className="h-12 flex-1 rounded-xl border-slate-200 bg-white px-6 text-lg font-medium placeholder:text-slate-400 focus:border-[#EAB308] focus:ring-[#EAB308]"
                                 required
                             />
                             <Button
                                 type="submit"
                                 disabled={isLoading}
-                                className="h-14 bg-[#EAB308] px-8 text-lg font-bold text-white border-2 border-[#EAB308] hover:bg-transparent hover:border-[#EAB308] hover:border-2 hover:text-[#EAB308] cursor-pointer rounded-2xl disabled:opacity-50"
+                                className="h-12 bg-[#EAB308] px-8 text-lg font-bold text-white border-2 border-[#EAB308] hover:bg-transparent hover:border-[#EAB308] hover:border-2 hover:text-[#EAB308] cursor-pointer rounded-xl disabled:opacity-50"
                             >
                                 {isLoading ? (
                                     "Subscribing..."

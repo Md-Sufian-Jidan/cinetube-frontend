@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, useInView, useMotionValue, useTransform, animate } from "framer-motion";
-import { cn } from "@/lib/utils";
 
 interface StatItemProps {
     value: number;

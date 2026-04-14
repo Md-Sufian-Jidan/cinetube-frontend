@@ -3,8 +3,8 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Star, Play } from "lucide-react";
-import { initialMedia } from "@/lib/mockData";
 import { cn } from "@/lib/utils";
+import { initialMedia } from "@/data/data";
 
 export default function TopTrending() {
     // Sorting by averageRating as a proxy for 'trending'
@@ -48,7 +48,7 @@ export default function TopTrending() {
                             </span>
 
                             {/* Movie Poster */}
-                            <div className="relative z-10 h-96 w-80 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 transition-all duration-500 group-hover:-translate-y-4 group-hover:shadow-[0_30px_60px_rgba(234,179,8,0.2)]">
+                            <div className="relative z-10 h-96 w-80 overflow-hidden rounded-xl border border-slate-200 bg-slate-100 transition-all duration-500 group-hover:-translate-y-4 group-hover:shadow-[0_30px_60px_rgba(234,179,8,0.2)]">
                                 <Image
                                     src={"https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059"}
                                     // movie.posterUrl
@@ -69,7 +69,7 @@ export default function TopTrending() {
                                         <Play className="h-8 w-8 fill-current ml-1" />
                                     </motion.div>
 
-                                    <div className="mt-6 flex items-center gap-2 rounded-full bg-white/20 backdrop-blur-md px-4 py-1 border border-white/30">
+                                    <div className="mt-6 flex items-center gap-2 rounded-xl bg-white/20 backdrop-blur-md px-4 py-1 border border-white/30">
                                         <Star className="h-4 w-4 fill-[#EAB308] text-[#EAB308]" />
                                         <span className="text-sm font-black text-white">{movie.averageRating}</span>
                                     </div>
@@ -83,7 +83,7 @@ export default function TopTrending() {
                                 </h3>
                                 <div className="flex items-center gap-2">
                                     <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">{movie.releaseYear}</span>
-                                    <span className="h-1 w-1 rounded-full bg-slate-300" />
+                                    <span className="h-1 w-1 rounded-xl bg-slate-300" />
                                     <span className="text-xs font-bold text-[#EAB308] uppercase tracking-widest">{movie.type}</span>
                                 </div>
                             </div>

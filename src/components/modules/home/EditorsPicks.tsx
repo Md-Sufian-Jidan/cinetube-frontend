@@ -6,9 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Star, Clapperboard, PlayCircle } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getAllMedia } from "@/app/(commonLayout)/all-movie/_actions";
-import { initialMedia } from "@/lib/mockData";
-import { IMedia } from "@/types/media.types";
 import Link from "next/link";
+import { initialMedia } from "@/data/data";
 
 function cn(...classes: (string | boolean | undefined)[]) {
     return classes.filter(Boolean).join(" ");
@@ -34,7 +33,7 @@ export default function EditorsPicks() {
                     {/* Header Section */}
                     <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
                         <div className="space-y-4">
-                            <Badge className="bg-[#EAB308] hover:bg-[#EAB308]/90 text-[#0F172A] font-black px-4 py-1 rounded-full">
+                            <Badge className="bg-[#EAB308] hover:bg-[#EAB308]/90 text-[#0F172A] font-black px-4 py-1 rounded-xl">
                                 PREMIUM SELECTION
                             </Badge>
                             <h2 className="font-playfair text-5xl font-black text-[#0F172A] leading-tight">
@@ -48,13 +47,13 @@ export default function EditorsPicks() {
 
                     {/* Error State */}
                     <div className="flex flex-col items-center justify-center py-20 space-y-6">
-                        <div className="bg-red-50 p-8 rounded-full">
+                        <div className="bg-red-50 p-8 rounded-xl">
                             <Clapperboard size={64} className="text-red-300" />
                         </div>
                         <div className="text-center space-y-2">
-                            <h3 className="text-2xl font-bold text-slate-900">Unable to Load Editor's Picks</h3>
+                            <h3 className="text-2xl font-bold text-slate-900">Unable to Load Editor&apos;s Picks</h3>
                             <p className="text-slate-500 max-w-md">
-                                We're having trouble loading our premium selection. Please try again later.
+                                We&apos;re having trouble loading our premium selection. Please try again later.
                             </p>
                         </div>
                         <Link href="/all-movie">
@@ -76,7 +75,7 @@ export default function EditorsPicks() {
                     {/* Header Section */}
                     <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
                         <div className="space-y-4">
-                            <Badge className="bg-[#EAB308] hover:bg-[#EAB308]/90 text-[#0F172A] font-black px-4 py-1 rounded-full">
+                            <Badge className="bg-[#EAB308] hover:bg-[#EAB308]/90 text-[#0F172A] font-black px-4 py-1 rounded-xl">
                                 PREMIUM SELECTION
                             </Badge>
                             <h2 className="font-playfair text-5xl font-black text-[#0F172A] leading-tight">
@@ -90,11 +89,11 @@ export default function EditorsPicks() {
 
                     {/* Empty State */}
                     <div className="flex flex-col items-center justify-center py-20 space-y-6">
-                        <div className="bg-slate-50 p-8 rounded-full">
+                        <div className="bg-slate-50 p-8 rounded-xl">
                             <Clapperboard size={64} className="text-slate-300" />
                         </div>
                         <div className="text-center space-y-2">
-                            <h3 className="text-2xl font-bold text-slate-900">No Editor's Picks Available</h3>
+                            <h3 className="text-2xl font-bold text-slate-900">No Editor&apos;s Picks Available</h3>
                             <p className="text-slate-500 max-w-md">
                                 Our cinema experts are curating the best movies for you. Check back soon for our premium selection!
                             </p>
@@ -116,7 +115,7 @@ export default function EditorsPicks() {
                 {/* Header Section */}
                 <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
                     <div className="space-y-4">
-                        <Badge className="bg-[#EAB308] hover:bg-[#EAB308]/90 text-[#0F172A] font-black px-4 py-1 rounded-full">
+                        <Badge className="bg-[#EAB308] hover:bg-[#EAB308]/90 text-[#0F172A] font-black px-4 py-1 rounded-xl">
                             PREMIUM SELECTION
                         </Badge>
                         <h2 className="font-playfair text-5xl font-black text-[#0F172A] leading-tight">
@@ -141,7 +140,7 @@ export default function EditorsPicks() {
                                     viewport={{ once: true }}
                                     transition={{ delay: index * 0.1, duration: 0.5 }}
                                     className={cn(
-                                        "group relative overflow-hidden rounded-[2rem] border border-slate-100 bg-[#0F172A] shadow-xl",
+                                        "group relative overflow-hidden rounded-xl border border-slate-100 bg-[#0F172A] shadow-xl",
                                         isLarge ? "lg:col-span-2 lg:row-span-2 min-h-[500px]" : "lg:col-span-1 min-h-[300px]"
                                     )}
                                 >
@@ -168,7 +167,7 @@ export default function EditorsPicks() {
                                                 )}>
                                                     {movie.title}
                                                 </h3>
-                                                <div className="flex items-center gap-1.5 bg-[#EAB308] px-2.5 py-1 rounded-lg text-[#0F172A]">
+                                                <div className="flex items-center gap-1.5 bg-[#EAB308] px-2.5 py-1 rounded-xl text-[#0F172A]">
                                                     <Star className="h-3.5 w-3.5 fill-current" />
                                                     <span className="text-xs font-black">{movie.averageRating || "N/A"}</span>
                                                 </div>
@@ -181,7 +180,7 @@ export default function EditorsPicks() {
                                                 </div>
 
                                                 <p className="text-sm text-slate-400 line-clamp-2 italic">
-                                                    "{movie.synopsis}"
+                                                    &ldquo;{movie.synopsis}&ldquo;
                                                 </p>
 
                                                 <Link
@@ -198,7 +197,7 @@ export default function EditorsPicks() {
                                     {/* Pricing Badge (Static) */}
                                     <div className="absolute top-5 right-5 z-20">
                                         <span className={cn(
-                                            "text-[10px] font-black tracking-widest uppercase px-3 py-1 rounded-full backdrop-blur-md",
+                                            "text-[10px] font-black tracking-widest uppercase px-3 py-1 rounded-xl backdrop-blur-md",
                                             movie.pricing === "PREMIUM" ? "bg-[#EAB308] text-[#0F172A]" : "bg-white/20 text-white"
                                         )}>
                                             {movie.pricing}
