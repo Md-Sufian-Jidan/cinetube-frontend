@@ -1,5 +1,5 @@
 
-import { AboutFeature, AboutStat, Category, ContactInfo, ContactResponseData, contactSocial, ContactSupportCategory, Faq, Feature, Media, Testimonial } from "@/types/commonTypes";
+import { AboutFeature, AboutStat, BlogPost, Category, ContactInfo, ContactResponseData, contactSocial, ContactSupportCategory, Faq, Feature, Media, PricingFeature, PricingPlan, SupportArticle, SupportCategory, TermsSection, Testimonial } from "@/types/commonTypes";
 
 export const initialMedia: Media[] = [
     {
@@ -195,7 +195,6 @@ export const testimonials: Testimonial[] = [
     },
 ];
 
-
 // About page content
 export const aboutFeatures: AboutFeature[] = [
     {
@@ -384,4 +383,215 @@ export const contactSocials: contactSocial[] = [
         icon: "Youtube",
         href: "https://youtube.com",
     },
+];
+
+// Blog page data
+export const posts: BlogPost[] = [
+    {
+        title: "Top 10 Hidden Gems to Watch This Weekend",
+        excerpt: "Dive into our curated list of underrated indie movies that deserve your attention.",
+        category: "Recommendations",
+        author: "Sarah Jenkins",
+        date: "Apr 12, 2026",
+        readTime: "4 min read",
+        image: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059",
+    },
+    {
+        title: "How We Optimized 4K Streaming for Low Bandwidth",
+        excerpt: "A deep technical dive into our new dynamic bitrate streaming algorithm.",
+        category: "Engineering",
+        author: "David Chen",
+        date: "Apr 08, 2026",
+        readTime: "8 min read",
+        image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070",
+    },
+    {
+        title: "Announcing CineTube Originals Vol. 1",
+        excerpt: "Get ready for a highly anticipated batch of original series premiering next month.",
+        category: "Announcements",
+        author: "Elena Rodriguez",
+        date: "Apr 05, 2026",
+        readTime: "3 min read",
+        image: "https://images.unsplash.com/photo-1542204165-65bf26472b9b?q=80&w=1974",
+    },
+    {
+        title: "Mastering the CineTube Dashboard as an Admin",
+        excerpt: "Tips and tricks for new administrators to manage their content libraries efficiently.",
+        category: "Tutorials",
+        author: "Marcus Wei",
+        date: "Mar 28, 2026",
+        readTime: "6 min read",
+        image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015",
+    },
+    {
+        title: "The Impact of Sound Design in Modern Thrillers",
+        excerpt: "Exploring why audio matters just as much as visuals in setting the perfect mood.",
+        category: "Editorial",
+        author: "Sam Taylor",
+        date: "Mar 20, 2026",
+        readTime: "5 min read",
+        image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1974",
+    },
+    {
+        title: "A Look Back at the Best Releases of Q1 2026",
+        excerpt: "Our community's favorite movies and series from the first quarter of the year.",
+        category: "Community",
+        author: "Alex Reynolds",
+        date: "Mar 15, 2026",
+        readTime: "4 min read",
+        image: "https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?q=80&w=2071",
+    },
+];
+
+// Pricing page data
+export const plans: PricingPlan[] = [
+    {
+        name: "Basic",
+        description: "Perfect for casual viewers who want to catch up on shows.",
+        monthlyPrice: 9.99,
+        yearlyPrice: 99.99,
+        features: [
+            { name: "Ad-supported viewing", included: true },
+            { name: "1080p resolution", included: true },
+            { name: "Watch on 1 device at a time", included: true },
+            { name: "Offline downloads", included: false },
+            { name: "4K HDR Streaming", included: false },
+            { name: "Spatial Audio", included: false },
+        ],
+        highlight: false,
+    },
+    {
+        name: "Standard",
+        description: "Great for most users looking for a high-quality ad-free experience.",
+        monthlyPrice: 15.99,
+        yearlyPrice: 159.99,
+        features: [
+            { name: "Ad-free viewing", included: true },
+            { name: "4K resolution", included: true },
+            { name: "Watch on 2 devices simultaneously", included: true },
+            { name: "Offline downloads", included: true },
+            { name: "4K HDR Streaming", included: false },
+            { name: "Spatial Audio", included: false },
+        ],
+        highlight: true,
+    },
+    {
+        name: "Premium",
+        description: "The ultimate cinematic experience for dedicated movie lovers.",
+        monthlyPrice: 22.99,
+        yearlyPrice: 229.99,
+        features: [
+            { name: "Ad-free viewing", included: true },
+            { name: "4K resolution", included: true },
+            { name: "Watch on 4 devices simultaneously", included: true },
+            { name: "Offline downloads", included: true },
+            { name: "4K HDR Streaming", included: true },
+            { name: "Spatial Audio", included: true },
+        ],
+        highlight: false,
+    },
+];
+
+export const pricingFeatures: PricingFeature[] = [
+    {
+        category: "Streaming Quality",
+        items: [
+            { name: "Resolution", basic: "1080p", standard: "4K", premium: "4K HDR" },
+            { name: "Spatial Audio", basic: false, standard: false, premium: true },
+            { name: "Dolby Vision & Atmos", basic: false, standard: false, premium: true },
+        ]
+    },
+    {
+        category: "Features & Accessibility",
+        items: [
+            { name: "Ad-free streaming", basic: false, standard: true, premium: true },
+            { name: "Simultaneous screens", basic: "1", standard: "2", premium: "4" },
+            { name: "Offline downloads", basic: false, standard: true, premium: true },
+            { name: "Custom profiles", basic: "Up to 2", standard: "Up to 5", premium: "Unlimited" },
+        ]
+    },
+    {
+        category: "Content Catalog",
+        items: [
+            { name: "Movies & Series", basic: true, standard: true, premium: true },
+            { name: "Exclusive CineTube Originals", basic: false, standard: true, premium: true },
+            { name: "Live Events & Premieres", basic: false, standard: false, premium: true },
+        ]
+    }
+];
+
+// Support page data
+export const supportCategories: SupportCategory[] = [
+    {
+        title: "Account Settings",
+        description: "Manage your profile, preferences, and security settings.",
+        icon: "User",
+    },
+    {
+        title: "Plans & Billing",
+        description: "Update payment methods, view invoices, and change plans.",
+        icon: "CreditCard",
+    },
+    {
+        title: "Streaming & Playback",
+        description: "Troubleshoot buffering, audio issues, and subtitle settings.",
+        icon: "PlayCircle",
+    },
+    {
+        title: "Supported Devices",
+        description: "Find out how to watch on Smart TVs, consoles, and mobile.",
+        icon: "Smartphone",
+    },
+    {
+        title: "Platform Features",
+        description: "Learn about offline viewing, profiles, and recommendations.",
+        icon: "Settings",
+    },
+    {
+        title: "Community & Contact",
+        description: "Get in touch with our team or browse community forums.",
+        icon: "MessageSquare",
+    },
+];
+
+export const supportArticles: SupportArticle[] = [
+    { title: "How to change your subscription plan", reads: "12k reads" },
+    { title: "Troubleshooting buffering and video quality", reads: "8.5k reads" },
+    { title: "Setting up parental controls", reads: "5.2k reads" },
+    { title: "Supported devices and browsers", reads: "15k reads" },
+    { title: "How to use offline viewing on mobile", reads: "21k reads" },
+    { title: "Resetting your forgotten password", reads: "34k reads" },
+];
+
+// Terms page data
+export const termsSections: TermsSection[] = [
+    {
+        id: "agreement",
+        title: "1. Agreement to Terms",
+        icon: "FileText",
+        content: `By accessing or using the CineTube platform, you signify that you have read, understood, and agree to be bound by these Terms of Service. If you do not agree to these Terms, you may not access or use the Service. These Terms apply to all visitors, users, and others who access or use the Service. We reserve the right, at our sole discretion, to modify or replace these Terms at any time.`
+    },
+    {
+        id: "use-license",
+        title: "2. Use License & Restrictions",
+        icon: "Shield",
+        content: `CineTube grants you a limited, non-exclusive, non-transferable, and revocable license to access and use the Service for your personal, non-commercial purposes.
+        \nYou agree not to:
+        • Modify, copy, distribute, transmit, display, or perform the content.
+        • Use the service for any illegal or unauthorized purpose.
+        • Circumvent, disable, or otherwise interfere with security-related features of the Service.
+        • Use automated systems, such as "robots" or "spiders", to access the Service.`
+    },
+    {
+        id: "privacy",
+        title: "3. Privacy & Data Security",
+        icon: "Lock",
+        content: `Your privacy is important to us. Our Privacy Policy explains how we collect, use, protect, and when we share personal information and other data with others. By using our Services, you agree that we can collect and use such data in accordance with our Privacy Policy. We implement advanced security measures to maintain the safety of your personal information.`
+    },
+    {
+        id: "jurisdiction",
+        title: "4. Governing Law",
+        icon: "Globe",
+        content: `These Terms shall be governed and construed in accordance with the laws of your local jurisdiction, without regard to its conflict of law provisions. Our failure to enforce any right or provision of these Terms will not be considered a waiver of those rights. If any provision of these Terms is held to be invalid or unenforceable by a court, the remaining provisions of these Terms will remain in effect.`
+    }
 ];

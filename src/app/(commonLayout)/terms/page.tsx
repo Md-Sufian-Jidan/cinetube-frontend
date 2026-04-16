@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Support | CineTube",
+    title: "Terms of Service | CineTube",
     description: "CineTube is a state-of-the-art cinematic platform designed for seamless movie and series browsing. Built with modern aesthetics, responsiveness, and performance at its core — users can discover, review, and manage their favorite content, while admins get a powerful dashboard for full platform control.",
-    keywords: ["CineTube", "Support", "CineTube Support", "Movie Streaming", "Series Streaming", "Premium Streaming"],
+    keywords: ["CineTube", "Terms of Service", "CineTube Terms of Service", "Movie Streaming", "Series Streaming", "Premium Streaming"],
     authors: [{
         name: "Md Abu Sufian Jidan",
         url: "https://mdabusufianjidan.vercel.app"
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
         locale: "en_US",
         url: "https://cinetube-blond.vercel.app",
         siteName: "CineTube",
-        title: "Support | CineTube",
+        title: "Terms of Service | CineTube",
         description:
             "CineTube is a state-of-the-art cinematic platform designed for seamless movie and series browsing. Built with modern aesthetics, responsiveness, and performance at its core — users can discover, review, and manage their favorite content, while admins get a powerful dashboard for full platform control.",
         images: [
@@ -22,13 +22,13 @@ export const metadata: Metadata = {
                 url: "https://i.ibb.co/fzyLjfBP/cinetube.png",
                 width: 1200,
                 height: 630,
-                alt: "Support | CineTube",
+                alt: "Terms of Service | CineTube",
             },
         ],
     },
     twitter: {
         card: "summary_large_image",
-        title: "Support | CineTube",
+        title: "Terms of Service | CineTube",
         description:
             "CineTube is a state-of-the-art cinematic platform designed for seamless movie and series browsing. Built with modern aesthetics, responsiveness, and performance at its core — users can discover, review, and manage their favorite content, while admins get a powerful dashboard for full platform control.",
         images: ["https://i.ibb.co/fzyLjfBP/cinetube.png"],
@@ -47,20 +47,12 @@ export const metadata: Metadata = {
     },
 };
 
-import { SupportHero } from "@/components/modules/support/SupportHero";
-import { SupportCategories } from "@/components/modules/support/SupportCategories";
-import { SupportArticles } from "@/components/modules/support/SupportArticles";
-import { FAQSection } from "@/components/shared/Faq";
-import { AboutCta } from "@/components/modules/about/AboutCta";
+import { TermsContent } from "@/components/modules/terms/TermsContent";
 
-export default function SupportPage() {
+export default function TermsPage() {
     return (
-        <main className="min-h-screen bg-slate-50 dark:bg-black font-jakarta">
-            <SupportHero />
-            <SupportCategories />
-            <SupportArticles />
-            <FAQSection />
-            <AboutCta />
+        <main className="min-h-screen font-jakarta">
+            <TermsContent />
         </main>
     );
 }

@@ -7,16 +7,15 @@ import { Separator } from "@/components/ui/separator";
 
 const footerLinks = {
     platform: [
-        { name: "Browse Movies", href: "/movies" },
+        { name: "Browse Movies", href: "/all-movies" },
         { name: "TV Series", href: "/series" },
         { name: "Top Rated", href: "/top-rated" },
         { name: "Pricing", href: "/pricing" },
     ],
     support: [
-        { name: "Help Center", href: "/help" },
+        { name: "Help Center", href: "/contact" },
+        { name: "Need Support?", href: "/support" },
         { name: "Terms of Service", href: "/terms" },
-        { name: "Privacy Policy", href: "/privacy" },
-        { name: "Refund Policy", href: "/refunds" },
     ],
 };
 
@@ -31,13 +30,13 @@ export default function Footer() {
                     {/* Brand Column */}
                     <div className="space-y-8">
                         <Link href="/" className="flex items-center gap-3 group shrink-0">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#EAB308] text-white shadow-lg shadow-[#EAB308]/20 transition-transform group-hover:scale-110">
-                            <Film size={22} />
-                        </div>
-                        <span className="font-playfair text-2xl font-black tracking-tighter text-slate-900 uppercase">
-                            Cine<span className="text-[#EAB308]">Tube</span>
-                        </span>
-                    </Link>
+                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#EAB308] text-white shadow-lg shadow-[#EAB308]/20 transition-transform group-hover:scale-110">
+                                <Film size={22} />
+                            </div>
+                            <span className="font-playfair text-2xl font-black tracking-tighter text-slate-900 uppercase">
+                                Cine<span className="text-[#EAB308]">Tube</span>
+                            </span>
+                        </Link>
                         <p className="text-sm font-medium leading-relaxed text-slate-500 max-w-xs">
                             The ultimate destination for cinephiles. Discover, rate, and stream
                             the world's most iconic stories with our community-driven portal.

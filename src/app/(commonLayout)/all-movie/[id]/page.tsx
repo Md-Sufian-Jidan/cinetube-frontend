@@ -6,7 +6,7 @@ import Image from "next/image";
 import { getMediaById } from "../_actions";
 import Link from "next/link";
 import ReviewSection from "@/components/modules/media/ReviewSection";
-import { initialMedia } from "@/lib/mockData";
+import { initialMedia } from "@/data/data";
 
 interface PageProps {
     params: Promise<{ id: string }>;

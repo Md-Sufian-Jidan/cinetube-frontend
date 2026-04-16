@@ -57,7 +57,7 @@ export function ChatWidget() {
             },
         ]
 
-        setMessages(nextMessages)
+        // setMessages(nextMessages)
         setInput("")
         setError("")
         setIsSubmitting(true)

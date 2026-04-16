@@ -1,3 +1,5 @@
+"use client";
+
 import type { ComponentType } from "react";
 import { motion } from "framer-motion";
 import { getIconComponent } from "@/lib/iconMapper";
@@ -41,7 +43,7 @@ function FeatureCard({
 
 export function AboutFeatures() {
     return (
-        <section className="py-24 px-6 bg-transparent">
+        <section className="py-24 px-6 bg-[#fafafa]">
             <div className="container mx-auto px-6">
 
                 {/* Heading */}
@@ -61,13 +63,13 @@ export function AboutFeatures() {
                     {aboutFeatures.map((feature, index) => {
                         const Icon = getIconComponent(feature.icon);
                         return (
-                        <FeatureCard
-                            key={index}
-                            title={feature.title}
-                            description={feature.description}
-                            Icon={Icon}
-                        />
-                    )
+                            <FeatureCard
+                                key={index}
+                                title={feature.title}
+                                description={feature.description}
+                                Icon={Icon}
+                            />
+                        )
                     })}
                 </div>
             </div>

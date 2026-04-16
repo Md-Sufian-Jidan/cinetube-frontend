@@ -134,10 +134,8 @@ const AddMediaForm = () => {
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <form.Field
-                                    name="title"
-                                    validators={{ onChange: mediaZodSchema.shape.title }}
-                                >
+                                {/* REMOVED validators prop */}
+                                <form.Field name="title">
                                     {(field) => (
                                         <AppField
                                             field={field}
@@ -148,10 +146,8 @@ const AddMediaForm = () => {
                                     )}
                                 </form.Field>
 
-                                <form.Field
-                                    name="releaseYear"
-                                    validators={{ onChange: mediaZodSchema.shape.releaseYear }}
-                                >
+                                {/* REMOVED validators prop */}
+                                <form.Field name="releaseYear">
                                     {(field) => (
                                         <AppField
                                             field={field}
@@ -163,10 +159,8 @@ const AddMediaForm = () => {
                                     )}
                                 </form.Field>
 
-                                <form.Field
-                                    name="director"
-                                    validators={{ onChange: mediaZodSchema.shape.director }}
-                                >
+                                {/* REMOVED validators prop */}
+                                <form.Field name="director">
                                     {(field) => (
                                         <AppField
                                             field={field}
@@ -224,10 +218,8 @@ const AddMediaForm = () => {
                                 </div>
                             </div>
 
-                            <form.Field
-                                name="synopsis"
-                                validators={{ onChange: mediaZodSchema.shape.synopsis }}
-                            >
+                            {/* REMOVED validators prop */}
+                            <form.Field name="synopsis">
                                 {(field) => (
                                     <div className="space-y-2">
                                         <label className="text-sm font-medium text-slate-700">
@@ -241,7 +233,8 @@ const AddMediaForm = () => {
                                         />
                                         {field.state.meta.errors.length > 0 && (
                                             <p className="text-xs text-red-500">
-                                                {field.state.meta.errors[0]?.message as string}
+                                                {/* Fix this issue */}
+                                                {field.state.meta.errors}
                                             </p>
                                         )}
                                     </div>
@@ -259,10 +252,8 @@ const AddMediaForm = () => {
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <form.Field
-                                    name="streamingLink"
-                                    validators={{ onChange: mediaZodSchema.shape.streamingLink }}
-                                >
+                                {/* REMOVED validators prop */}
+                                <form.Field name="streamingLink">
                                     {(field) => (
                                         <AppField
                                             field={field}
@@ -273,10 +264,8 @@ const AddMediaForm = () => {
                                     )}
                                 </form.Field>
 
-                                <form.Field
-                                    name="posterUrl"
-                                    validators={{ onChange: mediaZodSchema.shape.posterUrl }}
-                                >
+                                {/* REMOVED validators prop */}
+                                <form.Field name="posterUrl">
                                     {(field) => (
                                         <AppField
                                             field={field}

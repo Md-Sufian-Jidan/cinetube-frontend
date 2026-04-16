@@ -102,10 +102,10 @@ export function AboutIntro() {
             rounded-2xl p-5 shadow-xl
             hidden sm:block
           ">
-                        <p className="text-sm font-bold text-slate-900 dark:text-white">
+                        <p className="text-sm font-bold text-white dark:text-white">
                             🎬 Unlimited Streaming
                         </p>
-                        <p className="text-xs text-slate-500 dark:text-slate-300 mt-1">
+                        <p className="text-xs text-white dark:text-slate-300 mt-1">
                             Anytime, Anywhere
                         </p>
                     </div>

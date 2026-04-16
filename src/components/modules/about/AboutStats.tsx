@@ -20,7 +20,7 @@ function AnimatedNumber({ value }: { value: number }) {
 
 export function AboutStats() {
     return (
-        <section className="py-24 px-6">
+        <section className="py-24 px-6 bg-[#fafafa]">
             <div className="container mx-auto px-6">
 
                 {/* Heading */}

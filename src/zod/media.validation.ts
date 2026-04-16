@@ -20,9 +20,10 @@ export const mediaZodSchema = z.object({
         .array(
             z.object({
                 name: z.string().min(1, "Cast name is required"),
-                role: z.enum(["ACTOR", "DIRECTOR", "PRODUCER", "WRITER"], {
-                    errorMap: () => ({ message: "Select a valid role" }),
-                }),
+                // role: z.enum(["ACTOR", "DIRECTOR", "PRODUCER", "WRITER"], {
+                //     errorMap: () => ({ message: "Select a valid role" }),
+                // }),
+                role: z.string().optional(),
                 bio: z.string().optional(),
             })
         )
